@@ -1,0 +1,247 @@
+---
+title: "Introduction to MultiDataSet"
+subtitle: "Carlos Ruiz, Carles Hernández, Juan R. González"
+author: |
+  | Center for Research in Environmental Epidemiology (CREAL), Barcelona, Spain
+  | Bioinformatics Research Group in Epidemiolgy             
+  | (<http://www.creal.cat/brge.htm>)
+date: "`r Sys.Date()`"
+package: "`r pkg_ver('MultiDataSet')`"
+output: 
+  BiocStyle::html_document:
+    number_sections: true
+    toc: yes
+    fig_caption: yes
+    fig_height: 3
+    fig_width: 4
+vignette: >
+  %\VignetteIndexEntry{Introduction to MultiDataSet}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+# MultiDataSet design
+`MultiDataSet` is a new class designed to manage different omics datasets corresponding to the same experiment. It is based in Bioconductor framework, so it works with S4 classes derived from eSet. The following data is extracted from each eSet-derived object that is added to a `MultiDataSet`:
+
+* The matrix or matrices of data
+* The phenotypic data
+* The annotation
+
+When working with `MultiDataSet` it should be taken into account that phenotypic data is stored independently for each set. This fact allows to store variables with the same name but different values in different sets (e.g. technical variables).
+
+In the code below, the libraries needed in this tutorial will be loaded:
+
+```{r Load libraries, message=FALSE}
+library(MultiDataSet)
+library(MEALData)
+library(minfiData)
+``` 
+
+# Create a new MultiDataSet
+
+`MultiDataSet`s should be created prior to adding any eSet object. They are generated using the standard R function:
+
+```{r New Multi}
+multi <- createMultiDataSet()
+``` 
+
+The fuction `names` recovers the names of sets included in the `MultiDataSet`. Right now, the object is empty so there are no names:
+
+```{r Names empty Multi}
+names(multi)
+``` 
+
+# Add a set
+
+`r Rpackage("MultiDataSet")` includes three functions to include three specific objects: `ExpressionSet`, `SnpSet` and `MethylationSet`. Let's start by the `ExpressionSet`.
+
+## Adding an ExpressionSet
+
+`ExpressionSet` is the Bioconductor class designed to store a the data of an expression microarray experiment. `r Rpackage("MEALData")` includes an `ExpressionSet` called eset:
+
+```{r eset}
+data(eset)
+eset
+``` 
+
+The function that adds an `ExpressionSet` to a `MultiDataSet` is `add_genexp`. It has three arguments: the `MultiDataSet` where the `ExpressionSet` will be added (object), the `ExpressionSet` to be added (gexpSet) and a boolean to enable or disable the warnings (warning). 
+
+```{r add eset }
+multi2 <- add_genexp(multi, eset)
+multi2
+multi
+``` 
+
+There are two things that should be noticed. First, `add_genexp` **does not modify** the `MultiDataSet` passed in the `object` argument. Consequently, multi is still NULL. This property is common of all the functions used to add sets to the `MultiDataSet`. `add_genexp` adds the `ExpressionSet` data to the slot _expression_. This should be kept in mind when retrieving the data. 
+
+## Adding a SnpSet
+
+The function `add_snps` adds a `SnpSet` to the `MultiDataSet`. It is very similar to `add_genexp`, the difference is the second argument, which is snpSet instead of gexpSet. Clearly, snpSet should be a `SnpSet`.
+
+In `r Rpackage("MEALData")`, we have included a list with the genotypes and the annotation:
+
+```{r snps}
+data(snps)
+names(snps)
+snps$genotypes[1:5, 1:5]
+head(snps$map)
+``` 
+
+The matrix of genotypes represent the status of the SNP (0 for homozygote for allele 1, 1 for heterozygotes and 2 for homozygotes for the allele 2). With this data, we can create a SnpSet:
+
+```{r Create SnpSet}
+SnpSet <- new("SnpSet", call = snps$genotypes)
+fData(SnpSet) <- snps$map
+colnames(fData(SnpSet))[1] <- "ochr"
+pData(SnpSet) <- data.frame(id=colnames(snps$genotypes))
+rownames(pData(SnpSet)) <- colnames(snps$genotypes)
+SnpSet
+``` 
+
+Now, we can add SnpSet to multi:
+
+```{r Add SnpSet}
+multi2 <- add_snps(multi, SnpSet)
+multi
+multi2
+``` 
+
+As it happened with `add_genexp`, the original object remains unchanged. SNP data is added to the slot _snps_.
+
+## Adding a MethylationSet
+
+The function `add_methy` adds a `MethylationSet` to the `MultiDataSet`. Again, the only difference with  `add_genexp` is in the second argument. In `add_methy` the second argument is called methySet and it should be a `MethylationSet`.
+
+`MethylationSet` is a new class which can be considered the equivalent of the `ExpressionSet` for methylation. In `r Rpackage("MEALData")`, there is no a `MethylationSet`, but there is a matrix of beta values (the methylation values) and a data.frame with the phenotypic variables. With this data, we can easily create a `MethylationSet`:
+
+```{r create methy}
+data(betavals)
+betavals[1:5, 1:5]
+data(pheno)
+head(pheno)
+methSet <- prepareMethylationSet(matrix = betavals, phenotypes = pheno)
+methSet
+``` 
+
+`prepareMethylationSet` creates the `MethylationSet` using the matrix of betavalues and the data.frame of phenotypes. If an annotation data.frame is not provided, by default, it loads it from `r Biocannopkg("IlluminaHumanMethylation450kanno.ilmn12.hg19")`. 
+
+Now, we are ready to add the methylation data to multi:
+
+```{r Add MethylationSet}
+pData(methSet)$id <- rownames(pData(methSet))
+multi2 <- add_methy(multi, methSet)
+multi
+multi2
+``` 
+
+As before, the multi object remains unchanged. The methylation data is added to the slot _methylation_.
+
+## Adding other eSet-derived classes
+
+Besides the specific functions, there is a general function that can add any eSet-derived objects: `add_eset`. `add_eset` has four arguments. object and set are equivalent to the first two arguments of the specific functions (the `MultiDataSet` and the object to be added). dataset.name is a character with the name of the slot where the set will be added. Finally, there is also a flag to enable or disable the warnings.
+
+To test this function, we will use the data from `r Rpackage("minfiData")`. `r Rpackage("minfiData")` includes two objects: a `RGChannelSet` (RGsetEx) and a `MethylSet` (MsetEx):
+
+```{r minfi objects}
+data(RGsetEx)
+RGsetEx
+data(MsetEx)
+MsetEx
+``` 
+
+```{r complete_sets}
+pData(RGsetEx)$id <- rownames(pData(RGsetEx))
+fData(RGsetEx)$chromosome <- "unkwn"
+fData(RGsetEx)$start <- 0
+fData(RGsetEx)$end <- 0
+
+pData(MsetEx)$id <- rownames(pData(MsetEx))
+fData(MsetEx)$chromosome <- "unkwn"
+fData(MsetEx)$start <- 0
+fData(MsetEx)$end <- 0
+```
+
+Both classes are defined in `r Rpackage("minfi")` and are extensions of Bioconductor eSet. In the first example, we will add RGsetEx to the slot _RG_:
+
+```{r Add RGSet}
+multi2 <- add_eset(multi, RGsetEx, "RG")
+multi2
+```
+
+There is a new slot called _RG_ that contains the data of the RGsetEx. 
+
+As it can be seen, the specific functions worked in the same way than `add_eset`. The reasion is that the specific functions are specific cases of the general function, where the set's class and the slot's name have been fixed. 
+
+# Retrieve a set
+
+Two options have been incorporated to retrieve a set from a `MultiDataSet`. Before starting, let's create a `MultiDataSet` with expression data:
+
+```{r Add eset2}
+multi2 <- add_genexp(multi, eset)
+multi2
+```
+
+multi2 contains now our expression data in the slot _expression_. One option to recover the object is to use the operator `[[`:
+
+```{r get eset}
+neweset <- multi2[["expression"]]
+neweset
+eset
+```
+
+# Overwrite a set
+
+If we add a set to a existing slot, the old set is overwritten:
+
+```{r overwrite set}
+multi2 <- add_eset(multi, RGsetEx, "ex")
+multi2[["ex"]]
+multi2 <- add_eset(multi, MsetEx, "ex")
+multi2[["ex"]]
+```
+
+In the example, first we add a RGsetEx to the slot _ex_. Then, we add MsetEx to slot _ex_. RGsetEx is removed from multi2 and it is substituted by MsetEx. The same behavior applies for the specific functions: `add_genexp`, `add_snps` and `add_methy`.
+
+# Subset a MultiDataSet
+
+The operator `[` allows to subset the `MultiDataSet`. The second parameter selects the samples. Let's try this function with a `MultiDataSet` with methSet, eset and SnpSet.
+
+```{r}
+multi2 <- createMultiDataSet()
+multi2 <- add_genexp(multi2, eset)
+multi2 <- add_methy(multi2, methSet)
+multi2 <- add_snps(multi2, SnpSet)
+multi2
+names(multi2)
+multi2[, 1:2]
+```
+
+In this example, the first two sets are selected (snps and expression). The subset can also be done using names:
+
+```{r}
+names(multi2[,c("expression", "methylation")])
+```
+
+If the subsetting only includes a set, a `MultiDataSet` is returned. If we want a the original set, we need to set drop = TRUE:
+
+```{r}
+multi2[, "methylation", drop = TRUE]
+```
+
+With the first argument we can filter the samples of the `MultiDataSet`. With these parameter we can select some samples of all the sets:
+
+```{r}
+multi3 <- multi2[c("WG2275", "WG2276", "GM00290"), ]
+multi3
+multi3[["snps"]]
+multi3[["expression"]]
+multi3[["methylation"]]
+```
+
+With this code, all the sets have been filtered to the first three samples. We can subset at the same time sets and samples:
+
+```{r}
+multi3 <- multi2[c("WG2275", "WG2276", "GM00290"), 1:2]
+multi3
+multi3[["expression"]]
+multi3[["methylation"]]
+```

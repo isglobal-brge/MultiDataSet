@@ -32,10 +32,7 @@ setMethod(
             if(is.numeric(j)) {
                 j <- names(x)[j]
             }
-            if (length(j) == 1 & drop) {
-                x <- x@return_method[[j]](x@assayData[[j]], x@phenoData[[j]], x@featureData[[j]])
-                validObject(x)
-            } else {
+
                 if(sum(j %in% names(x)) != length(j)) {
                     stop("Invalid tables' selection. Given table not present.")
                 } else {
@@ -44,7 +41,7 @@ setMethod(
                     x@featureData <- x@featureData[j]
                     x@assayData <- x@assayData[j]
                 }
-            }
+            
         }
         ## /
         
@@ -103,7 +100,7 @@ setMethod(
                 x <- x[ , names(x)[!is.na(ranges)]]
             }
             for (dtype in names(x)){
-                nfData <- subsetByOverlaps(x@rowRanges[[dtype]], k)
+                nfData <- GenomicRanges::subsetByOverlaps(x@rowRanges[[dtype]], k)
                 fNames <- names(nfData)
                 orig <- assayData(x[[dtype]])
                 storage.mode <- Biobase:::assayDataStorageMode(orig)
@@ -133,6 +130,11 @@ setMethod(
             x@featureData <- featD
             x@rowRanges <- rangeD
         }    
+        
+        if (length(x) == 1 & drop) {
+            x <- x@return_method[[1]](x@assayData[[1]], x@phenoData[[1]], x@featureData[[1]])
+        }
+        
         validObject(x)
         return(x)
     })

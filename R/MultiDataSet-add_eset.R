@@ -28,7 +28,7 @@ setMethod(
         } 
         if (!is(GRanges, "GenomicRanges")){
             if (!is.na(GRanges)){
-               stop("GRanges should be a GenomicRanges or NA.")
+                stop("GRanges should be a GenomicRanges or NA.")
             }
         }
         
@@ -36,8 +36,11 @@ setMethod(
         
         pheno <- phenoData(set)
         if (!"id" %in% colnames(pheno)){
-            warning("No id column found in pData. The id will be equal to the sampleNames")
+            if (warnings) {
+                warning("No id column found in pData. The id will be equal to the sampleNames")
+            }
             pheno$id <- rownames(pheno)
+            
         }
         object@phenoData[[dataset.name]] <- pheno
         object@featureData[[dataset.name]] <- featureData(set)

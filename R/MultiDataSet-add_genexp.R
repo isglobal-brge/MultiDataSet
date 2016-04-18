@@ -11,6 +11,7 @@ setMethod(
             fet$end <- fet$start
         }
         range <- GenomicRanges::makeGRangesFromDataFrame(fet)
+        names(range) <- featureNames(gexpSet)
         object <- add_eset(object, gexpSet, dataset.type = "expression", GRanges = range, ...)
         
         return(object)

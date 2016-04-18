@@ -1,4 +1,5 @@
 context("add eSet")
+library(GenomicRanges)
 
 test_that("MultiSet", {
   multi <- createMultiDataSet()

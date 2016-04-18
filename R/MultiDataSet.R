@@ -12,7 +12,7 @@
 #' @import Biobase
 #' @importClassesFrom SummarizedExperiment RangedSummarizedExperiment
 #' @importClassesFrom minfi RatioSet
-#' @importFrom GenomicRanges makeGRangesFromDataFrame rowRanges
+#' @importFrom GenomicRanges makeGRangesFromDataFrame rowRanges subsetByOverlaps
 #' @importFrom S4Vectors DataFrame
 #' @seealso \linkS4class{MultiDataSet}
 NULL

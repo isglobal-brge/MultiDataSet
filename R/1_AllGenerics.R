@@ -12,17 +12,15 @@
 #' are several sets of the same type (e.g. multiple expression assays)
 #' @param warnings Logical to indicate if warnings will be displayed.
 #' @param overwrite Logical to indicate if the set stored in the slot will be overwritten. 
-#' @param useGRanges Logical to indicate if the featureData will be transformed to GenomicRanges
+#' @param GRanges \code{GenomicRanges} to be included in rowRanges slot. 
 #' @return A new \code{MultiDataSet} with a slot filled.
 #' @seealso \code{\link{add_methy}}, \code{\link{add_genexp}}, \code{\link{add_rnaseq}}, \code{\link{add_snps}}
 #' @exportMethod add_eset
 #' @examples 
 #' multi <- createMultiDataSet()
 #' eset <- new("ExpressionSet", exprs = matrix(runif(10), 5))
-#' multi <- add_eset(multi, eset, "exampledata")
-setGeneric("add_eset", function(object, set, dataset.type, dataset.name = NULL, warnings = TRUE, overwrite = FALSE, useGRanges = FALSE) {
-    standardGeneric("add_eset")
-})
+#' multi <- add_eset(multi, eset, "exampledata", GRanges = NA)
+setGeneric("add_eset", function(object, set, dataset.type, dataset.name = NULL, warnings = TRUE, overwrite = FALSE, GRanges) standardGeneric("add_eset"))
 
 #' Method to add an expression microarray dataset to \code{MultiDataSet}.
 #'
@@ -41,11 +39,9 @@ setGeneric("add_eset", function(object, set, dataset.type, dataset.name = NULL, 
 #' multi <- createMultiDataSet()
 #' eset <- new("ExpressionSet", exprs = matrix(runif(4), 2))
 #' fData(eset) <- data.frame(chromosome = c("chr1", "chr2"), start = c(12414, 1234321),
-#'  end = c(121241, 12412412414), stringsAsFactors = FALSE)
+#'  end = c(121241, 124124114), stringsAsFactors = FALSE)
 #' multi <- add_genexp(multi, eset)
-setGeneric("add_genexp", function(object, gexpSet, ...) {
-    standardGeneric("add_genexp")
-})
+setGeneric("add_genexp", function(object, gexpSet, ...) standardGeneric("add_genexp"))
 
 #' Method to add an expression RNA seq dataset to \code{MultiDataSet}.
 #' 
@@ -56,7 +52,7 @@ setGeneric("add_genexp", function(object, gexpSet, ...) {
 #' @rdname add_rnaseq-methods
 #' @exportMethod add_rnaseq
 #' @param object \code{MultiDataSet} that will be filled.
-#' @param gexpSet \code{ExpressionSet} to be used to fill the slot.
+#' @param rnaSet \code{ExpressionSet} to be used to fill the slot.
 #' @param ... Arguments to be passed to \code{add_eset}.
 #' @return A new \code{MultiDataSet} with the slot \code{"rnaseq"}
 #' filled.
@@ -64,11 +60,9 @@ setGeneric("add_genexp", function(object, gexpSet, ...) {
 #' multi <- createMultiDataSet()
 #' eset <- new("ExpressionSet", exprs = matrix(runif(4), 2))
 #' fData(eset) <- data.frame(chromosome = c("chr1", "chr2"), start = c(12414, 1234321),
-#'  end = c(121241, 12412412414), stringsAsFactors = FALSE)
+#'  end = c(121241, 12122414), stringsAsFactors = FALSE)
 #' multi <- add_genexp(multi, eset)
-setGeneric("add_rnaseq", function(object, gexpSet, ...) {
-    standardGeneric("add_rnaseq")
-})
+setGeneric("add_rnaseq", function(object, rnaSet, ...) standardGeneric("add_rnaseq"))
 
 #' Method to add a slot of methylation to \code{MultiDataSet}.
 #'
@@ -90,9 +84,7 @@ setGeneric("add_rnaseq", function(object, gexpSet, ...) {
 #'  methy <- prepareMethylationSet(betavals, pheno)
 #'  multi <- add_methy(multi, methy)
 #' }
-setGeneric("add_methy", function(object, methySet, ...) {
-    standardGeneric("add_methy")
-})
+setGeneric("add_methy", function(object, methySet, ...) standardGeneric("add_methy"))
 
 #' Method to add a \code{RangedSummarizedExperiment} to \code{MultiDataSet}.
 #'
@@ -125,9 +117,7 @@ setGeneric("add_methy", function(object, methySet, ...) {
 #'                             rowRanges=rowRanges, colData=colData)
 #' multi <- add_rse(multi, rse, "rseEx")
 #' }
-setGeneric("add_rse", function(object, set, dataset.type, dataset.name = NULL, warnings = TRUE, overwrite = FALSE) {
-    standardGeneric("add_rse")
-})
+setGeneric("add_rse", function(object, set, dataset.type, dataset.name = NULL, warnings = TRUE, overwrite = FALSE) standardGeneric("add_rse"))
 
 #' Method to add a slot of SNPs to \code{MultiDataSet}.
 #'
@@ -155,9 +145,7 @@ setGeneric("add_rse", function(object, set, dataset.type, dataset.name = NULL, w
 #' rownames(pheno) <- c("VAL0156", "VAL0372")
 #' pData(snpSet) <- pheno
 #' multi <- add_snps(multi, snpSet)
-setGeneric("add_snps", function(object, snpSet, ...) {
-    standardGeneric("add_snps")
-})
+setGeneric("add_snps", function(object, snpSet, ...) standardGeneric("add_snps"))
 
 #' Get the name of the ids common to all datasets
 #'
@@ -186,9 +174,7 @@ setGeneric("add_snps", function(object, snpSet, ...) {
 #' 
 #' multi <- add_genexp(multi, eset, dataset.name="g2")
 #' commonIds(multi)
-setGeneric("commonIds", function(object) {
-    standardGeneric("commonIds")
-})
+setGeneric("commonIds", function(object) standardGeneric("commonIds"))
 
 #' @export 
 setGeneric("betas", function(object){
@@ -211,9 +197,7 @@ setGeneric("betas", function(object){
 #'  methy <- prepareMethylationSet(betavals, pheno)
 #'  checkProbes(methy)
 #' }
-setGeneric("checkProbes", function(object){
-    standardGeneric("checkProbes")
-})
+setGeneric("checkProbes", function(object) standardGeneric("checkProbes"))
 
 #' Modify a \code{MethylationSet} to only contain common samples
 #' 
@@ -233,9 +217,7 @@ setGeneric("checkProbes", function(object){
 #'  methy <- prepareMethylationSet(betavals, pheno)
 #'  checkSamples(methy)
 #' }
-setGeneric("checkSamples", function(object){
-    standardGeneric("checkSamples")
-})
+setGeneric("checkSamples", function(object) standardGeneric("checkSamples"))
 
 #' Method to select samples that are present in all datasets.
 #'
@@ -266,9 +248,7 @@ setGeneric("checkSamples", function(object){
 #' 
 #' multi <- add_genexp(multi, eset, dataset.name="g2")
 #' commonSamples(multi)
-setGeneric("commonSamples", function(object) {
-    standardGeneric("commonSamples")
-})
+setGeneric("commonSamples", function(object) standardGeneric("commonSamples"))
 
 #' Transforms beta values to M-values
 #' 
@@ -288,6 +268,4 @@ setGeneric("commonSamples", function(object) {
 #' mvalues <- getMs(set)
 #' head(mvalues)
 #' }
-setGeneric("getMs", function(object, threshold = 0.0001){
-    standardGeneric("getMs")
-})
+setGeneric("getMs", function(object, threshold = 0.0001) standardGeneric("getMs"))

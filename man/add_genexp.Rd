@@ -25,7 +25,7 @@ This method adds or overwrites the slot \code{"expression"} of an
 multi <- createMultiDataSet()
 eset <- new("ExpressionSet", exprs = matrix(runif(4), 2))
 fData(eset) <- data.frame(chromosome = c("chr1", "chr2"), start = c(12414, 1234321),
- end = c(121241, 12412412414), stringsAsFactors = FALSE)
+ end = c(121241, 124124114), stringsAsFactors = FALSE)
 multi <- add_genexp(multi, eset)
 }
 

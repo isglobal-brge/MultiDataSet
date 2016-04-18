@@ -3,7 +3,7 @@ Type: Package
 Title: Implementation of the BRGE's (Bioinformatic Research Group in
         Epidemiology from Center for Research in Environmental
         Epidemiology) MultiDataSet and MethylationSet
-Version: 0.99.9
+Version: 0.99.10
 Authors@R: c(person("Carlos", "Ruiz-Arenas", , "cruiz@creal.cat", role
         = c("aut", "cre")), person("Carles", "Hernandez-Ferrer", ,
         "chernandez@creal.cat", role = "aut"), person("Juan R.",

@@ -41,6 +41,8 @@ setClass (
 #' of each \code{assayData}.
 #' @slot featureData List of \code{AnnotatedDataFrame} containing the featureData
 #' of each \code{assayData}.
+#' @slot rowRanges List of \code{GenomicRanges} containing the rowRanges
+#' of each \code{assayData}.
 #' @slot return_method List of functions used to create the original object.
 #' @seealso \code{\link{add_eset}}, \code{\link{add_rse}}
 setClass(
@@ -49,6 +51,7 @@ setClass(
     assayData = "list",
     phenoData = "list",
     featureData = "list",
+    rowRanges = "list",
     return_method = "list"
   )
 )

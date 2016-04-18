@@ -9,7 +9,7 @@ setMethod(
     
     cat( " . featureData:\n")
     for(name in names(object)) {
-      cat("    . ", name, ": ", length(object@featureData[[name]]), " rows, ",
+      cat("    . ", name, ": ", nrow(object@featureData[[name]]), " rows, ",
           length(varLabels(object@featureData[[name]])), " cols ", sep = "")
       
       nms <- varLabels(object@featureData[[name]])

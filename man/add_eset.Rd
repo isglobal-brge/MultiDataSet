@@ -5,7 +5,7 @@
 \title{Method to add an \code{eSet} to \code{MultiDataSet}.}
 \usage{
 add_eset(object, set, dataset.type, dataset.name = NULL, warnings = TRUE,
-  overwrite = FALSE, useGRanges = FALSE)
+  overwrite = FALSE, GRanges)
 }
 \arguments{
 \item{object}{\code{MultiDataSet} that will be filled.}
@@ -21,7 +21,7 @@ are several sets of the same type (e.g. multiple expression assays)}
 
 \item{overwrite}{Logical to indicate if the set stored in the slot will be overwritten.}
 
-\item{useGRanges}{Logical to indicate if the featureData will be transformed to GenomicRanges}
+\item{GRanges}{\code{GenomicRanges} to be included in rowRanges slot.}
 }
 \value{
 A new \code{MultiDataSet} with a slot filled.
@@ -33,7 +33,7 @@ of the given \code{eSet}.
 \examples{
 multi <- createMultiDataSet()
 eset <- new("ExpressionSet", exprs = matrix(runif(10), 5))
-multi <- add_eset(multi, eset, "exampledata")
+multi <- add_eset(multi, eset, "exampledata", GRanges = NA)
 }
 \seealso{
 \code{\link{add_methy}}, \code{\link{add_genexp}}, \code{\link{add_rnaseq}}, \code{\link{add_snps}}

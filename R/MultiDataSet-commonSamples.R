@@ -8,6 +8,6 @@ setMethod(
     if (length(samples) == 0){
       stop("There are no samples present in all the datasets")
     }
-    return(object[samples, ,])
+    return(object[samples, ])
   }
 )

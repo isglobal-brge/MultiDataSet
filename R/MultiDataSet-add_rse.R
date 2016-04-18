@@ -11,9 +11,7 @@ setMethod(
     validObject(set)
     dataset.name <- paste(c(dataset.type, dataset.name), collapse = "+")
 
-#     if (!"id" %in% colnames(colData(set))){
-#       stop("colData of set must contain a column called id.")
-#     }
+
     if(dataset.name %in% names(object)){
       if (!overwrite){
         stop("There is already an object in this slot. Set overwrite = TRUE to overwrite the previous set.")
@@ -34,6 +32,7 @@ setMethod(
     }
     object@phenoData[[dataset.name]] <- pheno
     object@featureData[[dataset.name]] <- Biobase::AnnotatedDataFrame(as.data.frame(SummarizedExperiment::rowRanges(set)))
+    object@rowRanges[[dataset.name]] <- SummarizedExperiment::rowRanges(set)
     
     returnfunc <- function(env, phe, fet) {
       assays <- SummarizedExperiment::Assays(as.list(env))

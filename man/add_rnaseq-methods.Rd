@@ -5,12 +5,12 @@
 \alias{add_rnaseq}
 \title{Method to add an expression RNA seq dataset to \code{MultiDataSet}.}
 \usage{
-add_rnaseq(object, gexpSet, ...)
+add_rnaseq(object, rnaSet, ...)
 }
 \arguments{
 \item{object}{\code{MultiDataSet} that will be filled.}
 
-\item{gexpSet}{\code{ExpressionSet} to be used to fill the slot.}
+\item{rnaSet}{\code{ExpressionSet} to be used to fill the slot.}
 
 \item{...}{Arguments to be passed to \code{add_eset}.}
 }
@@ -26,7 +26,7 @@ This method adds or overwrites the slot \code{"rnaseq"} of an
 multi <- createMultiDataSet()
 eset <- new("ExpressionSet", exprs = matrix(runif(4), 2))
 fData(eset) <- data.frame(chromosome = c("chr1", "chr2"), start = c(12414, 1234321),
- end = c(121241, 12412412414), stringsAsFactors = FALSE)
+ end = c(121241, 12122414), stringsAsFactors = FALSE)
 multi <- add_genexp(multi, eset)
 }
 

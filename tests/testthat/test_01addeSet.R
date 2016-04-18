@@ -42,7 +42,7 @@ test_that("MultiSet", {
   fvarLabels(mldat) <- tolower(fvarLabels(mldat))
   fData(mldat)$position <- fData(mldat)$cpg_coordinate
   pData(mldat)$id <- pData(mldat)$sampleID
-  multi <- add_eset(multi, mldat, "cot")
+  multi <- add_eset(multi, mldat, "cot", GRanges = NA)
   expect_equal(names(multi), c("expression", "snps", "cot"))
   expect_equal(names(multi[, c("cot", "snps")]), c("cot", "snps"))
   expect_is(multi[, "snps", drop = TRUE], "SnpSet")
@@ -78,13 +78,14 @@ test_that("subseting", {
   ## /
   
   ## Check SAMPLES
-  expect_equal(commonIds(multi[c("S1", "S2"),, ]), "S1")
+  expect_equal(commonIds(multi[c("S1", "S2"), ]), "S1")
   expect_equal(unique(unlist(sampleNames(commonSamples(multi)))), "S1")
   
   ## /
   
   ## Check RANGES
-  # expect_equal(sum(sapply(fData(multi[,, GRanges("chr1:1-7")]), function(gr) { length(names(gr)) })), 3)
+  expect_equivalent(nrow(multi[,, GRanges("chr1:1-7")][["expression+g1"]]), 2L)
+  expect_equivalent(nrow(multi[,, GRanges("chr1:1-7")][["expression+g2"]]), 1L)
   ## /
   
 })

@@ -40,6 +40,7 @@ setMethod(
                     x@phenoData <- x@phenoData[j]
                     x@featureData <- x@featureData[j]
                     x@assayData <- x@assayData[j]
+                    x@rowRanges <- x@rowRanges[j]
                 }
             
         }
@@ -96,7 +97,8 @@ setMethod(
             assyD <- list()
             featD <- list()
             rangeD <- list()
-            if (sum(is.na(rowRanges(x)))){
+            ranges <- rowRanges(x)
+            if (sum(is.na(ranges))){
                 x <- x[ , names(x)[!is.na(ranges)]]
             }
             for (dtype in names(x)){

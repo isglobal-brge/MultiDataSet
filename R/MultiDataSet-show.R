@@ -15,6 +15,12 @@ setMethod(
       nms <- varLabels(object@featureData[[name]])
       cat(ifelse(length(nms) == 0, "", paste0("(", .wrpvec(nms), ")")), "\n", sep = "")
     }
+    cat( " . rowRanges:\n")
+    for(name in names(object)) {
+        cat("    . ", name, ": ", 
+            ifelse(is(object@rowRanges[[name]], "GenomicRanges"), "YES\n", "NO\n"), sep="")
+    }
+    
     
     cat( " . phenoData:\n")
     for(name in names(object)) {

@@ -1,25 +1,32 @@
 Package: MultiDataSet
 Type: Package
-Title: Implementation of the BRGE's (Bioinformatic Research Group in
-        Epidemiology from Center for Research in Environmental
-        Epidemiology) MultiDataSet and MethylationSet
+Title: Implementation of the BRGE's (Bioinformatic Research Group in Epidemiology from
+ Center for Research in Environmental Epidemiology) MultiDataSet and MethylationSet 
 Version: 0.99.12
-Authors@R: c(person("Carlos", "Ruiz-Arenas", , "cruiz@creal.cat", role
-        = c("aut", "cre")), person("Carles", "Hernandez-Ferrer", ,
-        "chernandez@creal.cat", role = "aut"), person("Juan R.",
-        "González", ,"jrgonzalez@creal.cat", role = "aut"))
-Description: Implementation of the BRGE's (Bioinformatic Research Group
-        in Epidemiology from Center for Research in Environmental
-        Epidemiology) MultiDataSet and MethylationSet. MultiDataSet is
-        designed for integrating multi omics data sets and
-        MethylationSet to contain normalized methylation data. These
-        package contains base classes for MEAL and rexposome packages.
-License: MIT
+Authors@R: c(person("Carlos", "Ruiz-Arenas", , "cruiz@creal.cat", role = c("aut", "cre")),
+  person("Carles", "Hernandez-Ferrer", , "chernandez@creal.cat", role = "aut"),
+  person("Juan R.", "González", ,"jrgonzalez@creal.cat", role = "aut"))
+Description:  Implementation of the BRGE's (Bioinformatic Research Group in Epidemiology from
+ Center for Research in Environmental Epidemiology) MultiDataSet and MethylationSet. MultiDataSet
+ is designed for integrating multi omics data sets and MethylationSet to contain normalized methylation data. 
+ These package contains base classes for MEAL and rexposome packages.
+License: file LICENSE
 LazyData: TRUE
 biocViews: Software, DataRepresentation
-Depends: R (>= 3.3), Biobase
-Imports: BiocGenerics, GenomicRanges, S4Vectors, SummarizedExperiment,
-        minfi
+Depends: 
+    R (>= 3.3), Biobase
+Imports: 
+    BiocGenerics,
+    GenomicRanges,
+    IRanges, 
+    minfi,
+    S4Vectors,
+    SummarizedExperiment
 RoxygenNote: 5.0.1
-Suggests: MEALData, minfiData, knitr, rmarkdown, testthat, methylumi
+Suggests: MEALData,
+    minfiData,
+    knitr,
+    rmarkdown,
+    testthat,
+    methylumi
 VignetteBuilder: knitr

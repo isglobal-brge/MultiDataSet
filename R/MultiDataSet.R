@@ -10,9 +10,11 @@
 #' 
 #' @import BiocGenerics
 #' @import Biobase
-#' @importClassesFrom SummarizedExperiment RangedSummarizedExperiment
+#' @importClassesFrom SummarizedExperiment RangedSummarizedExperiment 
 #' @importClassesFrom minfi RatioSet
-#' @importFrom GenomicRanges makeGRangesFromDataFrame rowRanges subsetByOverlaps
+#' @importFrom GenomicRanges makeGRangesFromDataFrame
+#' @importFrom IRanges subsetByOverlaps 
 #' @importFrom S4Vectors DataFrame
+#' @importFrom SummarizedExperiment rowRanges
 #' @seealso \linkS4class{MultiDataSet}
 NULL

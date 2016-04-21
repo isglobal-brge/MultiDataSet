@@ -20,6 +20,7 @@ setMethod(
 
 #' @describeIn MultiDataSet Method to add a slot of (RNASeq) expression to \code{MultiDataSet}.
 #' @aliases MultiDataSet-methods
+#' @param rnaSet \code{ExpressionSet} to be used to fill the slot.
 setMethod(
     f = "add_rnaseq",
     signature = c("MultiDataSet", "ExpressionSet"),

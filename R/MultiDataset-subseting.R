@@ -102,7 +102,7 @@ setMethod(
                 x <- x[ , names(x)[!is.na(ranges)]]
             }
             for (dtype in names(x)){
-                nfData <- GenomicRanges::subsetByOverlaps(x@rowRanges[[dtype]], k)
+                nfData <- IRanges::subsetByOverlaps(x@rowRanges[[dtype]], k)
                 fNames <- names(nfData)
                 orig <- assayData(x[[dtype]])
                 storage.mode <- Biobase:::assayDataStorageMode(orig)

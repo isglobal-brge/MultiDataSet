@@ -31,7 +31,7 @@ setMethod(
                 stop("GRanges should be a GenomicRanges or NA.")
             }
         }
-        
+
         object@assayData[[dataset.name]] <- assayData(set)
         
         pheno <- phenoData(set)
@@ -45,7 +45,7 @@ setMethod(
         object@phenoData[[dataset.name]] <- pheno
         object@featureData[[dataset.name]] <- featureData(set)
         object@rowRanges[[dataset.name]] <- GRanges
-        
+   
         returnfunc <- function(env, phe, fet) {
             new(class(set), assayData = env, phenoData = phe, 
                 featureData = fet)

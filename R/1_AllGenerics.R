@@ -269,3 +269,7 @@ setGeneric("commonSamples", function(object) standardGeneric("commonSamples"))
 #' head(mvalues)
 #' }
 setGeneric("getMs", function(object, threshold = 0.0001) standardGeneric("getMs"))
+
+#' @export
+setGeneric("rowRangesElements", function(object) standardGeneric("rowRangesElements"))
+

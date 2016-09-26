@@ -10,8 +10,14 @@ test_that("MultiSet", {
     stringsAsFactors = FALSE)
   pData(eset) <- data.frame(id = letters[1:2])
 
+  multi <- add_rnaseq(multi, eset)
+  expect_equal(names(multi), "rnaseq")
+  
+  multi <- createMultiDataSet()
   multi <- add_genexp(multi, eset)
   expect_equal(names(multi), "expression")
+  multi
+  
   
   expect_error(add_genexp(multi, eset), "There is already an object in this slot. Set overwrite = TRUE to overwrite the previous set.")
   expect_warning(add_genexp(multi, eset, overwrite = TRUE), "Slot 'expression' is already set in 'MultiDataSet'. Previous content will be overwritten.")
@@ -47,47 +53,48 @@ test_that("MultiSet", {
   expect_equal(names(multi), c("expression", "snps", "cot"))
   expect_equal(names(multi[, c("cot", "snps")]), c("cot", "snps"))
   expect_is(multi[, "snps", drop = TRUE], "SnpSet")
-})
-
-test_that("subseting", {
-  ## Create MULTI
+  
+  
+  
+  beta_matrix <- matrix(runif(4), nrow = 2)
+  colnames(beta_matrix) <- c("H", "M")
+  rownames(beta_matrix) <- c("cg00050873", "cg00212031")
+  phenotypes <- data.frame(age = c(12, 23))
+  rownames(phenotypes) <- c("H", "M")
+  mset <- prepareMethylationSet(matrix = beta_matrix, phenotypes = phenotypes)
+  
   multi <- createMultiDataSet()
-  eset <- new("ExpressionSet", exprs = matrix(runif(9), ncol = 3))
-  fData(eset) <- data.frame(chromosome = c("chr1", "chr1", "chr1"), 
-                            start = c(1, 5, 10),end = c(4, 6, 14), 
-                            stringsAsFactors = FALSE)
-  sampleNames(eset) <- c("S1", "S2", "S3")
-  pData(eset) <- data.frame(id = c("S1", "S2", "S3"))
-  rownames(pData(eset)) <- c("S1", "S2", "S3")
+  multi <- add_methy(multi, mset)
+  expect_equal(names(multi), "methylation")
   
-  multi <- add_genexp(multi, eset, dataset.name = "g1")
+  multi <- createMultiDataSet()
+  msetbad <- mset
+  colnames(fData(msetbad))[1] <- "chr"
+  expect_error(multi <- add_methy(multi, msetbad), "fData of methySet must contain columns chromosome and position")
+  
+  multi <- createMultiDataSet()
+  msetbad <- mset
+  colnames(fData(msetbad))[2] <- "pos"
+  expect_error(multi <- add_methy(multi, msetbad), "fData of methySet must contain columns chromosome and position")
+  
+  library(minfiData)
+  minfiset <- ratioConvert(MsetEx[1:2, ])
+  fData(minfiset) <- fData(mset)
+  
+  multi <- createMultiDataSet()
+  multi <- add_methy(multi, minfiset)
+  expect_equal(names(multi), "methylation")
   
   
-  eset <- new("ExpressionSet", exprs = matrix(runif(8), ncol = 2))
-  fData(eset) <- data.frame(chromosome = c("chr1", "chr1", "chr1", "chr1"), 
-                            start = c(1, 14, 25, 104),end = c(11, 16, 28, 115),
-                            stringsAsFactors = FALSE)
-  sampleNames(eset) <- c("S1", "G2")
-  pData(eset) <- data.frame(id = c("S1", "G2"))
-  rownames(pData(eset)) <- c("S1", "G2")
+  multi <- createMultiDataSet()
+  msetbad <- minfiset
+  colnames(fData(msetbad))[1] <- "chr"
+  expect_error(multi <- add_methy(multi, msetbad), "fData of methySet must contain columns chromosome and position")
   
-  multi <- add_genexp(multi, eset, dataset.name="g2")
-  ## /
-  
-  ## Check NAMES
-  expect_equal(names(multi), c("expression+g1", "expression+g2"))
-  ## /
-  
-  ## Check SAMPLES
-  expect_equal(commonIds(multi[c("S1", "S2"), ]), "S1")
-  expect_equal(unique(unlist(sampleNames(commonSamples(multi)))), "S1")
-  
-  ## /
-  
-  ## Check RANGES
-  expect_equivalent(nrow(multi[,, GRanges("chr1:1-7")][["expression+g1"]]), 2L)
-  expect_equivalent(nrow(multi[,, GRanges("chr1:1-7")][["expression+g2"]]), 1L)
-  ## /
+  multi <- createMultiDataSet()
+  msetbad <- minfiset
+  colnames(fData(msetbad))[2] <- "pos"
+  expect_error(multi <- add_methy(multi, msetbad), "fData of methySet must contain columns chromosome and position")
   
 })
 

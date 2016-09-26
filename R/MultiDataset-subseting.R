@@ -17,7 +17,7 @@ setMethod(
 #' @aliases MultiDataSet-methods [
 #' @param i Character corresponding to selected sample names. They should match the id column of phenoData.
 #' @param j Character with the name of the selected tables.
-#' @param drop ...
+#' @param drop If TRUE, sets with no samples or features will be discarded
 #' @param k \code{GenomicRange} used to filter the features.   
 setMethod(
     f = "[", 
@@ -32,16 +32,16 @@ setMethod(
             if(is.numeric(j)) {
                 j <- names(x)[j]
             }
-
-                if(sum(j %in% names(x)) != length(j)) {
-                    stop("Invalid tables' selection. Given table not present.")
-                } else {
-                    x@return_method <- x@return_method[j]
-                    x@phenoData <- x@phenoData[j]
-                    x@featureData <- x@featureData[j]
-                    x@assayData <- x@assayData[j]
-                    x@rowRanges <- x@rowRanges[j]
-                }
+            
+            if(sum(j %in% names(x)) != length(j)) {
+                stop("Invalid tables' selection. Given table not present.")
+            } else {
+                x@return_method <- x@return_method[j]
+                x@phenoData <- x@phenoData[j]
+                x@featureData <- x@featureData[j]
+                x@assayData <- x@assayData[j]
+                x@rowRanges <- x@rowRanges[j]
+            }
             
         }
         ## /
@@ -53,8 +53,8 @@ setMethod(
             if(length(samp) <= 0)
                 stop("Invalid samples' selection. It is an empty object.")
             
-            samp$selection <- i
-            samp2 <- Reduce(intersect, samp)
+            samp2 <- Reduce(union, samp)
+            samp2 <- intersect(samp2, i)
             
             if(length(samp2) <= 0)
                 stop("Invalid samples' selection. Given samples are not at any dataset.")
@@ -67,7 +67,8 @@ setMethod(
             for(dtype in names(x)) {
                 orig <- assayData(x[[dtype]])
                 storage.mode <- Biobase:::assayDataStorageMode(orig)
-                ii <- intersect(i, samp[[dtype]])
+                phen <- x@phenoData[[dtype]]
+                sel <- phen$id %in% i
                 assyD[[dtype]] <-
                     switch(storage.mode,
                            environment =,
@@ -75,7 +76,7 @@ setMethod(
                                aData <- new.env(parent=emptyenv())
                                
                                for(nm in ls(orig)){
-                                   aData[[nm]] <- orig[[nm]][, ii, drop = FALSE]
+                                   aData[[nm]] <- orig[[nm]][, sel, drop = FALSE]
                                }
                                
                                if ("lockedEnvironment" == storage.mode) {
@@ -84,10 +85,10 @@ setMethod(
                                aData
                            },
                            list = {
-                               lapply(orig, function(obj) obj[, ii, drop = FALSE])
+                               lapply(orig, function(obj) obj[, sel, drop = FALSE])
                            })
                 
-                phenD[[dtype]] <- x@phenoData[[dtype]][ii, , drop = FALSE]
+                phenD[[dtype]] <- x@phenoData[[dtype]][sel, , drop = FALSE]
             }
             x@assayData <- assyD
             x@phenoData <- phenD
@@ -140,3 +141,157 @@ setMethod(
         validObject(x)
         return(x)
     })
+
+#' @describeIn MultiDataSet Filter a subset using feature ids or phenotypes
+#' @aliases MultiDataSet-methods
+#' @param feat Logical expression indicating features to keep
+#' @param phe Logical expression indicating the phenotype of the samples to keep
+#' @param keep If FALSE, sets where the expression cannot be evaluated will be discarded.
+setMethod(
+    f = "subset",
+    signature = "MultiDataSet",
+    definition = 
+        function(x, feat, phe, warnings = TRUE, keep = TRUE) {
+            
+            if (missing(feat) && missing(phe)) {
+                stop("Specify genes id (feat) or phenotypes (phe) to subset.")
+            }
+            
+            if (!missing(feat)){
+                assyD <- list()
+                featD <- list()
+                rangeD <- list()
+                ranges <- rowRanges(x)
+                
+                # Catch the expression
+                e <- substitute(feat)
+                
+                # Get column names that will be used to filter 
+                featcols <- all.vars(e)
+                noFilteredSets <- character()
+                for(dtype in names(x)) {
+                    feats <- x@featureData[[dtype]]
+                    if (!all(featcols %in% colnames(feats))){
+                        noFilteredSets <- c(noFilteredSets, dtype)
+                        if (keep) {
+                            featD[[dtype]] <- x@featureData[[dtype]]
+                            assyD[[dtype]] <- x@assayData[[dtype]]
+                            rangeD[[dtype]] <- x@rowRanges[[dtype]]
+                        }
+                    } else {
+                        sel <- eval(e, pData(feats), parent.frame())
+                        if (!is.logical(sel))
+                            stop("'feat' must be a logical expression")
+                        sel <- sel & !is.na(sel)
+                        orig <- assayData(x[[dtype]])
+                        storage.mode <- Biobase:::assayDataStorageMode(orig)
+                        assyD[[dtype]] <-
+                            switch(storage.mode,
+                                   environment =,
+                                   lockedEnvironment = {
+                                       aData <- new.env(parent=emptyenv())
+                                       
+                                       for(nm in ls(orig)){
+                                           aData[[nm]] <- orig[[nm]][sel, , drop = FALSE]
+                                       }
+                                       
+                                       if ("lockedEnvironment" == storage.mode) {
+                                           Biobase:::assayDataEnvLock(aData)
+                                       }
+                                       aData
+                                   },
+                                   list = {
+                                       lapply(orig, function(obj) obj[sel, , drop = FALSE])
+                                   })
+                        featD[[dtype]] <- x@featureData[[dtype]][sel, , drop = FALSE]
+                        rangeD[[dtype]] <- x@rowRanges[[dtype]][sel]
+                    }
+                    
+                }
+                x@assayData <- assyD
+                x@featureData <- featD
+                x@rowRanges <- rangeD
+                
+                if (noFilteredSets == names(x)){
+                    stop("feat expression could not be applied to any of the sets.")
+                }
+                
+                if (warnings & length(noFilteredSets)) {
+                    warn <- "The following sets could not be filtered by feature id"
+                    if (keep){
+                        warning(paste0(warn, ": ", paste(noFilteredSets, collapse = ", ")))
+                    } else{
+                        warning(paste(warn, "and have been discarded:", paste(noFilteredSets, collapse = ", ")))
+                    }
+                }
+            }
+            
+            if (!missing(phe)){
+                assyD <- list()
+                phenD <- list()
+                
+                # Catch the expression
+                e <- substitute(phe)
+                
+                # Get column names that will be used to filter 
+                phenocols <- all.vars(e)
+                noFilteredSets <- character()
+                for(dtype in names(x)) {
+                    phen <- x@phenoData[[dtype]]
+                    if (!all(phenocols %in% colnames(phen))){
+                        noFilteredSets <- c(noFilteredSets, dtype)
+                        if (keep) {
+                            phenD[[dtype]] <- x@phenoData[[dtype]]
+                            assyD[[dtype]] <- x@assayData[[dtype]]
+                        }
+                    } else {
+                        sel <- eval(e, pData(phen), parent.frame())
+                        if (!is.logical(sel))
+                            stop("'phe' must be a logical expression")
+                        sel <- sel & !is.na(sel)
+                        orig <- assayData(x[[dtype]])
+                        storage.mode <- Biobase:::assayDataStorageMode(orig)
+                        assyD[[dtype]] <-
+                            switch(storage.mode,
+                                   environment =,
+                                   lockedEnvironment = {
+                                       aData <- new.env(parent=emptyenv())
+                                       
+                                       for(nm in ls(orig)){
+                                           aData[[nm]] <- orig[[nm]][, sel, drop = FALSE]
+                                       }
+                                       
+                                       if ("lockedEnvironment" == storage.mode) {
+                                           Biobase:::assayDataEnvLock(aData)
+                                       }
+                                       aData
+                                   },
+                                   list = {
+                                       lapply(orig, function(obj) obj[, sel, drop = FALSE])
+                                   })
+                        
+                        phenD[[dtype]] <- x@phenoData[[dtype]][sel, , drop = FALSE]
+                    }
+                    
+                }
+                x@assayData <- assyD
+                x@phenoData <- phenD
+                
+                if (noFilteredSets == names(x)){
+                    stop("phe expression could not be applied to any of the sets.")
+                }
+                
+                if (warnings & length(noFilteredSets)) {
+                    warn <- "The following sets could not be filtered by phenotype"
+                    if (keep){
+                        warning(paste(warn, ":", paste(noFilteredSets, collapse = ", ")))
+                    } else{
+                        warning(paste(warn, "and have been discarded:", paste(noFilteredSets, collapse = ", ")))
+                    }
+                }
+            }
+            
+            
+            validObject(x)
+            return(x)
+        })

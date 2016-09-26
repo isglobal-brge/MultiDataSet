@@ -9,7 +9,7 @@ add_methy(object, methySet, ...)
 \arguments{
 \item{object}{\code{MultiDataSet} that will be filled.}
 
-\item{methySet}{\code{MethylationSet} to be used to fill the slot.}
+\item{methySet}{\code{MethylationSet} or \code{RatioSet} to be used to fill the slot.}
 
 \item{...}{Further arguments to be passed to \code{add_eset}.}
 }
@@ -19,7 +19,8 @@ filled.
 }
 \description{
 This method adds or overwrites the slot \code{"methylation"} of an
-\code{MultiDataSet} with the content of the given \code{MethylationSet}.
+\code{MultiDataSet} with the content of the given \code{MethylationSet} or \code{RatioSet}. 
+The fData of the input object must contain the columns chromosome and position.
 }
 \examples{
 if (require(MEALData)){

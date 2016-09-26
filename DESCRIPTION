@@ -2,31 +2,34 @@ Package: MultiDataSet
 Type: Package
 Title: Implementation of the BRGE's (Bioinformatic Research Group in Epidemiology from
  Center for Research in Environmental Epidemiology) MultiDataSet and MethylationSet 
-Version: 1.1.2
-Authors@R: c(person("Carlos", "Ruiz-Arenas", , "cruiz@creal.cat", role = c("aut", "cre")),
-  person("Carles", "Hernandez-Ferrer", , "chernandez@creal.cat", role = "aut"),
-  person("Juan R.", "González", ,"jrgonzalez@creal.cat", role = "aut"))
-Description:  Implementation of the BRGE's (Bioinformatic Research Group in Epidemiology from
+Version: 1.1.3
+Authors@R: c(person("Carlos", "Ruiz-Arenas", , "carlos.ruiz@isglobal.org", role = c("aut", "cre")),
+  person("Carles", "Hernandez-Ferrer", , "carles.hernandez@isglobal.org", role = "aut"),
+  person("Juan R.", "González", ,"juanr.gonzalez@isglobal.org", role = "aut"))
+Description: Implementation of the BRGE's (Bioinformatic Research Group in Epidemiology from
  Center for Research in Environmental Epidemiology) MultiDataSet and MethylationSet. MultiDataSet
  is designed for integrating multi omics data sets and MethylationSet to contain normalized methylation data. 
  These package contains base classes for MEAL and rexposome packages.
 License: file LICENSE
 LazyData: TRUE
 biocViews: Software, DataRepresentation
-Depends: 
+Depends:
     R (>= 3.3), Biobase
-Imports: 
+Imports:
     BiocGenerics,
     GenomicRanges,
     IRanges, 
     minfi,
     S4Vectors,
-    SummarizedExperiment
+    SummarizedExperiment,
+    methods
 RoxygenNote: 5.0.1
 Suggests: MEALData,
     minfiData,
     knitr,
     rmarkdown,
     testthat,
-    methylumi
+    methylumi,
+    omicade4,
+    iClusterPlus
 VignetteBuilder: knitr

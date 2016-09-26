@@ -19,7 +19,8 @@ filled.
 }
 \description{
 This method adds or overwrites the slot \code{"expression"} of an
-\code{MultiDataSet} with the content of the given \code{ExpressionSet}.
+\code{MultiDataSet} with the content of the given \code{ExpressionSet}. The fData of 
+the \code{ExpressionSet} must contain the columns chromosome, start and end.
 }
 \examples{
 multi <- createMultiDataSet()

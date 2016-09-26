@@ -19,7 +19,8 @@ filled.
 }
 \description{
 This method adds or overwrites the slot \code{"snps"} of an
-\code{MultiDataSet} with the content of the given \code{SnpSet}.
+\code{MultiDataSet} with the content of the given \code{SnpSet}. The fData of the
+\code{SnpSet} must contain the columns chromosome and position.
 }
 \examples{
 multi <- createMultiDataSet()

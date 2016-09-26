@@ -25,7 +25,8 @@ setGeneric("add_eset", function(object, set, dataset.type, dataset.name = NULL, 
 #' Method to add an expression microarray dataset to \code{MultiDataSet}.
 #'
 #' This method adds or overwrites the slot \code{"expression"} of an
-#' \code{MultiDataSet} with the content of the given \code{ExpressionSet}.
+#' \code{MultiDataSet} with the content of the given \code{ExpressionSet}. The fData of 
+#' the \code{ExpressionSet} must contain the columns chromosome, start and end.
 #' 
 #' @aliases add_genexp
 #' @rdname add_genexp
@@ -46,9 +47,10 @@ setGeneric("add_genexp", function(object, gexpSet, ...) standardGeneric("add_gen
 #' Method to add an expression RNA seq dataset to \code{MultiDataSet}.
 #' 
 #' This method adds or overwrites the slot \code{"rnaseq"} of an
-#' \code{MultiDataSet} with the content of the given \code{ExpressionSet}.
+#' \code{MultiDataSet} with the content of the given \code{ExpressionSet}. The fData of 
+#' the \code{ExpressionSet} must contain the columns chromosome, start and end.
 #' 
-#' @aliases add-rnaseq
+#' @aliases add_rnaseq
 #' @rdname add_rnaseq-methods
 #' @exportMethod add_rnaseq
 #' @param object \code{MultiDataSet} that will be filled.
@@ -67,12 +69,13 @@ setGeneric("add_rnaseq", function(object, rnaSet, ...) standardGeneric("add_rnas
 #' Method to add a slot of methylation to \code{MultiDataSet}.
 #'
 #' This method adds or overwrites the slot \code{"methylation"} of an
-#' \code{MultiDataSet} with the content of the given \code{MethylationSet}.
+#' \code{MultiDataSet} with the content of the given \code{MethylationSet} or \code{RatioSet}. 
+#' The fData of the input object must contain the columns chromosome and position.
 #'
 #' @rdname add_methy
 #' @aliases add_methy
 #' @param object \code{MultiDataSet} that will be filled.
-#' @param methySet \code{MethylationSet} to be used to fill the slot.
+#' @param methySet \code{MethylationSet} or \code{RatioSet} to be used to fill the slot.
 #' @param ... Further arguments to be passed to \code{add_eset}.
 #' @return A new \code{MultiDataSet} with the slot \code{"methylation"}
 #' filled.
@@ -122,7 +125,8 @@ setGeneric("add_rse", function(object, set, dataset.type, dataset.name = NULL, w
 #' Method to add a slot of SNPs to \code{MultiDataSet}.
 #'
 #' This method adds or overwrites the slot \code{"snps"} of an
-#' \code{MultiDataSet} with the content of the given \code{SnpSet}.
+#' \code{MultiDataSet} with the content of the given \code{SnpSet}. The fData of the
+#' \code{SnpSet} must contain the columns chromosome and position.
 #'
 #' @rdname add_snps
 #' @aliases add_snps
@@ -270,6 +274,47 @@ setGeneric("commonSamples", function(object) standardGeneric("commonSamples"))
 #' }
 setGeneric("getMs", function(object, threshold = 0.0001) standardGeneric("getMs"))
 
+#' Get the name of the datasets that have rowRanges
 #' @export
+#' 
+#' @param object \code{MultiDataSet}
+#' @return Character vector with the slots that have rowRanges.
+#' @examples 
+#' multi <- createMultiDataSet()
+#' eset <- new("ExpressionSet", exprs = matrix(runif(10), 5))
+#' eset2 <- new("ExpressionSet", exprs = matrix(runif(8), ncol = 2))
+#' fData(eset2) <- data.frame(chromosome = c("chr1", "chr1", "chr1", "chr1"), 
+#'                           start = c(1, 14, 25, 104),end = c(11, 16, 28, 115),
+#'                           stringsAsFactors = FALSE)
+#' multi <- add_eset(multi, eset, "exampledata", GRanges = NA)
+#' multi <- add_genexp(multi, eset2)
+#' rowRangesElements(multi)
 setGeneric("rowRangesElements", function(object) standardGeneric("rowRangesElements"))
 
+#' Apply iClusterPlus clustering method to a MultiDataSet object
+#' 
+#' Method \link{iClusterPlus} is applied on a \link{MultiDataSet} object after
+#' getting the common samples along all the contained datasets.
+#'
+#' @param object \code{MultiDataSet}
+#' @param commonSamples Logical to indicate if common samples are selected
+#' @param ... Arguments passed to function \link{iClusterPlus}
+#' @note Argument \code{type} for \link{iClusterPlus} is filled within the method.
+#' @return A list of results from \link{iClusterPlus}
+#' @export
+setGeneric("w_iclusterplus", function(object, commonSamples=TRUE, ...)
+    standardGeneric("w_iclusterplus")
+)
+
+#' Apply mcia integration method to a MultiDataSet object
+#' 
+#' Method \link{mcia} is applied on a \link{MultiDataSet} object after
+#' getting the common samples along all the contained datasets.
+#' 
+#' @param object \code{MultiDataSet}
+#' @param ... Arguments passed to function \link{mcia}
+#' @return A list of results from \link{mcia}
+#' @export
+setGeneric("w_mcia", function(object, ...)
+    standardGeneric("w_mcia")
+)

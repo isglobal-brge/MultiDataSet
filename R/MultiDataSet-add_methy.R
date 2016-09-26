@@ -8,17 +8,12 @@ setMethod(
     definition = function(object, methySet, ...) {
         
         fet <- fData(methySet)
-        if (!"position" %in% colnames(fet)){
-            stop("methySet must contain a fData with a column called position.")
+        if (!all(c("position", "chromosome") %in% colnames(fet))){
+            stop("fData of methySet must contain columns chromosome and position")
         }
-        colnames(fet)[colnames(fet) == "position"] <- "start"
-        
-        if (!"end" %in% colnames(fet)){
-            fet$end <- fet$start
-        }
-        range <- GenomicRanges::makeGRangesFromDataFrame(fet)
-        
-        
+        range <- GenomicRanges::makeGRangesFromDataFrame(fet, seqnames.field = "chromosome", 
+                                                         start.field = "position", end.field = "position")
+
         object <- add_eset(object, methySet, dataset.type = "methylation", GRanges = range, ...)
         
         return(object)
@@ -33,15 +28,12 @@ setMethod(
     definition = function(object, methySet, ...) {
         
         fet <- fData(methySet)
-        if (!"position" %in% colnames(fet)){
-            stop("methySet must contain a fData with a column called position.")
+        if (!all(c("position", "chromosome") %in% colnames(fet))){
+            stop("fData of methySet must contain columns chromosome and position")
         }
-        colnames(fet)[colnames(fet) == "position"] <- "start"
-        
-        if (!"end" %in% colnames(fet)){
-            fet$end <- fet$start
-        }
-        range <- GenomicRanges::makeGRangesFromDataFrame(fet)
+
+        range <- GenomicRanges::makeGRangesFromDataFrame(fet, seqnames.field = "chromosome", 
+                                                         start.field = "position", end.field = "position")
         
         
         object <- add_eset(object, methySet, dataset.type = "methylation", GRanges = range, ...)

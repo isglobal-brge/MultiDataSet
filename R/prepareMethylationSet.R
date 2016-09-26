@@ -54,119 +54,104 @@
 #'  set <- prepareMethylationSet(betas, pheno)
 #'  }
 prepareMethylationSet <- function(matrix, phenotypes, 
-                                         annotation = "IlluminaHumanMethylation450kanno.ilmn12.hg19", 
-                                         chromosome = "chr", position = "pos", 
-                                         genes = "UCSC_RefGene_Name",
-                                         group = "UCSC_RefGene_Group",
-                                         filterNA_threshold = 0.05,
-                                         verbose = FALSE){
-  if (verbose){
-    message("Creating the object...")
-  }
-  
-  if (length(matrix) == 0){
-    stop("Matrix is empty.")
-  }
-  
-  #If matrix is a data.frame or a matrix, assure that only contains numbers, 
-  #filter NAs and convert to RatioSet
-  if (is(matrix, "data.frame")){
-    matrix <- data.matrix(matrix)
-  }
-  if (is(matrix, "matrix")){
-    matrix <- matrix[rowMeans(is.na(matrix)) <= filterNA_threshold, , drop = FALSE]
-  } else if (class(matrix) %in% c("GenomicMethylSet", "MethylSet", "RatioSet", "GenomicRatioSet")){
-    if (missing(phenotypes)){
-      phenotypes <- phenoData(matrix)
+                                  annotation = "IlluminaHumanMethylation450kanno.ilmn12.hg19", 
+                                  chromosome = "chr", position = "pos", 
+                                  genes = "UCSC_RefGene_Name",
+                                  group = "UCSC_RefGene_Group",
+                                  filterNA_threshold = 0.05,
+                                  verbose = FALSE){
+    if (verbose){
+        message("Creating the object...")
     }
-    matrix <- minfi::getBeta(matrix)
-  }else{
-    stop("matrix is not a minfi class nor a data.frame nor a matrix")
-  }
-  
-  if (is.null(rownames(matrix))){
-    stop("Rownames of matrix must contain probe names.")
-  }
-  if (is.null(colnames(matrix))){
-    stop("Colnames of matrix must contain sample names.")
-  }
-  
-  if (length(phenotypes) == 0){
-    stop("Phenotypes is empty.")
-  }
-  
-  if (is(annotation, "character")){
-    if (annotation == "IlluminaHumanMethylation450kanno.ilmn12.hg19"){
-      if (require(annotation, character.only = TRUE)){
-        annoChar <- annotation
-        annotation <- get(annotation)
-        annotation <- data.frame(annotation@data$Locations, annotation@data$Other)
-      }else{
-        stop(sprintf("Annotation package %s can not be found"), annotation)
-      }
+    
+    if (length(matrix) == 0){
+        stop("Matrix is empty.")
     }
-  }else{
-    annoChar <- "custom"
-  }
-  if (is.null(rownames(annotation))){
-    stop("rownames of annotation must contain probe names.")
-  }  
-  
-  if (!chromosome %in% colnames(annotation)){
-    stop("Annotation data.frame must contain a column name equal to \"chromosome\" argument.")
-  }else{
-    colnames(annotation)[colnames(annotation) == chromosome] <- "chromosome"
-  }
-  
-  if (!position %in% colnames(annotation)){
-    stop("Annotation data.frame must contain a column name equal to \"position\" argument.")
-  }else{
-    colnames(annotation)[colnames(annotation) == position] <- "position"
-  }
-  
-  if (!genes %in% colnames(annotation)){
-    warning("Annotation data.frame does not contain a column name equal to \"gene\" parameter. Results may be incomplete.")
-    if (is(annotation, "AnnotatedDataFrame")){
-      pData(annotation)[ , "genes"] <- rep("", nrow(annotation))
-    } else{
-      annotation[ , "genes"] <- rep("", nrow(annotation))
+    
+    #If matrix is a data.frame or a matrix, assure that only contains numbers, 
+    #filter NAs and convert to RatioSet
+    if (is(matrix, "data.frame")){
+        matrix <- data.matrix(matrix)
     }
-  }else{
-    colnames(annotation)[colnames(annotation) == genes] <- "genes"
-  }
-  
-  if (!group %in% colnames(annotation)){
-    warning("Annotation data.frame does not contain a column name equal to \"group\" parameter. Results may be incomplete.")
-    if (is(annotation, "AnnotatedDataFrame")){
-      pData(annotation)[ , "group"] <- rep("", nrow(annotation))
-    } else{
-      annotation[ , "group"] <- rep("", nrow(annotation))
+    if (is(matrix, "matrix")){
+        matrix <- matrix[rowMeans(is.na(matrix)) <= filterNA_threshold, , drop = FALSE]
+    } else if (class(matrix) %in% c("GenomicMethylSet", "MethylSet", "RatioSet", "GenomicRatioSet")){
+        if (missing(phenotypes)){
+            phenotypes <- phenoData(matrix)
+        }
+        matrix <- minfi::getBeta(matrix)
+    }else{
+        stop("matrix is not a minfi class nor a data.frame nor a matrix")
     }
-  }else{
-    colnames(annotation)[colnames(annotation) == group] <- "group"
-  }
-  
-  set <- methylationSet(betas = matrix, phenotypes = phenotypes,
-                               annotationDataFrame = annotation, annoString = annoChar)
-  if (verbose){
-    message("Checking the object...")
-  }
-  set <- checkSamples(set)
-  set <- checkProbes(set)
-  validObject(set)
-  gc()
-  set
-}
-
-cleanIlluminaAnnotation <- function(annot){
-  genescol <- "UCSC_RefGene_Name"
-  groupcol <- "UCSC_RefGene_Group"
-  genes <- strsplit(annot[ , genescol], ";")
-  group <- strsplit(annot[ , groupcol], ";")
-  dupvalues <- lapply(lapply(1:length(genes), function(x) 
-    paste(genes[[x]], group[[x]])), duplicated)
-  
-  annot$genes <- sapply(1:length(genes), function(x) paste(genes[[x]][!dupvalues[[x]]], collapse = ";"))
-  annot$group <- sapply(1:length(group), function(x) paste(group[[x]][!dupvalues[[x]]], collapse = ";"))
-  annot
+    
+    if (is.null(rownames(matrix))){
+        stop("Rownames of matrix must contain probe names.")
+    }
+    if (is.null(colnames(matrix))){
+        stop("Colnames of matrix must contain sample names.")
+    }
+    
+    if (length(phenotypes) == 0){
+        stop("Phenotypes is empty.")
+    }
+    
+    if (is(annotation, "character")){
+        if (annotation == "IlluminaHumanMethylation450kanno.ilmn12.hg19"){
+            if (require(annotation, character.only = TRUE)){
+                annoChar <- annotation
+                annotation <- get(annotation)
+                annotation <- data.frame(annotation@data$Locations, annotation@data$Other)
+            }
+        }else{
+            stop(sprintf("Annotation package %s can not be found.", annotation))
+        }
+        
+    }else{
+        annoChar <- "custom"
+    }
+    
+    if (!chromosome %in% colnames(annotation)){
+        stop("Annotation data.frame must contain a column name equal to \"chromosome\" argument.")
+    }else{
+        colnames(annotation)[colnames(annotation) == chromosome] <- "chromosome"
+    }
+    
+    if (!position %in% colnames(annotation)){
+        stop("Annotation data.frame must contain a column name equal to \"position\" argument.")
+    }else{
+        colnames(annotation)[colnames(annotation) == position] <- "position"
+    }
+    
+    if (!genes %in% colnames(annotation)){
+        warning("Annotation data.frame does not contain a column name equal to \"gene\" parameter. Results may be incomplete.")
+        if (is(annotation, "AnnotatedDataFrame")){
+            pData(annotation)[ , "genes"] <- rep("", nrow(annotation))
+        } else{
+            annotation[ , "genes"] <- rep("", nrow(annotation))
+        }
+    }else{
+        colnames(annotation)[colnames(annotation) == genes] <- "genes"
+    }
+    
+    if (!group %in% colnames(annotation)){
+        warning("Annotation data.frame does not contain a column name equal to \"group\" parameter. Results may be incomplete.")
+        if (is(annotation, "AnnotatedDataFrame")){
+            pData(annotation)[ , "group"] <- rep("", nrow(annotation))
+        } else{
+            annotation[ , "group"] <- rep("", nrow(annotation))
+        }
+    }else{
+        colnames(annotation)[colnames(annotation) == group] <- "group"
+    }
+    
+    set <- methylationSet(betas = matrix, phenotypes = phenotypes,
+                          annotationDataFrame = annotation, annoString = annoChar)
+    if (verbose){
+        message("Checking the object...")
+    }
+    set <- checkSamples(set)
+    set <- checkProbes(set)
+    validObject(set)
+    gc()
+    set
 }

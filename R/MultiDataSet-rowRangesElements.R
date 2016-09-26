@@ -1,4 +1,4 @@
-#' @describeIn MultiDataSet Get the name datasets having rowRanges
+#' @describeIn MultiDataSet Get the name of the datasets that have rowRanges
 #' @aliases MultiDataSet-methods
 setMethod(
     f = "rowRangesElements",

@@ -7,10 +7,11 @@ setMethod(
     definition = function(object, gexpSet, ...) {
         
         fet <- fData(gexpSet)
-        if (!"end" %in% colnames(fet)){
-            fet$end <- fet$start
+        if (!all(c("start", "end", "chromosome") %in% colnames(fet))){
+                stop("fData of gexpSet must contain columns chromosome, start and end")
         }
-        range <- GenomicRanges::makeGRangesFromDataFrame(fet)
+        range <- GenomicRanges::makeGRangesFromDataFrame(fet, seqnames.field = "chromosome", 
+                                                         end.field = "end")
         names(range) <- featureNames(gexpSet)
         object <- add_eset(object, gexpSet, dataset.type = "expression", GRanges = range, ...)
         
@@ -27,10 +28,10 @@ setMethod(
     definition = function(object, rnaSet, ...) {
         
         fet <- fData(rnaSet)
-        if (!"end" %in% colnames(fet)){
-            fet$end <- fet$start
+        if (!all(c("start", "end", "chromosome") %in% colnames(fet))){
+            stop("fData of gexpSet must contain columns chromosome, start and end")
         }
-        range <- GenomicRanges::makeGRangesFromDataFrame(fet)
+        range <- GenomicRanges::makeGRangesFromDataFrame(fet, seqnames.field = "chromosome", end.field = "end")
         object <- add_eset(object, rnaSet, dataset.type = "rnaseq", GRanges = range, ...)
         
         return(object)

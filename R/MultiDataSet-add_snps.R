@@ -7,15 +7,12 @@ setMethod(
     definition = function(object, snpSet, ...) {
         
         fet <- fData(snpSet)
-        if (!"position" %in% colnames(fet)){
-            stop("snpSet must contain a fData with a column called position.")
+        if (!all(c("position", "chromosome") %in% colnames(fet))){
+            stop("fData of methySet must contain columns chromosome and position")
         }
-        colnames(fet)[colnames(fet) == "position"] <- "start"
+        range <- GenomicRanges::makeGRangesFromDataFrame(fet, seqnames.field = "chromosome", 
+                                                         start.field = "position", end.field = "position")
         
-        if (!"end" %in% colnames(fet)){
-            fet$end <- fet$start
-        }
-        range <- GenomicRanges::makeGRangesFromDataFrame(fet)
         object <- add_eset(object, snpSet, dataset.type = "snps", GRanges = range, ...)
         return(object)
     }

@@ -1,9 +1,9 @@
 ---
 title: "Introduction to MultiDataSet"
-subtitle: "Carlos Ruiz, Carles Hernández, Juan R. González"
+subtitle: "Carles Hernandez-Ferrer, Carlos Ruiz-Arenas, Juan R. González"
 author: |
   | Center for Research in Environmental Epidemiology (CREAL), Barcelona, Spain
-  | Bioinformatics Research Group in Epidemiolgy             
+  | Bioinformatics Research Group in Epidemiology             
   | (<http://www.creal.cat/brge.htm>)
 date: "`r Sys.Date()`"
 package: "`r pkg_ver('MultiDataSet')`"
@@ -21,20 +21,20 @@ vignette: >
 ---
 # Introduction
 
-`MultiDataSet` is a new class designed to manage different omics datasets corresponding to the same set of samples. The main porpuse when developing `MultiDataSet` was to ease the integration of multiple biological datasets. 
+`MultiDataSet` is a new class designed to manage different omic datasets with samples in common. The main purpose when developing `MultiDataSet` was to ease the integration of multiple biological datasets. 
 
 `MultiDataSet` is based in Bioconductor's framework and it can work with S4 classes derived from `eSet` or from `SummarizedExperiment`. The following data is extracted from each set that is added to a `MultiDataSet`:
 
 * The matrix or matrices of data
 * The phenotypic data
-* The annotation
+* The feature data
 * A function to recover the original set
 
-It should be taken into account that phenotypic data is stored independently for each set. This allows to store variables with the same name but different values in different sets (e.g. technical variables). Another fact is that annotation is stored in the form of an `AnnotatedDataFrame` and `GenomicRanges`. This design allows to quickly perform subsets using `GenomicRanges` while preserving the possiblity of storing sets that do not have genomic coordinates (e.g. proteome data).  
+It should be taken into account that phenotypic data is stored independently for each set. This allows storing variables with the same name but different values in different sets (e.g. technical variables). Another fact is that feature data is stored in the form of an `AnnotatedDataFrame` and `GenomicRanges`. This design allows to quickly perform subsets using `GenomicRanges` while preserving the possibility of storing sets that do not have genomic coordinates (e.g. metabolic or exposure data).  
 
 In this document, addition of sets and subsetting will be presented. Advanced features such as creating new functions to add sets or developing integration functions using `MultiDataSet` are covered in other documents. 
  
-In the code below, the libraries needed in this tutorial will be loaded:
+In the code below, the libraries needed in this tutorial are loaded:
 
 ```{r Load libraries, message=FALSE, warning = FALSE}
 library(MultiDataSet)
@@ -45,17 +45,18 @@ library(GenomicRanges)
 
 ## Create a new MultiDataSet
 
-`MultiDataSet`s should be created prior to adding any object using our constructor:
+`MultiDataSet` objects should be created prior to adding any object using the constructor:
 
 ```{r New Multi}
 multi <- createMultiDataSet()
 multi
 ``` 
 
-The fuction `names` recovers the names of sets included in the `MultiDataSet`. Right now, the object is empty so there are no names:
+The function `names` recovers the names of sets included in the `MultiDataSet`. Right now, the object is empty so there are no names:
 
 ```{r Names empty Multi}
 names(multi)
+length(names(multi))
 ``` 
 
 # Adding sets 
@@ -72,7 +73,7 @@ General functions directly interact with the `MultiDataSet` and change its conte
 
 `add_eset` is the general function to add eSet-derived classes. This function has three important arguments. `object` is the `MultiDataSet` where the set will be added, `set` is the `eSet` that will be added and `dataset.type` is the type of the new set. The next lines will illustrate its use by adding an `ExpressionSet` from `r Rpackage("MEALData")`:
 
-```{r add_eset 1}
+```{r add_eset 10}
 data(eset)
 eset
 multi2 <- add_eset(multi, eset, dataset.type = "expression")
@@ -91,9 +92,9 @@ multi2
 
 If `dataset.name` is used, the resulting name is "dataset.type+dataset.name". With this strategy, we can have different datasets of the same type and we can still retrieve those datasets corresponding to the same type of data. 
 
-In order to assure sample consistency across the difference datasets, we use a common sample identifier  across all datasets. Sample identifier should be introduced by adding a column called `id` in the phenoData of the object. If it is not already present, it is created by default using the sample names. 
+In order to assure sample consistency across the difference datasets, we use a common sample identifier  across all datasets. Sample identifier should be introduced by adding a column called `id` in the phenotypic data (`phenoData`) of the object. If it is not already present, it is created by default using the sample names of the given set. 
 
-Because our `ExpressionSet` does not contain this column, a warning arose. To solve it, we can manually add an `id` to our dataset: 
+Because our `ExpressionSet` does not contain this column, a warning is raised. To solve it, we can manually add an `id` to our dataset: 
 
 ```{r add_eset add id to eset}
 eset2 <- eset
@@ -121,11 +122,11 @@ multi2 <- add_eset(multi, eset, dataset.type = "expression", warnings = FALSE, G
 multi2
 ``` 
 
-Now, we can see that rowRanges is NO for expression. The implications will be described in the filtering by `GenomicRanges` section.  
+Now, we can see that rowRanges is NO for expression. The implications will be described in the _Filtering by `GenomicRanges`_ section.  
 
 ### Add SummarizedExperiment
 
-`SummarizedExperiment`s are added using `add_rse`. Its arguments and behaviour are very similar to those of `add_eset`. The only difference is that there is `GRanges` argument (annotation data is already in the form of a `GenomicRanges`). To exemplify its use, a `GenomicRatioSet` (a `r Rpackage("minfi")` class) will be created and added:
+`SummarizedExperiment`s are added using `add_rse`. Its arguments and behavior are very similar to those of `add_eset`. The only difference is that there is `GRanges` argument (annotation data is already in the form of a `GenomicRanges`). To exemplify its use, a `GenomicRatioSet` (a `r Rpackage("minfi")` class) will be created and added:
 
 ```{r add_rse overwrite}
 data("MsetEx")
@@ -141,15 +142,25 @@ multi2
 
 Specific functions are designed to add specific datasets to `MultiDataSet`. They call general functions to add the data and they usually perform several checks (e.g: checking the class of the set or checking fData's columns). As a result, only sets with some features can be introduced to `MultiDataSet` and no later checks on data structure are required. Specific functions should always be used by users to ensure that the sets are properly added to `MultiDataSet`. 
 
-In `MultiDataSet` we have introduced four specific functions: `add_genexp`, `add_rnaseq`, `add_methy` and `add_snps`. All these functions has two arguments: `object` with the `MultiDataSet` and a second argument with the incoming set. The name of the second argument depends on the specific function (e.g: gexpSet for `add_genexp`, snpSet for `add_snps`...). Despite we will only show examples of `add_genexp` and `add_snps`, the other specific functions share the same behaviour and features. 
+In `MultiDataSet` we have introduced four specific functions: `add_genexp`, `add_rnaseq`, `add_methy` and `add_snps`. All these functions has two arguments: `object` with the `MultiDataSet` and a second argument with the incoming set. The name of the second argument depends on the specific function (e.g: gexpSet for `add_genexp`, snpSet for `add_snps`...). Despite we will only show examples of `add_genexp` and `add_snps`, the other specific functions share the same behavior and features. 
 
 `add_genexp` adds an `ExpressionSet` to the slot "expression". We will use the `ExpressionSet` of `r Rpackage("MEALData")` as example:
 
-```{r add eset }
+```{r add genexep error, error = TRUE}
+multi <- createMultiDataSet()
+multi2 <- add_genexp(multi, eset)
+eset
+``` 
+
+`add_genexp` requires that the fData of the incoming `ExpressionSet` has the columns `chromosome`, `start` and `end`. Our `eset` object has the columns `start` and `end` but the chromosome is labeled with `chr`. We should fix it before continue:
+
+```{r add genexep 0}
+fvarLabels(eset)[1] <- "chromosome"
 multi <- createMultiDataSet()
 multi2 <- add_genexp(multi, eset)
 multi2
 ``` 
+
 
 Given that `add_genexp` calls `add_eset`, the arguments of `add_eset` can also be used but `dataset.type` and `GRanges`. Let's add the same `ExpressionSet` to another slot using `dataset.name`:
 
@@ -187,7 +198,7 @@ multi2 <- add_snps(multi, SnpSet)
 multi2
 ```
 
-Now, the code has worked and the set has been succesfully added. This case exemplifies a checking in the structure of fData of a specific function. 
+Now, the method has worked and the set has been successfully added. This case exemplifies a checking in the structure of the `fData` of the incoming set by a specific function. 
 
 # Subsetting
 
@@ -205,7 +216,7 @@ The expression data contains 61 samples and 21916 features and the snps data 98 
 
 ## Samples 
 
-Subsetting by samples can be done in two different ways. The first option is to introduce a vector of sample ids. We haved overload the `[` operator and the samples are the first element:
+Subsetting by samples can be done in two different ways. The first option is to introduce a vector of sample ids. `MultiDataSet` has the operator `[` overloaded and samples are the first element:
 
 ```{r subset samples}
 samples <- sampleNames(SnpSet)[1:10]
@@ -214,7 +225,8 @@ multi[samples, ]
 
 Samples' subsetting returns, for each set, all the samples that are present in the filtering vector. In our example, the 10 samples are present in the snps data but only 6 are present in the expression data.
 
-We can also select only those samples that are present in all the datasets with the function `commonSamples`: 
+We can also select only those samples that are present in all the datasets with the function `commonSamples`. This method returns a new `MultiDataSet` but only with the common samples:  
+
 ```{r subset common samples}
 commonSamples(multi)
 length(intersect(sampleNames(eset), sampleNames(SnpSet)))

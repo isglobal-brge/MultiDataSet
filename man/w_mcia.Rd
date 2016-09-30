@@ -9,13 +9,13 @@ w_mcia(object, ...)
 \arguments{
 \item{object}{\code{MultiDataSet}}
 
-\item{...}{Arguments passed to function \link{mcia}}
+\item{...}{Arguments passed to function \link[omicade4]{mcia}}
 }
 \value{
-A list of results from \link{mcia}
+A list of results from \link[omicade4]{mcia}
 }
 \description{
-Method \link{mcia} is applied on a \link{MultiDataSet} object after
+Method \link[omicade4]{mcia} is applied on a \link{MultiDataSet} object after
 getting the common samples along all the contained datasets.
 }
 

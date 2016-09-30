@@ -293,14 +293,16 @@ setGeneric("rowRangesElements", function(object) standardGeneric("rowRangesEleme
 
 #' Apply iClusterPlus clustering method to a MultiDataSet object
 #' 
-#' Method \link{iClusterPlus} is applied on a \link{MultiDataSet} object after
+#' Method \link[iClusterPlus]{iClusterPlus} is applied on a \link{MultiDataSet} object after
 #' getting the common samples along all the contained datasets.
 #'
+#' @rdname w_iclusterplus
+#' @aliases w_iclusterplus
 #' @param object \code{MultiDataSet}
 #' @param commonSamples Logical to indicate if common samples are selected
-#' @param ... Arguments passed to function \link{iClusterPlus}
-#' @note Argument \code{type} for \link{iClusterPlus} is filled within the method.
-#' @return A list of results from \link{iClusterPlus}
+#' @param ... Arguments passed to function \link[iClusterPlus]{iClusterPlus}
+#' @note Argument \code{type} for \link[iClusterPlus]{iClusterPlus} is filled within the method.
+#' @return A list of results from \link[iClusterPlus]{iClusterPlus}
 #' @export
 setGeneric("w_iclusterplus", function(object, commonSamples=TRUE, ...)
     standardGeneric("w_iclusterplus")
@@ -308,12 +310,14 @@ setGeneric("w_iclusterplus", function(object, commonSamples=TRUE, ...)
 
 #' Apply mcia integration method to a MultiDataSet object
 #' 
-#' Method \link{mcia} is applied on a \link{MultiDataSet} object after
+#' Method \link[omicade4]{mcia} is applied on a \link{MultiDataSet} object after
 #' getting the common samples along all the contained datasets.
 #' 
+#' @rdname w_mcia
+#' @aliases w_mcia
 #' @param object \code{MultiDataSet}
-#' @param ... Arguments passed to function \link{mcia}
-#' @return A list of results from \link{mcia}
+#' @param ... Arguments passed to function \link[omicade4]{mcia}
+#' @return A list of results from \link[omicade4]{mcia}
 #' @export
 setGeneric("w_mcia", function(object, ...)
     standardGeneric("w_mcia")

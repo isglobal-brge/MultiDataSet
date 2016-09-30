@@ -19,6 +19,10 @@ setMethod("as.list", "MultiDataSet", as.list.MultiDataSet)
 #' @return A lsit of matrices, one per dataset
 #' @exportMethod as_list
 setGeneric("as_list", function(object) standardGeneric("as_list"))
+
+#' @describeIn MultiDataSet Returns a list with the first matrix of each
+#' dataset.
+#' @aliases as.list
 setMethod(
     f = "as_list",
     signature = "MultiDataSet",

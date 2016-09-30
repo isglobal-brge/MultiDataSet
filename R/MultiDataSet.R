@@ -17,5 +17,6 @@
 #' @importFrom IRanges subsetByOverlaps 
 #' @importFrom S4Vectors DataFrame
 #' @importFrom SummarizedExperiment rowRanges
+#' @importFrom utils installed.packages
 #' @seealso \linkS4class{MultiDataSet}
 NULL

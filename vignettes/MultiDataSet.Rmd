@@ -202,37 +202,38 @@ Now, the method has worked and the set has been successfully added. This case ex
 
 # Subsetting
 
-Subsetting of `MultiDataSet`s can be done by samples, by tables or using a `GenomicRanges`. In order to illustrate these operations, we will use the `ExpressionSet` and the snps of `r Rpackage("MEALData")`.  These sets contain gene expression and snps data from common samples. The `ExpressionSet` will also be added to another slot but setting GRanges = NA:
+Subsetting of `MultiDataSet`s can be done by samples, by tables or using a `GenomicRanges`. In order to illustrate these operations, we will use the `ExpressionSet` and the methylation data of `r Rpackage("MEALData")`. These sets contain data from common samples. First, we will create a `MethylationSet` from the matrix of beta values and the phenotypes and then we add the sets to a `MultiDataSet`. The `ExpressionSet` will also be added to another slot but setting GRanges = NA:
 
 ```{r Subsetting intro }
+mset <- prepareMethylationSet(betavals, pheno)
 multi <- createMultiDataSet()
-multi <- add_snps(multi, SnpSet)
+multi <- add_methy(multi, mset)
 multi <- add_genexp(multi, eset)
 multi <- add_eset(multi, eset, dataset.type = "test", GRanges = NA)
 multi
 ```
 
-The expression data contains 61 samples and 21916 features and the snps data 98 samples and 29909 SNPs. 
+The expression data contains 61 samples and 21916 features and the methylation data 61 samples and 451383 CpGs. 
 
 ## Samples 
 
 Subsetting by samples can be done in two different ways. The first option is to introduce a vector of sample ids. `MultiDataSet` has the operator `[` overloaded and samples are the first element:
 
 ```{r subset samples}
-samples <- sampleNames(SnpSet)[1:10]
+samples <- sampleNames(eset)[1:25]
 multi[samples, ]
 ```
 
-Samples' subsetting returns, for each set, all the samples that are present in the filtering vector. In our example, the 10 samples are present in the snps data but only 6 are present in the expression data.
+Samples' subsetting returns, for each set, all the samples that are present in the filtering vector. In our example, we selected the first 25 samples of the `ExpressionSet`. In the `MethylationSet`, only 23 of these samples were present. 
 
 We can also select only those samples that are present in all the datasets with the function `commonSamples`. This method returns a new `MultiDataSet` but only with the common samples:  
 
 ```{r subset common samples}
 commonSamples(multi)
-length(intersect(sampleNames(eset), sampleNames(SnpSet)))
+length(intersect(sampleNames(eset), sampleNames(mset)))
 ```
 
-The resulting `MultiDataSet` contains 61 samples for expression and snps, the same that the intersection between the sample names of the original sets. 
+The resulting `MultiDataSet` contains 57 samples for expression and methylation, the same that the intersection between the sample names of the original sets. 
 
 ## Tables
 
@@ -240,7 +241,7 @@ We can select the datasets of a `MultiDataSet` using their names. They should be
 
 ```{r subset tables}
 multi[, "expression"]
-multi[, c("snps", "test")]
+multi[, c("methylation", "test")]
 ```
 
 If we want to retrieve the original object, we can set `drop = TRUE` or use the `[[` operator:
@@ -267,11 +268,40 @@ multi[, , range2]
 ```
 
 
-## Advanced subsetting
+## Multiple subsetting
 
 These three operations can be combined to apply the three filters. In this case, first the sets are selected, then the samples and lastly the features:
 
 ```{r combined}
 multi[samples, "expression", range]
-multi[samples, "snps", range, drop = TRUE]
+multi[samples, "methylation", range, drop = TRUE]
 ```
+
+## Advanced subsetting
+
+The base R function `subset` can be used to perform advanced subsetting. This function can be used to filter the features by a column each dataset feature data. For instance, we can use this function to select all the features associated to a gene:
+
+```{r Advanced genes}
+subset(multi, genes == "SLC35E2")
+```
+
+This line returns a `MultiDataSet` with the features associated to the gene SLC35E2. The expression uses `genes` because it is a column that is common to the datasets include in `multi`. This function accepts any expression that returns a logical. Therefore, we can also use the `%in%` operator or include more than one expression:
+
+```{r Advanced genes 2}
+subset(multi, genes %in% c("SLC35E2", "IPO13", "TRPV1"))
+subset(multi, genes == "EEF1A1" | genes == "LPP")
+```
+
+A similar approach can be used for selection samples with a common phenotype. In this case, we should pass the expression in the third argument and the column must also be present in the phenodata of the datasets:
+
+
+```{r Advanced pheno}
+subset(multi, , gender == "female")
+```
+
+With this line of code, we can select all the women of the study. Both subsetting can be applied at the same time:
+
+```{r Combined advanced}
+subset(multi, genes == "SLC35E2", gender == "female")
+```
+

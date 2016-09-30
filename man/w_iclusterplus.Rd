@@ -11,16 +11,16 @@ w_iclusterplus(object, commonSamples = TRUE, ...)
 
 \item{commonSamples}{Logical to indicate if common samples are selected}
 
-\item{...}{Arguments passed to function \link{iClusterPlus}}
+\item{...}{Arguments passed to function \link[iClusterPlus]{iClusterPlus}}
 }
 \value{
-A list of results from \link{iClusterPlus}
+A list of results from \link[iClusterPlus]{iClusterPlus}
 }
 \description{
-Method \link{iClusterPlus} is applied on a \link{MultiDataSet} object after
+Method \link[iClusterPlus]{iClusterPlus} is applied on a \link{MultiDataSet} object after
 getting the common samples along all the contained datasets.
 }
 \note{
-Argument \code{type} for \link{iClusterPlus} is filled within the method.
+Argument \code{type} for \link[iClusterPlus]{iClusterPlus} is filled within the method.
 }
 

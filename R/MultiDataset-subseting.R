@@ -212,7 +212,7 @@ setMethod(
                 x@featureData <- featD
                 x@rowRanges <- rangeD
                 
-                if (noFilteredSets == names(x)){
+                if (length(noFilteredSets) && noFilteredSets == names(x)){
                     stop("feat expression could not be applied to any of the sets.")
                 }
                 
@@ -277,7 +277,7 @@ setMethod(
                 x@assayData <- assyD
                 x@phenoData <- phenD
                 
-                if (noFilteredSets == names(x)){
+                if (length(noFilteredSets) && noFilteredSets == names(x)){
                     stop("phe expression could not be applied to any of the sets.")
                 }
                 

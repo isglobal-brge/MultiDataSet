@@ -1,12 +1,14 @@
+#' @describeIn MultiDataSet Apply iClusterPlus clustering method to a MultiDataSet object
+#' @aliases MultiDataSet-methods
+#' @param commonSamples Logical to indicate if common samples are selected
 setMethod(
     f = "w_iclusterplus",
     signature = "MultiDataSet",
-    definition = function(object, commonSamples=TRUE, ...) {
-        if(!"iClusterPlus" %in% installed.packages()[,"Package"]) {
+    definition = function(object, commonSamples = TRUE, ...) {
+        if(!"iClusterPlus" %in% utils::installed.packages()[,"Package"]) {
             stop("R package 'iClusterPlus' not found. Please, install it al run again this function.")
         }
-        require(iClusterPlus)
-        
+
         if(length(object) > 4) {
             stop("'iClusterPlus' only allows four datasets.")
         }
@@ -28,6 +30,6 @@ setMethod(
         names(datasets[["type"]]) <- paste("dt", 1:(length(datasets) -1), sep="")
         
         # Call iClusterPlus with the generated arguments and the user's arguments
-        do.call("iClusterPlus", c(datasets, list(...)))
+        do.call(iClusterPlus::iClusterPlus, c(datasets, list(...)))
     }
 )

@@ -17,7 +17,6 @@
 \alias{add_snps,MultiDataSet,SnpSet-method}
 \alias{as.list}
 \alias{as.list,MultiDataSet-method}
-\alias{as_list,MultiDataSet-method}
 \alias{assayData}
 \alias{assayData,MultiDataSet-method}
 \alias{commonIds,MultiDataSet-method}
@@ -57,8 +56,6 @@
 \S4method{add_snps}{MultiDataSet,SnpSet}(object, snpSet, ...)
 
 \S4method{as.list}{MultiDataSet}(x)
-
-\S4method{as_list}{MultiDataSet}(object)
 
 \S4method{assayData}{MultiDataSet}(object)
 
@@ -164,9 +161,6 @@ The names of the three lists (\code{assayData}, \code{phenoData} and
 \item \code{add_snps}: Method to add a slot of SNPs to \code{MultiDataSet}.
 
 \item \code{as.list}: Returns a list with the first matrix of each
-dataset.
-
-\item \code{as_list}: Returns a list with the first matrix of each
 dataset.
 
 \item \code{assayData}: Retrieve all assay data blocks.

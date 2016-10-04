@@ -8,6 +8,6 @@ setMethod(
             stop("R package 'omicade4' not found. Please, install it before running this function.")
         }
         object <- commonSamples(object)
-        omicade4::mcia(as_list(object), ...)
+        omicade4::mcia(as.list(object), ...)
     }
 )

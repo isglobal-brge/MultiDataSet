@@ -97,11 +97,9 @@ prepareMethylationSet <- function(matrix, phenotypes,
     
     if (is(annotation, "character")){
         if (annotation == "IlluminaHumanMethylation450kanno.ilmn12.hg19"){
-            if (require(annotation, character.only = TRUE)){
-                annoChar <- annotation
-                annotation <- get(annotation)
-                annotation <- data.frame(annotation@data$Locations, annotation@data$Other)
-            }
+            annoChar <- annotation
+            annotation <- data.frame(IlluminaHumanMethylation450kanno.ilmn12.hg19::Locations, 
+                                     IlluminaHumanMethylation450kanno.ilmn12.hg19::Other)
         }else{
             stop(sprintf("Annotation package %s can not be found.", annotation))
         }

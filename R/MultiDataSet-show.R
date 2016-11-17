@@ -4,8 +4,10 @@ setMethod(
   definition = function(object) {
     cat("Object of class 'MultiDataSet'\n")
     cat(" . assayData:", length(object@assayData), "elements\n")
-    nms <- names(object)
-    cat("    . elements:", ifelse(is.null(nms), "", .wrpvec(nms)), "\n")
+    for(name in names(object)) {
+        cat("    . ", name, ": ", nrow(object@featureData[[name]]), " features, ",
+            nrow(object@phenoData[[name]]), " samples \n", sep = "")
+    }
     
     cat( " . featureData:\n")
     for(name in names(object)) {

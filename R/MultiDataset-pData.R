@@ -1,9 +1,20 @@
-#' @describeIn MultiDataSet Retrieve information on experimental phenotypes.
+#' @describeIn MultiDataSet Retrieve information on experimental phenotypes
 #' @aliases pData
 setMethod(
   f = "pData",
   signature = "MultiDataSet", 
   definition = function(object) {
-    return(object@phenoData)
+    return(lapply(object@phenoData, pData))
   }
+)
+
+
+#' @describeIn MultiDataSet Retrieve information on experimental phenotypes
+#' @aliases phenoData
+setMethod(
+    f = "phenoData",
+    signature = "MultiDataSet", 
+    definition = function(object) {
+        return(object@phenoData)
+    }
 )

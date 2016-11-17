@@ -274,6 +274,12 @@ setGeneric("commonSamples", function(object) standardGeneric("commonSamples"))
 #' }
 setGeneric("getMs", function(object, threshold = 0.0001) standardGeneric("getMs"))
 
+
+setGeneric("ncols", function(object) standardGeneric("ncols"))
+
+setGeneric("nrows", function(object) standardGeneric("nrows"))
+
+
 #' Get the name of the datasets that have rowRanges
 #' @export
 #' 

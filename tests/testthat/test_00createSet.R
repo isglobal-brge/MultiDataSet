@@ -14,7 +14,8 @@ test_that("Conversion from beta matrix", {
     rownames(beta_matrix) <- c("cg00050873", "cg00212031")
     phenotypes <- data.frame(age = c(12, 23))
     rownames(phenotypes) <- c("H", "M")
-    expect_match(class(prepareMethylationSet(matrix = beta_matrix, phenotypes = phenotypes, verbose = TRUE)),
+    expect_match(class(prepareMethylationSet(matrix = beta_matrix, phenotypes = phenotypes, 
+                                             verbose = TRUE)),
                  "MethylationSet")
     beta_frame <- data.frame(beta_matrix)
     expect_match(class(prepareMethylationSet(matrix = beta_frame, phenotypes = phenotypes)),

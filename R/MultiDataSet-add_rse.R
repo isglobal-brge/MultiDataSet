@@ -22,7 +22,8 @@ setMethod(
     }
     
     env <- new("environment")
-    lapply(names(SummarizedExperiment::assays(set)), function(x) assign(x, SummarizedExperiment::assays(set)[[x]], env))
+    lapply(names(SummarizedExperiment::assays(set)), 
+           function(x) assign(x, SummarizedExperiment::assays(set)[[x]], env))
     object@assayData[[dataset.name]] <- env
     
     pheno <- Biobase::AnnotatedDataFrame(as.data.frame(SummarizedExperiment::colData(set)))

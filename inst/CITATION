@@ -1,0 +1,15 @@
+citEntry(entry = "article", 
+author = c(person("Carles", "Hernandez-Ferrer"), 
+    person("Carlos", "Ruiz-Arenas"),
+    person("Alba", "Beltran-Gomila"),
+    person("Juan R.", "Gonzalez")),
+doi = "10.1186/s12859-016-1455-1",
+journal = "BMC bioinformatics",
+number = "1",
+pages = "36",
+title = "MultiDataSet: an R package for encapsulating multiple data sets with application to omic data integration.",
+url = "http://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1455-1 http://www.ncbi.nlm.nih.gov/pubmed/28095799 http://www.pubmedcentral.nih.gov/articlerender.fcgi?artid=PMC5240259",
+volume = "18",
+year = "2017", 
+textVersion = "Hernandez-Ferrer C, Ruiz-Arenas C, Beltran-Gomila A, Gonzalez JR: MultiDataSet: an R package for encapsulating multiple data sets with application to omic data integration. BMC Bioinformatics 2017, 18:36."
+)

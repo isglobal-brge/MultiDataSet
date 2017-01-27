@@ -16,8 +16,6 @@ test_that("MultiSet", {
   multi <- createMultiDataSet()
   multi <- add_genexp(multi, eset)
   expect_equal(names(multi), "expression")
-  multi
-  
   
   expect_error(add_genexp(multi, eset), "There is already an object in this slot. Set overwrite = TRUE to overwrite the previous set.")
   expect_warning(add_genexp(multi, eset, overwrite = TRUE), "Slot 'expression' is already set in 'MultiDataSet'. Previous content will be overwritten.")

@@ -122,6 +122,31 @@ setGeneric("add_methy", function(object, methySet, ...) standardGeneric("add_met
 #' }
 setGeneric("add_rse", function(object, set, dataset.type, dataset.name = NULL, warnings = TRUE, overwrite = FALSE) standardGeneric("add_rse"))
 
+
+#' Method to add a \code{SummarizedExperiment} to \code{MultiDataSet}.
+#'
+#' This method adds or overwrites a slot of a \code{MultiDataSet} with the content 
+#' of the given \code{SummarizedExperiment}.
+#'
+#' @rdname add_se
+#' @aliases add_se
+#' @param object \code{MultiDataSet} that will be filled.
+#' @param set Object derived from \code{SummarizedExperiment} to be used to fill the slot.
+#' @param dataset.type Character with the type of data of the omic set (e.g. expression, methylation...)
+#' @param dataset.name Character with the specific name for this set (NULL by default). It is useful when there 
+#' are several sets of the same type (e.g. multiple expression assays)
+#' @param warnings Logical to indicate if warnings will be displayed.
+#' @param overwrite Logical to indicate if the set stored in the slot will be overwritten. 
+#' @param GRanges \code{GenomicRanges} to be included in rowRanges slot. 
+#' @return A new \code{MultiDataSet} with a slot filled.
+#' @exportMethod add_se
+#' @examples 
+#' multi <- createMultiDataSet()
+#' se <- SummarizedExperiment::SummarizedExperiment(matrix(runif(10), 5))
+#' multi <- add_se(multi, se, "exampledata", GRanges = NA)
+setGeneric("add_se", function(object, set, dataset.type, dataset.name = NULL, warnings = TRUE, 
+                              overwrite = FALSE, GRanges) standardGeneric("add_se"))
+
 #' Method to add a slot of SNPs to \code{MultiDataSet}.
 #'
 #' This method adds or overwrites the slot \code{"snps"} of an

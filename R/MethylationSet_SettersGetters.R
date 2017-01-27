@@ -20,5 +20,6 @@ setMethod(
     M[M==0] <- threshold
     M[M==1] <- 1 - threshold
     M <- minfi::logit2(M)
+    return(M)
   }
 )

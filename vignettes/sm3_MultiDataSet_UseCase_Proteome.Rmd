@@ -1,0 +1,306 @@
+---
+title: "Adding a new type of data to MultiDataSet objects"
+author: "Carles Hernandez-Ferrer, Carlos Ruiz-Arenas, Alba Beltran-Gomila, Juan R. González"
+date: "`r Sys.Date()`"
+package: "`r pkg_ver('MultiDataSet')`"
+output: 
+  BiocStyle::html_document:
+    number_sections: true
+    toc: yes
+    fig_caption: yes
+    fig_height: 3
+    fig_width: 4
+---
+
+```{r create_data, eval = TRUE, echo = FALSE}
+#setwd("/home/kuragari/Downloads/use case")
+#setwd("C:/Users/chernandez/shared/Projects/multidataset/Tutorials")
+fdata <- data.frame(
+    feature = c("Adiponectin", "CRP", "APO.A1", "APO.B", "APO.E"),
+    LoD.T = c(4.0000E+07, 6.8333E+06, 1.6250E+09, 7.5000E+08, 3.0556E+08),
+    LoD.B = c(1.6461E+05, 2.8121E+04,	2.0062E+07,	9.2593E+06,	3.7723E+06),
+    unit = c("pg/mL", "pg/mL", "pg/mL", "pg/mL", "pg/mL")
+)
+
+
+pc <- textConnection("sample,gender,plate,kit
+sp001,male,P01,5
+sp002,male,P01,5
+sp003,female,P01,5
+sp004,male,P01,5
+sp005,female,P01,5
+sp006,female,P01,5
+sp007,male,P01,5
+sp009,male,P01,5
+sp010,male,P01,5
+sp012,male,P01,5
+sp013,male,P01,5
+sp014,female,P01,5
+sp015,male,P01,5
+sp016,male,P01,5
+sp017,male,P01,5
+sp018,male,P01,5
+sp019,male,P01,5
+sp020,male,P01,5
+sp021,female,P01,5
+sp022,male,P01,5
+sp023,male,P01,5
+sp024,female,P01,5
+sp025,male,P01,5
+sp026,male,P01,5
+sp027,female,P01,5
+sp028,male,P01,5
+sp029,female,P01,5
+sp030,female,P01,5
+sp031,male,P01,5
+sp032,female,P01,5
+sp033,male,P01,5
+sp034,male,P01,5
+sp035,female,P01,5")
+
+pdata <- read.csv(pc)
+
+ac <- textConnection("sample,Adiponectin,CRP,APO.A1,APO.B,APO.E
+sp001,15078717.84,256079.1978,166102189.6,81989413.94,12088576.71
+sp002,13216433.82,59688.53882,122910159.9,75276925.92,8662032.005
+sp003,25639817.37,272556.6707,132103162.9,58156884.1,11317489.32
+sp004,28042622.37,981180.998,163470320.6,72249107.96,9534858.626
+sp005,37507509.6,1434113.656,186415820,85977072.27,20772027.96
+sp006,27201037.83,7140776.893,180018819.1,115016660.7,19020968.34
+sp007,19734082.42,849104.2897,95178150.98,74531939.7,12575510.74
+sp009,24337465.91,2083163.005,119909512.6,75162215.53,13472623.87
+sp010,29346604.23,387120.4506,122159943.6,79429725.86,16315028.32
+sp012,23471847.37,313730.4201,162530447.6,61607843.14,6950787.103
+sp013,26464829.9,231195.7943,182276383.6,91789932.63,10467398.75
+sp014,15188363.38,13795018.08,179266346.9,142227471.5,10822788.47
+sp015,28585011.4,48724.14524,182652665.8,98888608.08,7252478.096
+sp016,19105671.52,110506.2048,140362398.3,64931137.97,8072973.965
+sp017,26570792.93,991854.9577,145432469.7,80533037.64,16914321.56
+sp018,23968478.51,234826.4158,127787432.4,65209657.88,7924737.258
+sp019,22881995.44,9321008.038,144681259.3,111528556.5,8072973.965
+sp020,23118772.5,16891530.05,196202782.9,80823891.6,14734492.79
+sp021,22942701.12,139509.27,92932170.07,59302740.96,4131144.701
+sp022,25317279.56,103616.9905,115034724.1,75678689.62,7252478.096
+sp023,26502576.75,79198.05423,209006876.8,110535951,20643082.4
+sp024,25540633.93,334148.4346,182276383.6,84506590.67,14632785.98
+sp025,34258505.11,654613.9767,115034724.1,90954853.78,18563191.06
+sp026,17832612.2,229986.4403,111660816.1,61993740.5,10964463.6
+sp027,20439508.67,534718.8069,157455877.1,56311320.18,7327611.264
+sp028,31333461.27,179608.5461,113535112.2,69359486.56,12852515.92
+sp029,18419548.11,271333.7529,100420374.9,41698956.49,10110231.2
+sp030,15699158.6,1011889.525,147310628.7,54048254.2,8735244.722
+sp031,20726453.63,479871.0422,98922372.45,58156884.1,10503016.43
+sp032,33833352.39,532158.9756,214657722.7,84800277.57,19866893.4
+sp033,14598125.04,179608.5461,84887644.72,86212822.7,13952043.6
+sp034,24457846.67,1219055.651,124410700.1,85918155,18235193.56
+sp035,11560113.29,134838.8042,92557881.06,34647582.51,6950787.103")
+
+adata <- read.csv(ac)
+rm(pc, ac)
+
+
+write.table(fdata, file="feature_data.tsv", sep="\t", row.names=F, col.names=T, quote=F)
+write.table(pdata, file="pheno_data.tsv", sep="\t", row.names=F, col.names=T, quote=F)
+write.table(adata, file="assay_data.tsv", sep="\t", row.names=F, col.names=T, quote=F)
+rm(fdata, pdata, adata)
+```
+
+# Introduction
+
+Recent advances in biotechnology are introducing new sources of biological information. As a result, developers need to create classes to properly storage and manage these new kinds of data. 
+
+`MultiDataSet` has methods to deal with three common datasets: gene expression, SNPs data, and DNA methylation. Gene expression from an `ExpressionSet` can be added to a `MultiDataSet` using `add_genexp` (for microarrays) or `add_rnaseq` (for RNAseq) functions. SNP data can be incorporated into a `MultiDataSet` by using the function `add_snp`. DNA methylation encapsulated in a `MethylationSet` object can be added into a `MultiDataSet` using `add_methy`. In addition, `MultiDataSet` is also able to work with any other class of objects based on `eSet` or `SummarizedExperiment`, two general classes of Bioconductor framework. Consequently, developers can implement methods to expand `MultiDataSet` to work with their own classes. 
+
+In this document, we show how to create a new method to add a new class of objects into `MultiDataSet`. This process is exemplified by creating a new class to store proteomic data. To this end, we will extend the `eSet` class. It should be noticed that the process would be very similar if the class was based on `SummarizedExperiment`.  
+
+
+# Objective
+
+The objective of this document is to illustrate how to create a method to add a new class of object to `MultiDataSet`. This tutorial is meant for software developers who have developed a new class to manage any new omic data or another type of information to be included in `MultiDataSet` objects.  
+
+
+# Implementation
+
+Proteome data is commonly represented as a matrix of protein's levels. This data has a special characteristic: some of the information cannot be measure due to the limit of detection (LOD) and limit of quantification (LOQ). Having LOD information in the data matrix can be crucial when performing statistical analyses. Considering proteins as the outcome requires using different statistical methods than those used for analyzing, for instance, gene expression data. LOD makes that proteins are left-censored variables making impossible the use of standard methods of analysis such as linear regression or t-test. 
+
+
+One approach that can be adopted to deal with this type of data is to assign LOD/2 to those values that are below LOD. This will allow the user to analyze protein data using standard packages such as `limma`, which uses linear models. However, this approach is biased. Other methods have been developed to properly analyze left-censored variables. Those methods require knowing the LOD of each protein. Therefore, having information about both protein's levels and LOD is crucial for downstream analyses. Currently, a class that stores protein data with LOD does not exist. To solve this issue, we propose to create `ProteomeSet`, a new class based on `eSet`. Our new class will contain the raw protein levels, information about LOD and protein levels having data below LOD equal to LOD/2. 
+
+We will begin by defining the new class: `ProteomeSet`. Second, we will develop a function to load the protein data and the LOD into R and to create our `ProteomeSet`. Third, we will implement a method for `MultiDataSet` to add `ProteomeSet`s. Finally, we will show the application of the code by creating a `MultiDataSet` with protein data.
+
+## Defining ProteomeSet
+
+We have chosen to extend `eSet` to implement our `ProteomeSet` because we can take profit of `eSet`s' methods and structure. Therefore, our `ProteomeSet` will also have the phenotype and feature data as well as  methods to retrieve data. Given that `eSet` is defined in Biobase package, we should load it prior to the definition of `ProteomeSet`:
+
+```{r Define Proteome, message=FALSE}
+library(Biobase)
+setClass (
+    Class = "ProteomeSet",
+    contains = "eSet", 
+    prototype = prototype(new("VersionedBiobase",
+                              versions = c(classVersion("eSet"), ProteomeSet = "1.0.0")))
+)
+```
+
+This `ProteomeSet` is defined as another `eSet` object. As previously mentioned, proteome data should contain some specific features. The `setValidity` function defines the requirements that an object must accomplish to be valid. assayData of `ProteomeSet` objects should have two slots to encapsulate both raw and modified data (e.g. values below LOD replaced by LOD/2). These slots will be called `raw` and `prots`, respectively. `ProteomeSet` should also contain information about LOD and LOQ. This data will be obtained from the columns `LoD.T` and `LoD.B` available as featureData. We can introduce these requirements with the following lines of code:
+
+```{r Define Proteome Validity, message=FALSE, results="hide"}
+setValidity("ProteomeSet", function(object) {
+    
+    ## Check that object has the slots 'prots' and 'raw' in assayData
+    msg <- validMsg(NULL, assayDataValidMembers(assayData(object), c("prots", "raw")))
+    
+    ## Check that objects has the columns 'LoD.T' and 'LoD.B' in featureData
+    msg <- validMsg(msg, ifelse(any(!c("LoD.T", "LoD.B") %in% fvarLabels(object)), "fData must contain columns 'LoD.T' and 'LoD.B'", FALSE))
+    if (is.null(msg)){
+        TRUE
+    } else{
+        msg
+    }
+}) 
+```
+
+In this subsection, we have covered the essentials of extending a class based on `eSet`. Readers interested in more advanced features can find more information about extending [R classes](http://adv-r.had.co.nz/OO-essentials.html) and extending [eSets](http://www.bioconductor.org/packages/devel/bioc/vignettes/Biobase/inst/doc/BiobaseDevelopment.pdf).
+
+
+
+## Loading Proteome Data
+
+Here, we create a function that loads proteome data from a text file, replaces values below LOD and above LOQ and returns a `ProteomeSet` with the available data. Correction of _limit of detection_ is commonly defined as follows:
+
+1. If the expression of a protein is below its LOD, it is replaced by LOD/2. 
+2. If the expression of a protein is above its LOQ, it is replaced by LOQ*1.5.
+
+The function `read_ldset` will perform this task. It requires four arguments:
+
+* `assayFile`: (character) A path to the proteome' measurements file.
+* `phenoFile`: (character) A path to the samples' phenotype file.
+* `featureFile`: (character) A path to the features' annotation file.
+* `sep`: (character) Indicates the field separator character of the three files above.
+
+The three input files need to be TSV style (TSV: tab-separated file) and must include a header. `assayFile` and `phenoFile` must have a column called `sample` with a unique sample id. `featureFile` must have a column called `feature` with the unique feature id, that must be equal to `assayFile`'s columns names. Moreover, `featureFile` must have two columns called `LoD.B` and `LoD.T`, corresponding to the LOD (_bottom limit of detection_) and the LOQ (_top limit of detection_) of each protein.
+
+`read_lds` checks that the features' names are the same in assay data and in feature data. It also checks that feature data has the two columns for the _limits of detection_. After performing the two checks, `read_ldset` creates the matrix with the updated level of expression of each protein. Then a `ProteomeSet` is created, containing the raw matrix as `raw` and the updated matrix as `prots`. The phenotypic data and feature's annotations are also included:
+
+```{r read_ldset}
+read_ldset <- function(assayFile, phenoFile, featureFile, sep="\t") {
+    ## Load the threes files that will be used to create the ProteomeSet
+    adata <- read.delim(assayFile, sep=sep, header=TRUE, row.names="sample")
+    pdata <- read.delim(phenoFile, sep=sep, header=TRUE, row.names="sample")
+    fdata <- read.delim(featureFile, sep=sep, header=TRUE, row.names="feature")
+    ## /
+    
+    ## Check that proteins in assay data are the same in feature data
+    if(!identical(colnames(adata), rownames(fdata))) {
+        stop("Features names in assay data (columns) are not equal to ",
+             "features names in feature data (rownames).")
+    }
+    ##/
+    
+    ## Check that feature data include columns LoD.B and LoD.T
+    if(sum(c("LoD.T", "LoD.B") %in% colnames(fdata)) != 2) {
+        stop("Feature data must contain two columns labeled 'LoD.T' (top ",
+             "limit of dectection) and 'LoD.B (bottom limit of dectection)")
+    }
+    ## /
+    
+    ## Perform the transformation of the protein level of expression
+    low <- fdata[colnames(adata), "LoD.B"]
+    up <- fdata[colnames(adata), "LoD.T"]
+    names(low) <- names(up) <- rownames(fdata)
+    faux <- function(x, low, up) {
+        x[x < low] <- as.double(low / 2)
+        x[x > up] <- as.double(up * 1.5)
+        x
+    }
+    tadata <- mapply(FUN = faux, x = as.list(adata), low = as.list(low), up = as.list(up))
+    dimnames(tadata) <- dimnames(adata)
+    ## /
+    
+    ## Create the ExpressionSet with the two matrices
+    prot <- new("ProteomeSet",
+                assayData = assayDataNew("environment", prots = t(tadata), raw = t(adata)),
+                phenoData = AnnotatedDataFrame(pdata),
+                featureData = AnnotatedDataFrame(fdata)
+    )
+    ## /
+    
+    ## Check that the new ProteomeSet is valid
+    validObject(prot)
+    ## /
+    
+    return(prot)
+}
+```
+
+
+## Extending MultiDataSet
+
+So far, we have developed a function to define a new class of objects to encapsulate proteomic data. In this section, we will show how to add `ProteomeSet` objects to `MultiDataSet`. To do so, we will create a generic method for adding proteins (`add_prot`) to `MultiDataSet` and its implementation using `add_eset`. 
+
+The method `add_prot` for `MultiDataSet` will accept two arguments: a `MultiDataSet` and a `ProteomeSet`. Following S4 development rules, a new generic method for `add_prot` needs to be set:
+
+````{r create_generic}
+setGeneric("add_prot", function(object, protSet, warnings = TRUE, ...)
+    standardGeneric("add_prot")
+)
+````
+
+In the definition of `add_prot`, we can see the three main arguments of this function. `object` is the `MultiDataSet` where we will add the `ProteomeSet`. `protSet` is the new `ProteomeSet` that will be added. Finally, `warnings` is a flag to indicate if warnings are displayed. 
+
+The following code shows the implementation of `add_prot`. In the signature, we specify that the first argument should be a `MultiDataSet` and the second a `ProteomeSet`. If any other class is passed to the function, an error will be returned. In the code of the function, we see only two lines: a call to `add_eset` and the return of the object. 
+
+````{r, message = FALSE}
+library(MultiDataSet)
+setMethod(
+    f = "add_prot",
+    signature = c("MultiDataSet", "ProteomeSet"),
+    definition = function(object, protSet, warnings = TRUE, ...) {
+        ## Add given ProteomeSet as 'proteome'
+        object <- MultiDataSet::add_eset(object, protSet, dataset.type = "proteome", GRanges = NA, ...)
+        ## /
+        return(object)
+    }
+)
+```
+
+Basic method `add_eset` is used to add `eSet` derived-classes to `MultiDataSet` and accepts several arguments. Four of them are used for implementing `add_prot`. As mentioned above, the first and the second are the `MultiDataSet` object where the proteins will be added and `ProteomeSet` with the proteins data. The third, `dataset.type`, is used to tag the type of omics data that `add_prot` is adding to the `MultiDataSet`. This argument is set to `"proteome"` in `add_prot`, `"expression"` in `add_genexp` and `"snps"` in `add_snps`. The fourth argument, `GRanges` is set to `NA`. This argument can take two type of values: a `GRanges` object with the equivalent content of the `fData` included into the `ExpressionSet` or `NA` in case no genomic coordinates are available for the set's features. In this case, since we are working with proteins, no genomic coordinates are given.
+
+
+## Data example: Adding Proteome data to MultiDataSet objects
+
+For illustration purposes, we have created three tsv-dummy files that are used in the following code to create a `ProteomeSet` using `read_ldset` function. These files are available in the Supplementary Material of the manuscript
+
+```{r load_ps}
+## Create a ProteomeSet with protein data
+ps <- read_ldset(assayFile="assay_data.tsv", 
+                 phenoFile="pheno_data.tsv",
+                 featureFile="feature_data.tsv"
+)
+ps
+```
+
+The created object `ps` is a `ProteomeSet` and it contains two elements called `prots` and `raw`. Moreover, `ps`'s feature data contains two columns called `LoD.B` and `LoD.T`.
+
+Now that the proteome data is loaded and stored in a `ProteomeSet`, we can add it to a new `MultiDataSet`. `MultiDataSet` objects can be created using the constructor `createMultiDataSet`. Then the method `add_prot` is used to include the proteome data to `md`:
+
+```{r add_prot_md_1, warning=FALSE}
+md <- createMultiDataSet()
+md <- add_prot(md, ps)
+```
+
+The method `names` of `MultiDataSet` shows the datasets stored in the `MultiDataSet`. `MultiDataSet` stores datasets calling them by its data type.
+
+````{r show_md_1}
+names(md)
+````
+
+Finally, the _show_ of the object gives more information related to the stored in the `MultiDataSet`:
+
+````{r show_md_2}
+md
+````
+
+The name of the set is shown (`proteome`), the number of proteins (5 rows in feature data), the number of samples (33 samples in pheno data) and, since no `GRanges` was provided, `rowRanges` is `NO`.
+
+

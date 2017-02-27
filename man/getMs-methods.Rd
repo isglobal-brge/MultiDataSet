@@ -26,4 +26,3 @@ mvalues <- getMs(set)
 head(mvalues)
 }
 }
-

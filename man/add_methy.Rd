@@ -30,4 +30,3 @@ if (require(MEALData)){
  multi <- add_methy(multi, methy)
 }
 }
-

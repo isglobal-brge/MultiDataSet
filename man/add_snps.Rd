@@ -36,4 +36,3 @@ rownames(pheno) <- c("VAL0156", "VAL0372")
 pData(snpSet) <- pheno
 multi <- add_snps(multi, snpSet)
 }
-

@@ -44,4 +44,3 @@ rownames(pData(eset)) <- c("S1", "G2")
 multi <- add_genexp(multi, eset, dataset.name="g2")
 commonSamples(multi)
 }
-

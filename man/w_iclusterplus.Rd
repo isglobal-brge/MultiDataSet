@@ -23,4 +23,3 @@ getting the common samples along all the contained datasets.
 \note{
 Argument \code{type} for \link[iClusterPlus]{iClusterPlus} is filled within the method.
 }
-

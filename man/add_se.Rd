@@ -35,4 +35,3 @@ multi <- createMultiDataSet()
 se <- SummarizedExperiment::SummarizedExperiment(matrix(runif(10), 5))
 multi <- add_se(multi, se, "exampledata", GRanges = NA)
 }
-

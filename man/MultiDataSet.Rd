@@ -13,4 +13,3 @@ Implementation of the BRGE's (Bioinformatic Research Group in Epidemiology from
 \seealso{
 \linkS4class{MultiDataSet}
 }
-

@@ -38,4 +38,3 @@ multi <- add_eset(multi, eset, "exampledata", GRanges = NA)
 \seealso{
 \code{\link{add_methy}}, \code{\link{add_genexp}}, \code{\link{add_rnaseq}}, \code{\link{add_snps}}
 }
-

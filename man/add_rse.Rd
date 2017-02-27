@@ -44,4 +44,3 @@ rse <- SummarizedExperiment(assays=SimpleList(counts=counts),
 multi <- add_rse(multi, rse, "rseEx")
 }
 }
-

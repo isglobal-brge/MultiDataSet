@@ -17,4 +17,3 @@ mae2mds(MAE, warnings = TRUE)
 \description{
 This function creates a \code{MultiDataSet} using the data of a \code{MultiAssayExperiment}.
 }
-

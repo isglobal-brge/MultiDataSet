@@ -26,4 +26,3 @@ multi <- add_eset(multi, eset, "exampledata", GRanges = NA)
 multi <- add_genexp(multi, eset2)
 rowRangesElements(multi)
 }
-

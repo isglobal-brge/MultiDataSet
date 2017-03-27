@@ -23,4 +23,3 @@ if (require(MEALData)){
  checkSamples(methy)
 }
 }
-

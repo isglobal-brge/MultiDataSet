@@ -29,4 +29,3 @@ fData(eset) <- data.frame(chromosome = c("chr1", "chr2"), start = c(12414, 12343
  end = c(121241, 12122414), stringsAsFactors = FALSE)
 multi <- add_genexp(multi, eset)
 }
-

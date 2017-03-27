@@ -18,4 +18,3 @@ A list of results from \link[omicade4]{mcia}
 Method \link[omicade4]{mcia} is applied on a \link{MultiDataSet} object after
 getting the common samples along all the contained datasets.
 }
-

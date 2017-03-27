@@ -100,7 +100,12 @@ prepareMethylationSet <- function(matrix, phenotypes,
             annoChar <- annotation
             annotation <- data.frame(IlluminaHumanMethylation450kanno.ilmn12.hg19::Locations, 
                                      IlluminaHumanMethylation450kanno.ilmn12.hg19::Other)
-        }else{
+        } else if (annotation == "IlluminaHumanMethylationEPICanno.ilm10b2.hg19"){
+            annoChar <- annotation
+            annotation <- data.frame(IlluminaHumanMethylationEPICanno.ilm10b2.hg19::Locations, 
+                                     IlluminaHumanMethylationEPICanno.ilm10b2.hg19::Other)
+        }
+        else{
             stop(sprintf("Annotation package %s can not be found.", annotation))
         }
         
@@ -150,6 +155,5 @@ prepareMethylationSet <- function(matrix, phenotypes,
     set <- checkSamples(set)
     set <- checkProbes(set)
     validObject(set)
-    gc()
     set
 }

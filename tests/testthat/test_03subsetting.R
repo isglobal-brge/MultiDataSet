@@ -43,6 +43,63 @@ test_that("Basic subseting", {
     
 })
 
+test_that("Common samples", {
+    ## Create MULTI
+    multi <- createMultiDataSet()
+    eset <- new("ExpressionSet", exprs = matrix(runif(9), ncol = 3))
+    fData(eset) <- data.frame(chromosome = c("chr1", "chr1", "chr1"), 
+                              start = c(1, 5, 10),end = c(4, 6, 14), 
+                              stringsAsFactors = FALSE)
+    sampleNames(eset) <- c("S1", "S2", "S3")
+    pData(eset) <- data.frame(id = c("S1", "S2", "S3"), stringsAsFactors = FALSE)
+    rownames(pData(eset)) <- c("S1", "S2", "S3")
+    
+    multi <- add_genexp(multi, eset, dataset.name = "g1")
+    
+    
+    eset2 <- new("ExpressionSet", exprs = matrix(runif(20), ncol = 5))
+    fData(eset2) <- data.frame(chromosome = c("chr1", "chr1", "chr1", "chr1"), 
+                              start = c(1, 14, 25, 104),end = c(11, 16, 28, 115),
+                              stringsAsFactors = FALSE)
+    pData(eset2) <- data.frame(id = c("S1", "S4", "S1", "S3", "S2"), stringsAsFactors = FALSE)
+    sampleNames(eset2) <- c("A1", "A4", "B1", "A2", "A3")
+    
+    multi <- add_genexp(multi, eset2, dataset.name="g2")
+    ## /
+    
+    ## Check SAMPLES
+    multi2 <- multi[c("S4", "S1"), ]
+    expect_equal(multi2[["expression+g1"]]$id, "S1")
+    expect_equal(multi2[["expression+g2"]]$id, c("S4", "S1", "S1"))
+    expect_equal(sampleNames(multi2[["expression+g1"]]), "S1")
+    expect_equal(sampleNames(multi2[["expression+g2"]]), c("A4", "A1", "B1"))
+
+    ## Check Common samples
+    multi2 <- commonSamples(multi)
+    expect_equal(multi2[["expression+g1"]]$id, c("S1", "S2", "S3"))
+    expect_equal(multi2[["expression+g2"]]$id, c("S1", "S1",  "S2", "S3"))
+    expect_equal(sampleNames(multi2[["expression+g1"]]), c("S1", "S2", "S3"))
+    expect_equal(sampleNames(multi2[["expression+g2"]]), c("A1", "B1", "A2", "A3"))
+    
+    ## Check Common samples unify names
+    expect_error(commonSamples(multi, unify.names = TRUE))
+    
+    multi2 <- multi[c("S2", "S3", "S4"), ]
+    multi2 <- commonSamples(multi2, unify.names = TRUE)
+    expect_equal(multi2[["expression+g1"]]$id, c("S2", "S3"))
+    expect_equal(multi2[["expression+g2"]]$id, c("S2", "S3"))
+    expect_equal(sampleNames(multi2[["expression+g1"]]), c("S2", "S3"))
+    expect_equal(sampleNames(multi2[["expression+g2"]]), c("S2", "S3"))
+    
+    
+    ## Check RANGES
+    expect_equivalent(nrow(multi[,, GRanges("chr1:1-7")][["expression+g1"]]), 2L)
+    expect_equivalent(nrow(multi[,, GRanges("chr1:1-7")][["expression+g2"]]), 1L)
+    ## /
+    
+})
+
+
 
 test_that("Advanced subseting", {
     ## Create MULTI

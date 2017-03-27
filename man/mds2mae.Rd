@@ -15,4 +15,3 @@ mds2mae(MDS)
 \description{
 This function creates a \code{MultiAssayExperiment} using the data of a \code{MultiDataSet}.
 }
-

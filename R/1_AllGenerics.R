@@ -250,11 +250,16 @@ setGeneric("checkSamples", function(object) standardGeneric("checkSamples"))
 
 #' Method to select samples that are present in all datasets.
 #'
-#' This method subsets the datasets to only contain the samples that are in all datasets.
+#' This method subsets the datasets to only contain the samples that are in all datasets. All sets 
+#' will have the samples in the same order, taking into account that there can be duplicates.
+#' 
+#' If unify.names is TRUE, the sample names of the sets will be unified using the id column of 
+#' phenodata. This option is only possible when there are no duplicated ids. 
 #'
 #' @rdname commonSamples
 #' @aliases commonSamples
 #' @param object \code{MultiDataSet} that will be filtered.
+#' @param unify.names Logical indicating if sample names of the sets should be unified.
 #' @return A new \code{MultiDataSet} with only the common samples.
 #' @exportMethod commonSamples
 #' @examples  
@@ -277,7 +282,7 @@ setGeneric("checkSamples", function(object) standardGeneric("checkSamples"))
 #' 
 #' multi <- add_genexp(multi, eset, dataset.name="g2")
 #' commonSamples(multi)
-setGeneric("commonSamples", function(object) standardGeneric("commonSamples"))
+setGeneric("commonSamples", function(object, unify.names = FALSE) standardGeneric("commonSamples"))
 
 #' Transforms beta values to M-values
 #' 

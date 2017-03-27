@@ -77,4 +77,3 @@ if (require(minfiData)){
  set <- prepareMethylationSet(betas, pheno)
  }
 }
-

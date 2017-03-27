@@ -4,16 +4,23 @@
 \alias{commonSamples}
 \title{Method to select samples that are present in all datasets.}
 \usage{
-commonSamples(object)
+commonSamples(object, unify.names = FALSE)
 }
 \arguments{
 \item{object}{\code{MultiDataSet} that will be filtered.}
+
+\item{unify.names}{Logical indicating if sample names of the sets should be unified.}
 }
 \value{
 A new \code{MultiDataSet} with only the common samples.
 }
 \description{
-This method subsets the datasets to only contain the samples that are in all datasets.
+This method subsets the datasets to only contain the samples that are in all datasets. All sets 
+will have the samples in the same order, taking into account that there can be duplicates.
+}
+\details{
+If unify.names is TRUE, the sample names of the sets will be unified using the id column of 
+phenodata. This option is only possible when there are no duplicated ids.
 }
 \examples{
  
@@ -37,4 +44,3 @@ rownames(pData(eset)) <- c("S1", "G2")
 multi <- add_genexp(multi, eset, dataset.name="g2")
 commonSamples(multi)
 }
-

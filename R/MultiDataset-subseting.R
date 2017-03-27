@@ -68,7 +68,7 @@ setMethod(
                 orig <- assayData(x[[dtype]])
                 storage.mode <- Biobase:::assayDataStorageMode(orig)
                 phen <- x@phenoData[[dtype]]
-                sel <- phen$id %in% i
+                sel <- order(match(phen$id, i), na.last = NA)
                 assyD[[dtype]] <-
                     switch(storage.mode,
                            environment =,

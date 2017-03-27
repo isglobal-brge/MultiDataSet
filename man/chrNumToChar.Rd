@@ -22,4 +22,3 @@ chromosomes <- c(1, 3, 4, 23, 15)
 stringChrs <- chrNumToChar(chromosomes)
 stringChrs
 }
-

@@ -12,7 +12,6 @@
 #' @import Biobase
 #' @importClassesFrom SummarizedExperiment RangedSummarizedExperiment 
 #' @import methods
-#' @importClassesFrom minfi RatioSet
 #' @importFrom GenomicRanges makeGRangesFromDataFrame
 #' @importFrom IRanges subsetByOverlaps 
 #' @importFrom S4Vectors DataFrame

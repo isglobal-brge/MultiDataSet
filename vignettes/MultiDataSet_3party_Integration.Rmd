@@ -294,7 +294,7 @@ col.scheme[[3]] <- greenred(256) # colours for mSet
 
 plotHeatmap(fit=fit,datasets=lapply(as.list(commonSamples(md)), t),
   type=c("gaussian","gaussian","gaussian"), col.scheme = col.scheme,
-  row.order=c(T,T,T),sparse=c(T,F,T),cap=c(F,F,F)
+  row.order=c(TRUE,TRUE,TRUE),sparse=c(TRUE,FALSE,TRUE),cap=c(FALSE,FALSE,FALSE)
 )
 ```
 In this case, the first two rectangles correspond to the two `ExpressionSet`s while the last rectangle to the `MethylationSet`.

@@ -16,6 +16,9 @@ methylationSet <- function(betas, phenotypes, annotationDataFrame, annoString = 
   meth <- assayDataNew(storage.mode = "lockedEnvironment",  meth = betas)
   set <- new(Class = "MethylationSet", assayData = meth)
   
+  if (is(phenotypes, "DataFrame")){
+      phenotypes <- data.frame(phenotypes)
+  }
   if (is(phenotypes, "data.frame")){
     phenotypes <- AnnotatedDataFrame(phenotypes)
   }

@@ -27,6 +27,7 @@ test_that("MultiSet", {
   expect_is(multi[["rseEx"]], "RangedSummarizedExperiment")
 
   library(minfiData)
+  data("MsetEx")
   GRset <- mapToGenome(MsetEx)
   colData(GRset)$id <- letters[1:6]
   multi <- add_rse(multi, GRset, "GRSet")

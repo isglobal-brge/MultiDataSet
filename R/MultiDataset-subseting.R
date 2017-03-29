@@ -65,7 +65,7 @@ setMethod(
             assyD <- list()
             phenD <- list()
             for(dtype in names(x)) {
-                orig <- assayData(x[[dtype]])
+                orig <- x@assayData[[dtype]]
                 storage.mode <- Biobase:::assayDataStorageMode(orig)
                 phen <- x@phenoData[[dtype]]
                 sel <- order(match(phen$id, i), na.last = NA)

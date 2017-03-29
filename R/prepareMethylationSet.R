@@ -77,7 +77,7 @@ prepareMethylationSet <- function(matrix, phenotypes,
         matrix <- matrix[rowMeans(is.na(matrix)) <= filterNA_threshold, , drop = FALSE]
     } else if (class(matrix) %in% c("GenomicMethylSet", "MethylSet", "RatioSet", "GenomicRatioSet")){
         if (missing(phenotypes)){
-            phenotypes <- phenoData(matrix)
+            phenotypes <- colData(matrix)
         }
         matrix <- minfi::getBeta(matrix)
     }else{
@@ -94,7 +94,7 @@ prepareMethylationSet <- function(matrix, phenotypes,
     if (length(phenotypes) == 0){
         stop("Phenotypes is empty.")
     }
-    
+
     if (is(annotation, "character")){
         if (annotation == "IlluminaHumanMethylation450kanno.ilmn12.hg19"){
             annoChar <- annotation

@@ -66,9 +66,6 @@ test_that("Check phenotype", {
     names(phenotypes) <- c("VAL0156", "VAL0372")
     expect_error(prepareMethylationSet(matrix = beta_matrix, phenotypes = phenotypes), 
                  "phenotypes must be a data.frame or an AnnotatedDataFrame.")  
-    phenotypes <- DataFrame(a = c(12, 23))
-    rownames(phenotypes) <- c("VAL0156", "VAL0372")
-    expect_error(prepareMethylationSet(matrix = beta_matrix, phenotypes = phenotypes), "phenotypes must be a data.frame or an AnnotatedDataFrame.")  
 })
 
 test_that("Empty arguments", {

@@ -27,7 +27,7 @@ setMethod(
     signature = c("MultiDataSet", "RatioSet"),
     definition = function(object, methySet, ...) {
         
-        fet <- fData(methySet)
+        fet <- rowData(methySet)
         if (!all(c("position", "chromosome") %in% colnames(fet))){
             stop("fData of methySet must contain columns chromosome and position")
         }
@@ -36,7 +36,7 @@ setMethod(
                                                          start.field = "position", end.field = "position")
         
         
-        object <- add_eset(object, methySet, dataset.type = "methylation", GRanges = range, ...)
+        object <- add_se(object, methySet, dataset.type = "methylation", GRanges = range, ...)
         
         return(object)
     }

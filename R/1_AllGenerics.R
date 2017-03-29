@@ -176,6 +176,32 @@ setGeneric("add_se", function(object, set, dataset.type, dataset.name = NULL, wa
 #' multi <- add_snps(multi, snpSet)
 setGeneric("add_snps", function(object, snpSet, ...) standardGeneric("add_snps"))
 
+#' Method to add a \code{matrix} to \code{MultiDataSet}.
+#'
+#' This method adds or overwrites a slot of a \code{MultiDataSet} with the content 
+#' of the given \code{matrix}.
+#'
+#' @rdname add_table
+#' @aliases add_table
+#' @param object \code{MultiDataSet} that will be filled.
+#' @param set \code{matrix} used to fill the slot.
+#' @param dataset.type Character with the type of data 
+#' @param dataset.name Character with the specific name for this set (NULL by 
+#' default). It is useful when there are several sets of the same type.
+#' @param warnings Logical to indicate if warnings will be displayed.
+#' @param overwrite Logical to indicate if the set stored in the slot will be overwritten. 
+#' @return A new \code{MultiDataSet} with a slot filled.
+#' @exportMethod add_table
+#' @examples 
+#' multi <- createMultiDataSet()
+#' mat <- matrix(runif(12), nrow = 3)
+#' colnames(mat) <- paste0("S", 1:4)
+#' rownames(mat) <- paste0("F", 1:3)
+#' multi <- add_table(multi, mat, "exampledata")
+setGeneric("add_table", function(object, set, dataset.type, dataset.name = NULL,
+                                 warnings = TRUE, overwrite = FALSE) standardGeneric("add_table"))
+
+
 #' Get the name of the ids common to all datasets
 #'
 #' @rdname commonIds

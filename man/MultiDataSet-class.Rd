@@ -2,15 +2,15 @@
 % Please edit documentation in R/0_AllClasses.R, R/MultiDataSet-add_eset.R,
 %   R/MultiDataSet-add_genexp.R, R/MultiDataSet-add_methy.R,
 %   R/MultiDataSet-add_rse.R, R/MultiDataSet-add_se.R,
-%   R/MultiDataSet-add_snps.R, R/MultiDataSet-as_list.R,
-%   R/MultiDataSet-commonIds.R, R/MultiDataSet-commonSamples.R,
-%   R/MultiDataSet-constructor.R, R/MultiDataSet-dims.R,
-%   R/MultiDataSet-iclusterplus.R, R/MultiDataSet-length.R,
-%   R/MultiDataSet-mcia.R, R/MultiDataSet-names.R, R/MultiDataSet-ncols.R,
-%   R/MultiDataSet-nrows.R, R/MultiDataSet-rowRangesElements.R,
-%   R/MultiDataSet-sampleNames.R, R/MultiDataset-assayData.R,
-%   R/MultiDataset-fData.R, R/MultiDataset-pData.R, R/MultiDataset-rowRanges.R,
-%   R/MultiDataset-subseting.R
+%   R/MultiDataSet-add_snps.R, R/MultiDataSet-add_table.R,
+%   R/MultiDataSet-as_list.R, R/MultiDataSet-commonIds.R,
+%   R/MultiDataSet-commonSamples.R, R/MultiDataSet-constructor.R,
+%   R/MultiDataSet-dims.R, R/MultiDataSet-iclusterplus.R,
+%   R/MultiDataSet-length.R, R/MultiDataSet-mcia.R,
+%   R/MultiDataSet-names.R, R/MultiDataSet-ncols.R, R/MultiDataSet-nrows.R,
+%   R/MultiDataSet-rowRangesElements.R, R/MultiDataSet-sampleNames.R,
+%   R/MultiDataset-assayData.R, R/MultiDataset-fData.R, R/MultiDataset-pData.R,
+%   R/MultiDataset-rowRanges.R, R/MultiDataset-subseting.R
 \docType{class}
 \name{MultiDataSet-class}
 \alias{MultiDataSet-class}
@@ -29,6 +29,8 @@
 \alias{add_se,MultiDataSet,SummarizedExperiment-method}
 \alias{MultiDataSet-methods}
 \alias{add_snps,MultiDataSet,SnpSet-method}
+\alias{MultiDataSet-methods}
+\alias{add_table,MultiDataSet,matrix-method}
 \alias{MultiDataSet-methods}
 \alias{as.list,MultiDataSet-method}
 \alias{as.list}
@@ -96,6 +98,9 @@
   dataset.name = NULL, warnings = TRUE, overwrite = FALSE, GRanges)
 
 \S4method{add_snps}{MultiDataSet,SnpSet}(object, snpSet, ...)
+
+\S4method{add_table}{MultiDataSet,matrix}(object, set, dataset.type,
+  dataset.name = NULL, warnings = TRUE, overwrite = FALSE)
 
 \S4method{as.list}{MultiDataSet}(x)
 
@@ -217,6 +222,8 @@ The names of the three lists (\code{assayData}, \code{phenoData} and
 \item \code{add_se}: Method to add a \code{SummarizedExperiment} to \code{MultiDataSet}.
 
 \item \code{add_snps}: Method to add a slot of SNPs to \code{MultiDataSet}.
+
+\item \code{add_table}: Method to add a \code{matrix} to \code{MultiDataSet}.
 
 \item \code{as.list}: Returns a list with the first matrix of each
 dataset.

@@ -62,7 +62,7 @@ test_that("Common samples", {
                               start = c(1, 14, 25, 104),end = c(11, 16, 28, 115),
                               stringsAsFactors = FALSE)
     pData(eset2) <- data.frame(id = c("S1", "S4", "S1", "S3", "S2"), stringsAsFactors = FALSE)
-    sampleNames(eset2) <- c("A1", "A4", "B1", "A2", "A3")
+    sampleNames(eset2) <- c("A1", "A4", "B1", "A3", "A2")
     
     multi <- add_genexp(multi, eset2, dataset.name="g2")
     ## /

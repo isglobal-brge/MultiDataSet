@@ -99,9 +99,9 @@ adata <- read.csv(ac)
 rm(pc, ac)
 
 
-write.table(fdata, file="feature_data.tsv", sep="\t", row.names=F, col.names=T, quote=F)
-write.table(pdata, file="pheno_data.tsv", sep="\t", row.names=F, col.names=T, quote=F)
-write.table(adata, file="assay_data.tsv", sep="\t", row.names=F, col.names=T, quote=F)
+write.table(fdata, file="feature_data.tsv", sep="\t", row.names=FALSE, col.names=TRUE, quote=FALSE)
+write.table(pdata, file="pheno_data.tsv", sep="\t", row.names=FALSE, col.names=TRUE, quote=FALSE)
+write.table(adata, file="assay_data.tsv", sep="\t", row.names=FALSE, col.names=TRUE, quote=FALSE)
 rm(fdata, pdata, adata)
 ```
 

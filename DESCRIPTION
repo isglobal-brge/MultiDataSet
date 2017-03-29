@@ -20,7 +20,6 @@ Imports:
     BiocGenerics,
     GenomicRanges,
     IRanges, 
-    minfi,
     S4Vectors,
     SummarizedExperiment,
     methods,
@@ -29,6 +28,7 @@ Imports:
     utils
 RoxygenNote: 6.0.1
 Suggests: MEALData,
+    minfi,
     minfiData,
     knitr,
     rmarkdown,

@@ -283,6 +283,8 @@ of each \code{assayData}.}
 \item{\code{rowRanges}}{List of \code{GenomicRanges} containing the rowRanges
 of each \code{assayData}.}
 
+\item{\code{extraData}}{List of other slots of the original object.}
+
 \item{\code{return_method}}{List of functions used to create the original object.}
 }}
 

@@ -31,16 +31,25 @@ setMethod(
       warning("No id column found in rowRanges. The id will be equal to the sampleNames")
       pheno$id <- rownames(pheno)
     }
+    
+    
     object@phenoData[[dataset.name]] <- pheno
     object@featureData[[dataset.name]] <- Biobase::AnnotatedDataFrame(as.data.frame(SummarizedExperiment::rowRanges(set)))
     object@rowRanges[[dataset.name]] <- SummarizedExperiment::rowRanges(set)
+    object@extraData[[dataset.name]] <- extra
     
     returnfunc <- function(env, phe, fet) {
-      assays <- SummarizedExperiment::Assays(as.list(env))
-      new(class(set), assays = assays, colData = S4Vectors::DataFrame(as(phe, "data.frame")), 
-          rowRanges = GenomicRanges::makeGRangesFromDataFrame(as(fet, "data.frame"), keep.extra.columns=TRUE), 
-          elementMetadata = S4Vectors::DataFrame(matrix(nrow = nrow(assays), ncol = 0 )))
-    }
+        extra <- attributes(set)
+        extra <- extra[!names(extra) %in% c("assays", "colData", "rowRanges", "class")]
+        extra[sapply(extra, class) == "NULL"] <- NULL
+        assays <- SummarizedExperiment::Assays(as.list(env))
+        extra$assays <- assays
+        extra$colData <- S4Vectors::DataFrame(as(phe, "data.frame"))
+        extra$rowRanges <- GenomicRanges::makeGRangesFromDataFrame(as(fet, "data.frame"), 
+                                                                 keep.extra.columns=TRUE)
+      extra$Class <- class(set)
+      do.call("new", extra)
+      }
     
     object@return_method[[dataset.name]] <- returnfunc
     return(object)

@@ -6,7 +6,8 @@ setMethod(
     signature = "MultiDataSet",
     definition = function(x, i) {
         if (i %in% names(x)) {
-            set <- x@return_method[[i]](x@assayData[[i]], x@phenoData[[i]], x@featureData[[i]])
+            set <- x@return_method[[i]](x@assayData[[i]], x@phenoData[[i]], 
+                                        x@featureData[[i]])
             validObject(set)
             return(set)
         }

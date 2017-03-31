@@ -43,6 +43,7 @@ setClass (
 #' of each \code{assayData}.
 #' @slot rowRanges List of \code{GenomicRanges} containing the rowRanges
 #' of each \code{assayData}.
+#' @slot extraData List of other slots of the original object.
 #' @slot return_method List of functions used to create the original object.
 #' @seealso \code{\link{add_eset}}, \code{\link{add_rse}}
 setClass(
@@ -52,6 +53,7 @@ setClass(
     phenoData = "list",
     featureData = "list",
     rowRanges = "list",
+    extraData = "list",
     return_method = "list"
   )
 )

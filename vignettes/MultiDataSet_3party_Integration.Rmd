@@ -40,30 +40,21 @@ library(MultiDataSet)
 library(Biobase)
 ```
 
-````{r create_data, echo=FALSE, eval=FALSE, message=FALSE}
+````{r create_data, echo=FALSE, eval=TRUE, message=FALSE}
 library(MEALData)
 data("eset") # Get the ExpressionSet from MEALData 
 gSet1 <- eset[sample(1:21916, 300), 1:50]   # Create ExpressionSet with samples from 01 to 50
 gSet2 <- eset[sample(1:21916, 300), 35:61]  # Create ExpressionSet with samples from 35 to 64
 
-data("betavals") # Getting
-data("pheno")
-
-pheno <- pheno[20:60, ]
-
-set.seed(2611)
-mSet <- prepareMethylationSet(matrix = betavals[sample(1:40000, 300), rownames(pheno)], 
-  phenotypes = pheno, 
-  annotation = "IlluminaHumanMethylation450kanno.ilmn12.hg19"
-)
-rm(betavals, pheno)
+data("mset")
+mSet <- mset[sample(1:40000, 300), 20:60] 
 
 
 colnames(fData(gSet1))[1] <- "chromosome"
 colnames(fData(gSet2))[1] <- "chromosome"
 colnames(fData(mSet))[1] <- "chromosome"
 
-setwd("/home/chernandez/Projects/multidataset/Tutorials/")
+# setwd("/home/chernandez/Projects/multidataset/Tutorials/")
 save(gSet1, gSet2, file="expression.RData")
 save(mSet, file="methylation.RData")
 ````

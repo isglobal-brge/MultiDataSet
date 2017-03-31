@@ -23,10 +23,9 @@ This method adds or overwrites the slot \code{"methylation"} of an
 The fData of the input object must contain the columns chromosome and position.
 }
 \examples{
-if (require(MEALData)){
+if(require(MEALData)){
+ data(mset)
  multi <- createMultiDataSet()
- betavals <- betavals[1:100, ]  ## To speed up the example, the beta values are reduced
- methy <- prepareMethylationSet(betavals, pheno)
- multi <- add_methy(multi, methy)
-}
+ multi <- add_methy(multi, mset)
+} 
 }

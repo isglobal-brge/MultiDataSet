@@ -36,9 +36,8 @@ methylationSet(betas, phenotypes, annotationDataFrame, annoString = "custom")
 
 \item{phenotypes}{Data.frame or AnnotatedDataFrame with the phenotypes}
 
-\item{annotationDataFrame}{Data.frame or AnnotatedDataFrame with the phenotypes with 
-the annotation of the methylation sites. A column with the chromosomes named chr 
-and a column with the positions names pos are required.}
+\item{annotationDataFrame}{Data.frame or AnnotatedDataFrame with the annotation of 
+the methylation sites.}
 
 \item{annoString}{Character with the name of the annotation used.}
 

@@ -59,7 +59,9 @@ test_that("MultiSet", {
   rownames(beta_matrix) <- c("cg00050873", "cg00212031")
   phenotypes <- data.frame(age = c(12, 23))
   rownames(phenotypes) <- c("H", "M")
-  mset <- prepareMethylationSet(matrix = beta_matrix, phenotypes = phenotypes)
+  annot <- data.frame(chromosome = c("chr1", "chr2"), 
+             position = c(12414, 1234321))
+  mset <- methylationSet(betas = beta_matrix, phenotypes = phenotypes, annotationDataFrame = annot)
   
   multi <- createMultiDataSet()
   multi <- add_methy(multi, mset)

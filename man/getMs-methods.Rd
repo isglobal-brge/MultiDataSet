@@ -20,9 +20,8 @@ the matrix of M values using a logit2 transformation. Betas equal to 0 will
 be transformed to threshold and betas equal to 1, to 1 - threshold.
 }
 \examples{
-if (require(minfiData)){
-set <- prepareMethylationSet(MsetEx[1:100, ], pData(MsetEx))
-mvalues <- getMs(set)
-head(mvalues)
-}
+if(require(MEALData)){
+ data(mset)
+ Ms <- getMs(mset)
+} 
 }

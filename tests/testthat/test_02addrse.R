@@ -1,5 +1,6 @@
 context("add rse")
 library(GenomicRanges)
+library(SummarizedExperiment)
 
 
 test_that("MultiSet", {

@@ -81,12 +81,11 @@ setGeneric("add_rnaseq", function(object, rnaSet, ...) standardGeneric("add_rnas
 #' filled.
 #' @exportMethod add_methy
 #' @examples 
-#' if (require(MEALData)){
+#' if(require(MEALData)){
+#'  data(mset)
 #'  multi <- createMultiDataSet()
-#'  betavals <- betavals[1:100, ]  ## To speed up the example, the beta values are reduced
-#'  methy <- prepareMethylationSet(betavals, pheno)
-#'  multi <- add_methy(multi, methy)
-#' }
+#'  multi <- add_methy(multi, mset)
+#' } 
 setGeneric("add_methy", function(object, methySet, ...) standardGeneric("add_methy"))
 
 #' Method to add a \code{RangedSummarizedExperiment} to \code{MultiDataSet}.
@@ -247,11 +246,10 @@ setGeneric("betas", function(object){
 #' @param object \code{MethylationSet}
 #' @return \code{MethylationSet} containing the common samples.
 #' @examples 
-#' if (require(MEALData)){
-#'  betavals <- betavals[1:100, ]  ## To speed up the example, the beta values are reduced
-#'  methy <- prepareMethylationSet(betavals, pheno)
-#'  checkProbes(methy)
-#' }
+#' if(require(MEALData)){
+#'  data(mset)
+#'  checkProbes(mset)
+#' } 
 setGeneric("checkProbes", function(object) standardGeneric("checkProbes"))
 
 #' Modify a \code{MethylationSet} to only contain common samples
@@ -267,11 +265,10 @@ setGeneric("checkProbes", function(object) standardGeneric("checkProbes"))
 #' @param object \code{MethylationSet}
 #' @return \code{MethylationSet} containing the common samples.
 #' @examples 
-#' if (require(MEALData)){
-#'  betavals <- betavals[1:100, ]  ## To speed up the example, the beta values are reduced
-#'  methy <- prepareMethylationSet(betavals, pheno)
-#'  checkSamples(methy)
-#' }
+#' if(require(MEALData)){
+#'  data(mset)
+#'  checkSamples(mset)
+#' } 
 setGeneric("checkSamples", function(object) standardGeneric("checkSamples"))
 
 #' Method to select samples that are present in all datasets.
@@ -323,11 +320,10 @@ setGeneric("commonSamples", function(object, unify.names = FALSE) standardGeneri
 #' @param threshold Numeric with the threshold to avoid 0s and 1s. 
 #' @return Matrix with the M values.
 #' @examples
-#' if (require(minfiData)){
-#' set <- prepareMethylationSet(MsetEx[1:100, ], pData(MsetEx))
-#' mvalues <- getMs(set)
-#' head(mvalues)
-#' }
+#' if(require(MEALData)){
+#'  data(mset)
+#'  Ms <- getMs(mset)
+#' } 
 setGeneric("getMs", function(object, threshold = 0.0001) standardGeneric("getMs"))
 
 

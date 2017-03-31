@@ -17,9 +17,8 @@ This function selects probes present in the annotation matrix. Probes without
 annotation and annotation values without beta values are discarded.
 }
 \examples{
-if (require(MEALData)){
- betavals <- betavals[1:100, ]  ## To speed up the example, the beta values are reduced
- methy <- prepareMethylationSet(betavals, pheno)
- checkProbes(methy)
-}
+if(require(MEALData)){
+ data(mset)
+ checkProbes(mset)
+} 
 }

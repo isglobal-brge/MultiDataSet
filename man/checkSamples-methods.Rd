@@ -17,9 +17,8 @@ This function removes samples that have beta values but no phenotypes and vice v
 If snps object is present, only samples present in the three set are retained.
 }
 \examples{
-if (require(MEALData)){
- betavals <- betavals[1:100, ]  ## To speed up the example, the beta values are reduced
- methy <- prepareMethylationSet(betavals, pheno)
- checkSamples(methy)
-}
+if(require(MEALData)){
+ data(mset)
+ checkSamples(mset)
+} 
 }

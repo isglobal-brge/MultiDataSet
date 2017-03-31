@@ -10,6 +10,10 @@ output:
     fig_caption: yes
     fig_height: 3
     fig_width: 4
+vignette: >
+  %\VignetteIndexEntry{Adding a new type of data to MultiDataSet objects}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
 ---
 
 ```{r create_data, eval = TRUE, echo = FALSE}

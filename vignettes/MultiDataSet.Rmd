@@ -202,11 +202,13 @@ Now, the method has worked and the set has been successfully added. This case ex
 
 # Subsetting
 
-Subsetting of `MultiDataSet`s can be done by samples, by tables or using a `GenomicRanges`. In order to illustrate these operations, we will use the `ExpressionSet` and the methylation data of `r Rpackage("MEALData")`. These sets contain data from common samples. First, we will create a `MethylationSet` from the matrix of beta values and the phenotypes and then we add the sets to a `MultiDataSet`. The `ExpressionSet` will also be added to another slot but setting GRanges = NA:
+Subsetting of `MultiDataSet`s can be done by samples, by tables or using a `GenomicRanges`. In order to illustrate these operations, we will use the `ExpressionSet` and the `MethylationSet` of `r Rpackage("MEALData")`. First, we will add these sets to a `MultiDataSet`. The `ExpressionSet` will be added to another slot but setting GRanges = NA:
 
 ```{r Subsetting intro }
-mset <- prepareMethylationSet(betavals, pheno)
+data(mset)
 multi <- createMultiDataSet()
+
+# Remove probes without a position before adding the object
 multi <- add_methy(multi, mset)
 multi <- add_genexp(multi, eset)
 multi <- add_eset(multi, eset, dataset.type = "test", GRanges = NA)

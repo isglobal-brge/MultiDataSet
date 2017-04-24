@@ -1,3 +1,16 @@
+CHANGES IN VERSION 1.4.0
+-------------------------
+    
+    NEW FEATURES
+
+o Add function to add matrices to MDS.
+
+o Add vignettes published in scientific article.
+
+o Remove non-critical dependencies.
+
+
+
 CHANGES IN VERSION 1.2.0
 -------------------------
     

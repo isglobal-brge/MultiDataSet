@@ -7,7 +7,9 @@
 setMethod(
     f = "add_eset",
     signature = c("MultiDataSet", "eSet"),
-    definition = function(object, set, dataset.type, dataset.name = NULL, warnings = TRUE, overwrite = FALSE, 
+    definition = function(object, set, dataset.type, dataset.name = NULL, 
+                          sample.tables = NULL, feature.tables = NULL,
+                          warnings = TRUE, overwrite = FALSE, 
                           GRanges) {
         validObject(set)
         dataset.name <- paste(c(dataset.type, dataset.name), collapse = "+")
@@ -31,7 +33,6 @@ setMethod(
                 stop("GRanges should be a GenomicRanges or NA.")
             }
         }
-
         object@assayData[[dataset.name]] <- assayData(set)
         
         pheno <- phenoData(set)
@@ -42,6 +43,9 @@ setMethod(
             pheno$id <- rownames(pheno)
             
         }
+        
+        
+        
         object@phenoData[[dataset.name]] <- pheno
         object@featureData[[dataset.name]] <- featureData(set)
         object@rowRanges[[dataset.name]] <- GRanges

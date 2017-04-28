@@ -4,7 +4,9 @@
 setMethod(
     f = "add_se",
     signature = c("MultiDataSet", "SummarizedExperiment"),
-    definition = function(object, set, dataset.type, dataset.name, warnings = TRUE, overwrite = FALSE, 
+    definition = function(object, set, dataset.type, dataset.name, 
+                          sample.tables = NULL, feature.tables = NULL,
+                          warnings = TRUE, overwrite = FALSE, 
                           GRanges) {
         validObject(set)
         dataset.name <- paste(c(dataset.type, dataset.name), collapse = "+")
@@ -24,14 +26,33 @@ setMethod(
                function(x) assign(x, SummarizedExperiment::assays(set)[[x]], env))
         object@assayData[[dataset.name]] <- env
         
+        extra <- attributes(set)
+        
         pheno <- Biobase::AnnotatedDataFrame(as.data.frame(SummarizedExperiment::colData(set)))
         if (!"id" %in% colnames(pheno)){
-            warning("No id column found in rowRanges. The id will be equal to the sampleNames")
+            warning("No id column found in colData. The id will be equal to the sampleNames")
             pheno$id <- rownames(pheno)
         }
-        object@phenoData[[dataset.name]] <- pheno
-        object@featureData[[dataset.name]] <- 
-            Biobase::AnnotatedDataFrame(as.data.frame(SummarizedExperiment::rowData(set)))
+        object@phenoData[[dataset.name]] <- list(main = pheno)
+        if (!is.null(sample.tables)) {
+            phetabs <- extra[sample.tables]
+            for (tab in names(phetabs)){
+                rownames(phetabs[[tab]]) <- rownames(pheno)
+            }
+            object@phenoData[[dataset.name]] <- c(object@phenoData[[dataset.name]], phetabs)
+            
+        }
+        
+        
+        feat <- Biobase::AnnotatedDataFrame(as.data.frame(SummarizedExperiment::rowData(set)))
+        object@featureData[[dataset.name]] <- list(main = feat)
+        if (!is.null(feature.tables)) {
+            feattabs <- extra[feature.tables]
+            for (tab in names(feattabs)){
+                rownames(feattabs[[tab]]) <- rownames(feat)
+            }
+            object@featureData[[dataset.name]] <- c(object@featureData[[dataset.name]], feattabs)
+        }
         
         if (missing(GRanges)){
             GRanges <- GenomicRanges::makeGRangesFromDataFrame(SummarizedExperiment::colData(set))
@@ -42,16 +63,27 @@ setMethod(
                 stop("GRanges should be a GenomicRanges or NA.")
             }
         }
-        
         object@rowRanges[[dataset.name]] <- GRanges
         
-        returnfunc <- function(env, phe, fet) {
-            assays <- SummarizedExperiment::Assays(as.list(env))
-            new(class(set), assays = assays, colData = S4Vectors::DataFrame(as(phe, "data.frame")), 
-                rowRanges = GenomicRanges::makeGRangesFromDataFrame(as(fet, "data.frame"), keep.extra.columns=TRUE), 
-                elementMetadata = S4Vectors::DataFrame(matrix(nrow = nrow(assays), ncol = 0 )))
-        }
         
+        extranames <- names(extra)[!names(extra) %in% 
+                                       c("assays", "colData", "rowRanges", "class", sample.tables, feature.tables)]
+        extra <- extra[extranames]
+        extra <- extra[!sapply(extra, class) == "name"]
+        object@extraData[[dataset.name]] <- extra
+        
+        returnfunc <- function(env, phe, fet, extra) {
+            assays <- SummarizedExperiment::Assays(as.list(env))
+            attr <- list(Class = class(set), 
+                         assays = assays, 
+                         colData = S4Vectors::DataFrame(as(phe$main, "data.frame")),
+                         rowRanges = GenomicRanges::makeGRangesFromDataFrame(as(fet$main, "data.frame"), 
+                                                                             keep.extra.columns=TRUE))
+            attr <- c(attr, phe[-1], fet[-1], extra)
+            rownames(attr$elementMetadata) <- NULL
+            do.call("new", attr)
+        }
+
         object@return_method[[dataset.name]] <- returnfunc
         return(object)
     }

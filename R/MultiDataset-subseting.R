@@ -7,7 +7,7 @@ setMethod(
     definition = function(x, i) {
         if (i %in% names(x)) {
             set <- x@return_method[[i]](x@assayData[[i]], x@phenoData[[i]], 
-                                        x@featureData[[i]])
+                                        x@featureData[[i]], x@extraData[[i]])
             validObject(set)
             return(set)
         }
@@ -42,6 +42,7 @@ setMethod(
                 x@featureData <- x@featureData[j]
                 x@assayData <- x@assayData[j]
                 x@rowRanges <- x@rowRanges[j]
+                x@extraData <- x@extraData[j]
             }
             
         }
@@ -89,7 +90,11 @@ setMethod(
                                lapply(orig, function(obj) obj[, sel, drop = FALSE])
                            })
                 
-                phenD[[dtype]] <- x@phenoData[[dtype]][sel, , drop = FALSE]
+                phenD[[dtype]] <- list()
+                for (tab in names(x@phenoData[[dtype]])){
+                    phenD[[dtype]][[tab]] <- x@phenoData[[dtype]][[tab]][sel, , drop = FALSE]
+                }
+                
             }
             x@assayData <- assyD
             x@phenoData <- phenD
@@ -106,7 +111,7 @@ setMethod(
             for (dtype in names(x)){
                 nfData <- IRanges::subsetByOverlaps(x@rowRanges[[dtype]], k)
                 fNames <- names(nfData)
-                orig <- assayData(x[[dtype]])
+                orig <- x@assayData[[dtype]]
                 storage.mode <- Biobase:::assayDataStorageMode(orig)
                 assyD[[dtype]] <-
                     switch(storage.mode,
@@ -115,7 +120,11 @@ setMethod(
                                aData <- new.env(parent=emptyenv())
                                
                                for(nm in ls(orig)){
-                                   aData[[nm]] <- orig[[nm]][fNames, , drop = FALSE]
+                                    if (length(dim(orig[[nm]])) == 2){
+                                        aData[[nm]] <- orig[[nm]][fNames, , drop = FALSE]
+                                    } else if (length(dim(orig[[nm]])) == 3){
+                                        aData[[nm]] <- orig[[nm]][fNames, , , drop = FALSE]
+                                    } 
                                }
                                
                                if ("lockedEnvironment" == storage.mode) {
@@ -126,7 +135,11 @@ setMethod(
                            list = {
                                lapply(orig, function(obj) obj[fNames, , drop = FALSE])
                            })
-                featD[[dtype]] <- x@featureData[[dtype]][fNames, , drop = FALSE]
+                featD[[dtype]] <- list()
+                for (tab in names(x@featureData[[dtype]])){
+                    featD[[dtype]][[tab]] <- x@featureData[[dtype]][[tab]][fNames, , drop = FALSE]
+                }
+                
                 rangeD[[dtype]] <- x@rowRanges[[dtype]][fNames]
                 
             }   
@@ -136,7 +149,8 @@ setMethod(
         }    
         
         if (length(x) == 1 & drop) {
-            x <- x@return_method[[1]](x@assayData[[1]], x@phenoData[[1]], x@featureData[[1]])
+            x <- x@return_method[[1]](x@assayData[[1]], x@phenoData[[1]], x@featureData[[1]], 
+                                      x@extraData[[1]])
         }
         
         validObject(x)

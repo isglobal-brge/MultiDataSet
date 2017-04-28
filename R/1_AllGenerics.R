@@ -20,7 +20,9 @@
 #' multi <- createMultiDataSet()
 #' eset <- new("ExpressionSet", exprs = matrix(runif(10), 5))
 #' multi <- add_eset(multi, eset, "exampledata", GRanges = NA)
-setGeneric("add_eset", function(object, set, dataset.type, dataset.name = NULL, warnings = TRUE, overwrite = FALSE, GRanges) standardGeneric("add_eset"))
+setGeneric("add_eset", function(object, set, dataset.type, dataset.name = NULL, 
+                                sample.tables = NULL, feature.tables = NULL,
+                                warnings = TRUE, overwrite = FALSE, GRanges) standardGeneric("add_eset"))
 
 #' Method to add an expression microarray dataset to \code{MultiDataSet}.
 #'
@@ -120,7 +122,9 @@ setGeneric("add_methy", function(object, methySet, ...) standardGeneric("add_met
 #'                             rowRanges=rowRanges, colData=colData)
 #' multi <- add_rse(multi, rse, "rseEx")
 #' }
-setGeneric("add_rse", function(object, set, dataset.type, dataset.name = NULL, warnings = TRUE, overwrite = FALSE) standardGeneric("add_rse"))
+setGeneric("add_rse", function(object, set, dataset.type, dataset.name = NULL, 
+                               sample.tables = NULL, feature.tables = NULL,
+                               warnings = TRUE, overwrite = FALSE) standardGeneric("add_rse"))
 
 
 #' Method to add a \code{SummarizedExperiment} to \code{MultiDataSet}.
@@ -144,8 +148,9 @@ setGeneric("add_rse", function(object, set, dataset.type, dataset.name = NULL, w
 #' multi <- createMultiDataSet()
 #' se <- SummarizedExperiment::SummarizedExperiment(matrix(runif(10), 5))
 #' multi <- add_se(multi, se, "exampledata", GRanges = NA)
-setGeneric("add_se", function(object, set, dataset.type, dataset.name = NULL, warnings = TRUE, 
-                              overwrite = FALSE, GRanges) standardGeneric("add_se"))
+setGeneric("add_se", function(object, set, dataset.type, dataset.name = NULL, 
+                              sample.tables = NULL, feature.tables = NULL,
+                              warnings = TRUE, overwrite = FALSE, GRanges) standardGeneric("add_se"))
 
 #' Method to add a slot of SNPs to \code{MultiDataSet}.
 #'

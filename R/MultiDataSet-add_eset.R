@@ -2,13 +2,15 @@
 #' @aliases MultiDataSet-methods
 #' @param set Object derived from \code{eSet} to be used to fill the slot.
 #' @param dataset.name Character with the specific name for this set (NULL by default). It is useful when there 
+#' @param sample.tables Character with the names of the slots with sample data besides phenoData.
+#' @param feature.tables Character with the names of the slots with feature data besides featureData.
 #' @param warnings Logical to indicate if warnings will be displayed.
 #' @param GRanges \code{GenomicRanges} to be included in rowRanges slot. 
 setMethod(
     f = "add_eset",
     signature = c("MultiDataSet", "eSet"),
     definition = function(object, set, dataset.type, dataset.name = NULL, 
-                          sample.tables = NULL, feature.tables = NULL,
+                          sample.tables = "protocolData", feature.tables = NULL,
                           warnings = TRUE, overwrite = FALSE, 
                           GRanges) {
         validObject(set)
@@ -24,15 +26,8 @@ setMethod(
         }
         
         
-        if (missing(GRanges)){
-            GRanges <- GenomicRanges::makeGRangesFromDataFrame(fData(set))
-            names(GRanges) <- rownames(fData(set))
-        } 
-        if (!is(GRanges, "GenomicRanges")){
-            if (!is.na(GRanges)){
-                stop("GRanges should be a GenomicRanges or NA.")
-            }
-        }
+
+        
         object@assayData[[dataset.name]] <- assayData(set)
         
         pheno <- phenoData(set)
@@ -44,15 +39,46 @@ setMethod(
             
         }
         
+        extra <- attributes(set)
         
+        object@phenoData[[dataset.name]] <- list(main = pheno)
+        if (!is.null(sample.tables)) {
+            object@phenoData[[dataset.name]] <- 
+                c(object@phenoData[[dataset.name]],  extra[sample.tables])
+        }
         
-        object@phenoData[[dataset.name]] <- pheno
-        object@featureData[[dataset.name]] <- featureData(set)
+        feat <- featureData(set)
+        object@featureData[[dataset.name]] <- list(main = feat)
+        if (!is.null(feature.tables)) {
+            object@featureData[[dataset.name]] <- 
+                c(object@featureData[[dataset.name]], extra[feature.tables])
+        }
+        
+        if (missing(GRanges)){
+            GRanges <- GenomicRanges::makeGRangesFromDataFrame(fData(set))
+            names(GRanges) <- rownames(fData(set))
+        } 
+        if (!is(GRanges, "GenomicRanges")){
+            if (!is.na(GRanges)){
+                stop("GRanges should be a GenomicRanges or NA.")
+            }
+        }
         object@rowRanges[[dataset.name]] <- GRanges
-   
-        returnfunc <- function(env, phe, fet) {
-            new(class(set), assayData = env, phenoData = phe, 
-                featureData = fet)
+        
+        
+        extranames <- names(extra)[!names(extra) %in% 
+                                       c("assayData", "phenoData", "featureData", "class", sample.tables, feature.tables)]
+        extra <- extra[extranames]
+        extra <- extra[!sapply(extra, class) == "name"]
+        object@extraData[[dataset.name]] <- extra
+        
+        returnfunc <- function(env, phe, fet, extra) {
+            attr <- list(Class = class(set), 
+                         assayData = env, 
+                         phenoData = phe$main,
+                         featureData = fet$main)
+            attr <- c(attr, phe[-1], fet[-1], extra)
+            do.call("new", attr)
         }
         
         object@return_method[[dataset.name]] <- returnfunc

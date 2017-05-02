@@ -69,7 +69,7 @@ setMethod(
             for(dtype in names(x)) {
                 orig <- x@assayData[[dtype]]
                 storage.mode <- Biobase:::assayDataStorageMode(orig)
-                phen <- x@phenoData[[dtype]]
+                phen <- x@phenoData[[dtype]]$main
                 sel <- order(match(phen$id, i), na.last = NA)
                 assyD[[dtype]] <-
                     switch(storage.mode,
@@ -111,6 +111,7 @@ setMethod(
             for (dtype in names(x)){
                 nfData <- IRanges::subsetByOverlaps(x@rowRanges[[dtype]], k)
                 fNames <- names(nfData)
+                sel <- names(x@rowRanges[[dtype]]) %in% fNames
                 orig <- x@assayData[[dtype]]
                 storage.mode <- Biobase:::assayDataStorageMode(orig)
                 assyD[[dtype]] <-
@@ -121,9 +122,9 @@ setMethod(
                                
                                for(nm in ls(orig)){
                                     if (length(dim(orig[[nm]])) == 2){
-                                        aData[[nm]] <- orig[[nm]][fNames, , drop = FALSE]
+                                        aData[[nm]] <- orig[[nm]][sel, , drop = FALSE]
                                     } else if (length(dim(orig[[nm]])) == 3){
-                                        aData[[nm]] <- orig[[nm]][fNames, , , drop = FALSE]
+                                        aData[[nm]] <- orig[[nm]][sel, , , drop = FALSE]
                                     } 
                                }
                                
@@ -133,14 +134,14 @@ setMethod(
                                aData
                            },
                            list = {
-                               lapply(orig, function(obj) obj[fNames, , drop = FALSE])
+                               lapply(orig, function(obj) obj[sel, , drop = FALSE])
                            })
                 featD[[dtype]] <- list()
                 for (tab in names(x@featureData[[dtype]])){
-                    featD[[dtype]][[tab]] <- x@featureData[[dtype]][[tab]][fNames, , drop = FALSE]
+                    featD[[dtype]][[tab]] <- x@featureData[[dtype]][[tab]][sel, , drop = FALSE]
                 }
                 
-                rangeD[[dtype]] <- x@rowRanges[[dtype]][fNames]
+                rangeD[[dtype]] <- x@rowRanges[[dtype]][sel]
                 
             }   
             x@assayData <- assyD
@@ -174,8 +175,10 @@ setMethod(
             
             if (!missing(feat)){
                 assyD <- list()
+                pheD <- list()
                 featD <- list()
                 rangeD <- list()
+                extraD <- list()
                 ranges <- rowRanges(x)
                 
                 # Catch the expression
@@ -185,20 +188,22 @@ setMethod(
                 featcols <- all.vars(e)
                 noFilteredSets <- character()
                 for(dtype in names(x)) {
-                    feats <- x@featureData[[dtype]]
+                    feats <- x@featureData[[dtype]]$main
                     if (!all(featcols %in% colnames(feats))){
                         noFilteredSets <- c(noFilteredSets, dtype)
                         if (keep) {
                             featD[[dtype]] <- x@featureData[[dtype]]
+                            pheD[[dtype]] <- x@phenoData[[dtype]]
                             assyD[[dtype]] <- x@assayData[[dtype]]
                             rangeD[[dtype]] <- x@rowRanges[[dtype]]
+                            extraD[[dtype]] <- x@extraData[[dtype]]
                         }
                     } else {
                         sel <- eval(e, pData(feats), parent.frame())
                         if (!is.logical(sel))
                             stop("'feat' must be a logical expression")
                         sel <- sel & !is.na(sel)
-                        orig <- assayData(x[[dtype]])
+                        orig <- assayData(x)[[dtype]]
                         storage.mode <- Biobase:::assayDataStorageMode(orig)
                         assyD[[dtype]] <-
                             switch(storage.mode,
@@ -207,8 +212,13 @@ setMethod(
                                        aData <- new.env(parent=emptyenv())
                                        
                                        for(nm in ls(orig)){
-                                           aData[[nm]] <- orig[[nm]][sel, , drop = FALSE]
+                                           if (length(dim(orig[[nm]])) == 2){
+                                               aData[[nm]] <- orig[[nm]][sel, , drop = FALSE]
+                                           } else if (length(dim(orig[[nm]])) == 3){
+                                               aData[[nm]] <- orig[[nm]][sel, , , drop = FALSE]
+                                           } 
                                        }
+                                       
                                        
                                        if ("lockedEnvironment" == storage.mode) {
                                            Biobase:::assayDataEnvLock(aData)
@@ -218,16 +228,24 @@ setMethod(
                                    list = {
                                        lapply(orig, function(obj) obj[sel, , drop = FALSE])
                                    })
-                        featD[[dtype]] <- x@featureData[[dtype]][sel, , drop = FALSE]
+                        featD[[dtype]] <- list()
+                        for (tab in names(x@featureData[[dtype]])){
+                            featD[[dtype]][[tab]] <- x@featureData[[dtype]][[tab]][sel, , drop = FALSE]
+                        }
                         rangeD[[dtype]] <- x@rowRanges[[dtype]][sel]
+                        extraD[[dtype]] <- x@extraData[[dtype]]
+                        pheD[[dtype]] <- x@phenoData[[dtype]]
+                        
                     }
                     
                 }
                 x@assayData <- assyD
                 x@featureData <- featD
+                x@phenoData <- pheD 
                 x@rowRanges <- rangeD
+                x@extraData <- extraD
                 
-                if (length(noFilteredSets) && noFilteredSets == names(x)){
+                if (length(noFilteredSets) && all(names(x) %in% noFilteredSets)){
                     stop("feat expression could not be applied to any of the sets.")
                 }
                 
@@ -243,7 +261,11 @@ setMethod(
             
             if (!missing(phe)){
                 assyD <- list()
-                phenD <- list()
+                pheD <- list()
+                featD <- list()
+                rangeD <- list()
+                extraD <- list()
+                
                 
                 # Catch the expression
                 e <- substitute(phe)
@@ -252,19 +274,22 @@ setMethod(
                 phenocols <- all.vars(e)
                 noFilteredSets <- character()
                 for(dtype in names(x)) {
-                    phen <- x@phenoData[[dtype]]
+                    phen <- x@phenoData[[dtype]]$main
                     if (!all(phenocols %in% colnames(phen))){
                         noFilteredSets <- c(noFilteredSets, dtype)
                         if (keep) {
-                            phenD[[dtype]] <- x@phenoData[[dtype]]
+                            featD[[dtype]] <- x@featureData[[dtype]]
+                            pheD[[dtype]] <- x@phenoData[[dtype]]
                             assyD[[dtype]] <- x@assayData[[dtype]]
+                            rangeD[[dtype]] <- x@rowRanges[[dtype]]
+                            extraD[[dtype]] <- x@extraData[[dtype]]
                         }
                     } else {
                         sel <- eval(e, pData(phen), parent.frame())
                         if (!is.logical(sel))
                             stop("'phe' must be a logical expression")
                         sel <- sel & !is.na(sel)
-                        orig <- assayData(x[[dtype]])
+                        orig <- assayData(x)[[dtype]]
                         storage.mode <- Biobase:::assayDataStorageMode(orig)
                         assyD[[dtype]] <-
                             switch(storage.mode,
@@ -285,14 +310,23 @@ setMethod(
                                        lapply(orig, function(obj) obj[, sel, drop = FALSE])
                                    })
                         
-                        phenD[[dtype]] <- x@phenoData[[dtype]][sel, , drop = FALSE]
-                    }
+                        pheD[[dtype]] <- list()
+                        for (tab in names(x@phenoData[[dtype]])){
+                            pheD[[dtype]][[tab]] <- x@phenoData[[dtype]][[tab]][sel, , drop = FALSE]
+                        }
+                        featD[[dtype]] <- x@featureData[[dtype]]
+                        rangeD[[dtype]] <- x@rowRanges[[dtype]]
+                        extraD[[dtype]] <- x@extraData[[dtype]]
+                        }
                     
                 }
                 x@assayData <- assyD
-                x@phenoData <- phenD
-                
-                if (length(noFilteredSets) && noFilteredSets == names(x)){
+                x@featureData <- featD
+                x@phenoData <- pheD 
+                x@rowRanges <- rangeD
+                x@extraData <- extraD
+
+                if (length(noFilteredSets) && all(names(x) %in% noFilteredSets)){
                     stop("phe expression could not be applied to any of the sets.")
                 }
                 

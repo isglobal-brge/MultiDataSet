@@ -10,6 +10,8 @@
 #' @param dataset.type Character with the type of data of the omic set (e.g. expression, methylation...)
 #' @param dataset.name Character with the specific name for this set (NULL by default). It is useful when there 
 #' are several sets of the same type (e.g. multiple expression assays)
+#' @param sample.tables Character with the names of the slots with sample data besides phenoData.
+#' @param feature.tables Character with the names of the slots with feature data besides featureData.
 #' @param warnings Logical to indicate if warnings will be displayed.
 #' @param overwrite Logical to indicate if the set stored in the slot will be overwritten. 
 #' @param GRanges \code{GenomicRanges} to be included in rowRanges slot. 
@@ -103,6 +105,8 @@ setGeneric("add_methy", function(object, methySet, ...) standardGeneric("add_met
 #' @param dataset.type Character with the type of data of the omic set (e.g. expression, methylation...)
 #' @param dataset.name Character with the specific name for this set (NULL by default). It is useful when there 
 #' are several sets of the same type (e.g. multiple expression assays)
+#' @param sample.tables Character with the names of the slots with sample data besides colData.
+#' @param feature.tables Character with the names of the slots with feature data besides rowData.
 #' @param warnings Logical to indicate if warnings will be displayed.
 #' @param overwrite Logical to indicate if the set stored in the slot will be overwritten. 
 #' @return A new \code{MultiDataSet} with a slot filled.
@@ -139,6 +143,8 @@ setGeneric("add_rse", function(object, set, dataset.type, dataset.name = NULL,
 #' @param dataset.type Character with the type of data of the omic set (e.g. expression, methylation...)
 #' @param dataset.name Character with the specific name for this set (NULL by default). It is useful when there 
 #' are several sets of the same type (e.g. multiple expression assays)
+#' @param sample.tables Character with the names of the slots with sample data besides colData.
+#' @param feature.tables Character with the names of the slots with feature data besides rowData.
 #' @param warnings Logical to indicate if warnings will be displayed.
 #' @param overwrite Logical to indicate if the set stored in the slot will be overwritten. 
 #' @param GRanges \code{GenomicRanges} to be included in rowRanges slot. 

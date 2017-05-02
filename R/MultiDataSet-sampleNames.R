@@ -9,7 +9,7 @@ setMethod(
       return(NULL)
     }
     ## CHECK THAT WE RETURN CHARACTER, NOT FACTOR!
-    res <- lapply(tables, function(x) as.character(object@phenoData[[x]]$id))
+    res <- lapply(tables, function(x) as.character(object@phenoData[[x]]$main$id))
     names(res) <- tables
     res
   }

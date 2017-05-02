@@ -37,23 +37,16 @@ setMethod(
         
         object@phenoData[[dataset.name]] <- list(main = pheno)
         if (!is.null(sample.tables)) {
-            phetabs <- extra[sample.tables]
-            for (tab in names(phetabs)){
-                rownames(phetabs[[tab]]) <- rownames(pheno)
-            }
-            object@phenoData[[dataset.name]] <- c(object@phenoData[[dataset.name]], phetabs)
-            
+            object@phenoData[[dataset.name]] <- 
+                c(object@phenoData[[dataset.name]], extra[sample.tables])
         }
         
         
         feat <- Biobase::AnnotatedDataFrame(as.data.frame(SummarizedExperiment::rowRanges(set)))
         object@featureData[[dataset.name]] <- list(main = feat)
         if (!is.null(feature.tables)) {
-            feattabs <- extra[feature.tables]
-            for (tab in names(feattabs)){
-                rownames(feattabs[[tab]]) <- rownames(feat)
-            }
-            object@featureData[[dataset.name]] <- c(object@featureData[[dataset.name]], feattabs)
+            object@featureData[[dataset.name]] <- 
+                c(object@featureData[[dataset.name]], extra[feature.tables])
         }
         
         object@rowRanges[[dataset.name]] <- SummarizedExperiment::rowRanges(set)
@@ -73,7 +66,6 @@ setMethod(
                          rowRanges = GenomicRanges::makeGRangesFromDataFrame(as(fet$main, "data.frame"), 
                                                                              keep.extra.columns=TRUE))
             attr <- c(attr, phe[-1], fet[-1], extra)
-            rownames(attr$elementMetadata) <- NULL
             do.call("new", attr)
         }
         

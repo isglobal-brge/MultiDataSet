@@ -4,7 +4,8 @@
 \alias{add_eset}
 \title{Method to add an \code{eSet} to \code{MultiDataSet}.}
 \usage{
-add_eset(object, set, dataset.type, dataset.name = NULL, warnings = TRUE,
+add_eset(object, set, dataset.type, dataset.name = NULL,
+  sample.tables = NULL, feature.tables = NULL, warnings = TRUE,
   overwrite = FALSE, GRanges)
 }
 \arguments{
@@ -16,6 +17,10 @@ add_eset(object, set, dataset.type, dataset.name = NULL, warnings = TRUE,
 
 \item{dataset.name}{Character with the specific name for this set (NULL by default). It is useful when there 
 are several sets of the same type (e.g. multiple expression assays)}
+
+\item{sample.tables}{Character with the names of the slots with sample data besides phenoData.}
+
+\item{feature.tables}{Character with the names of the slots with feature data besides featureData.}
 
 \item{warnings}{Logical to indicate if warnings will be displayed.}
 

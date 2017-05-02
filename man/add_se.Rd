@@ -4,8 +4,8 @@
 \alias{add_se}
 \title{Method to add a \code{SummarizedExperiment} to \code{MultiDataSet}.}
 \usage{
-add_se(object, set, dataset.type, dataset.name = NULL, warnings = TRUE,
-  overwrite = FALSE, GRanges)
+add_se(object, set, dataset.type, dataset.name = NULL, sample.tables = NULL,
+  feature.tables = NULL, warnings = TRUE, overwrite = FALSE, GRanges)
 }
 \arguments{
 \item{object}{\code{MultiDataSet} that will be filled.}
@@ -16,6 +16,10 @@ add_se(object, set, dataset.type, dataset.name = NULL, warnings = TRUE,
 
 \item{dataset.name}{Character with the specific name for this set (NULL by default). It is useful when there 
 are several sets of the same type (e.g. multiple expression assays)}
+
+\item{sample.tables}{Character with the names of the slots with sample data besides colData.}
+
+\item{feature.tables}{Character with the names of the slots with feature data besides rowData.}
 
 \item{warnings}{Logical to indicate if warnings will be displayed.}
 

@@ -4,6 +4,10 @@ setMethod(
     f = "rowRangesElements",
     signature = "MultiDataSet",
     definition = function(object) {
-        names(object@rowRanges[!is.na(object@rowRanges)])
+        res <- names(object@rowRanges[!is.na(object@rowRanges)])
+        if (is.null(res)) {
+            res <- character(0)
+        }
+        return(res)
     }
 )

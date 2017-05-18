@@ -105,7 +105,7 @@ setMethod(
             for (dtype in names(x)){
                 nfData <- IRanges::subsetByOverlaps(x@rowRanges[[dtype]], k)
                 fNames <- names(nfData)
-                orig <- assayData(x[[dtype]])
+                orig <- assayData(x)[[dtype]]
                 storage.mode <- Biobase:::assayDataStorageMode(orig)
                 assyD[[dtype]] <-
                     switch(storage.mode,
@@ -183,7 +183,7 @@ setMethod(
                         if (!is.logical(sel))
                             stop("'feat' must be a logical expression")
                         sel <- sel & !is.na(sel)
-                        orig <- assayData(x[[dtype]])
+                        orig <- assayData(x)[[dtype]]
                         storage.mode <- Biobase:::assayDataStorageMode(orig)
                         assyD[[dtype]] <-
                             switch(storage.mode,
@@ -249,7 +249,7 @@ setMethod(
                         if (!is.logical(sel))
                             stop("'phe' must be a logical expression")
                         sel <- sel & !is.na(sel)
-                        orig <- assayData(x[[dtype]])
+                        orig <- assayData(x)[[dtype]]
                         storage.mode <- Biobase:::assayDataStorageMode(orig)
                         assyD[[dtype]] <-
                             switch(storage.mode,

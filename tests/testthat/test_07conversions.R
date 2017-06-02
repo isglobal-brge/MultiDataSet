@@ -107,7 +107,7 @@ test_that("mds2mae", {
 
     expect_is(mae, "MultiAssayExperiment")
     expect_equal(names(mae), c("methylation", "expression", "test"))
-    expect_equal(nrow(pData(mae)), length(Reduce(union, sampleNames(multi))))
+    expect_equal(nrow(colData(mae)), length(Reduce(union, sampleNames(multi))))
 
     expect_is(experiments(mae)[[1]], "MethylationSet")
     expect_is(experiments(mae)[[2]], "ExpressionSet")

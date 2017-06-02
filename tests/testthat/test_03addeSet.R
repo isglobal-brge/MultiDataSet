@@ -66,7 +66,7 @@ test_that("specific functions based on eSet", {
     
     # Check add_rnaseq  ####
     multi <- add_rnaseq(multi, eset)
-    expect_equal(names(multi), "rnaseq")
+    expect_equal(names(multi), c("expression", "rnaseq"))
   
   
     expect_error(add_genexp(multi, eset), "There is already an object in this slot. Set overwrite = TRUE to overwrite the previous set.")
@@ -85,7 +85,7 @@ test_that("specific functions based on eSet", {
     rownames(pheno) <- c("VAL0156", "VAL0372")
     pData(snpSet) <- pheno
     multi2 <- add_snps(multi, snpSet)
-    expect_equal(names(multi2), c("expression", "snps"))
+    expect_equal(names(multi2), c("expression", "rnaseq", "snps"))
     
     expect_s4_class(multi2[["expression"]], "ExpressionSet")
     expect_s4_class(multi2[["snps"]], "SnpSet")
@@ -93,11 +93,11 @@ test_that("specific functions based on eSet", {
     # Wrong fData ####
     snpSet2 <- snpSet
     fvarLabels(snpSet2)[1] <- "chr"
-    expect_error(add_snps(multi, snpSet2), "fData of methySet must contain columns chromosome and position")
+    expect_error(add_snps(multi, snpSet2), "fData of snpSet must contain columns chromosome and position")
     
     snpSet2 <- snpSet
     fvarLabels(snpSet2)[2] <- "cot"
-    expect_error(add_snps(multi, snpSet2), "fData of methySet must contain columns chromosome and position")
+    expect_error(add_snps(multi, snpSet2), "fData of snpSet must contain columns chromosome and position")
     
     
   # library(methylumi)

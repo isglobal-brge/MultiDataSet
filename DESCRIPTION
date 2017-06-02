@@ -2,8 +2,8 @@ Package: MultiDataSet
 Type: Package
 Title: Implementation of the BRGE's (Bioinformatic Research Group in Epidemiology from
  Center for Research in Environmental Epidemiology) MultiDataSet and MethylationSet 
-Version: 1.5.1
-Date: 2017-02-21
+Version: 1.5.2
+Date: 2017-06-02
 Authors@R: c(person("Carlos", "Ruiz-Arenas", , "carlos.ruiz@isglobal.org", role = c("aut", "cre")),
   person("Carles", "Hernandez-Ferrer", , "carles.hernandez@isglobal.org", role = "aut"),
   person("Juan R.", "Gonzalez", ,"juanr.gonzalez@isglobal.org", role = "aut"))

@@ -1,7 +1,7 @@
 as.list.MultiDataSet <- function(x) {
     ll <- lapply(names(x), function(dtype) {
-        elm <- assayDataElementNames(x[[dtype]])[1]
-        assayDataElement(x[[dtype]], elm)
+        elm <- assayDataElementNames(assayData(x)[[dtype]])[1]
+        assayDataElement(assayData(x)[[dtype]], elm)
     })
     names(ll) <- names(x)
     return(ll)

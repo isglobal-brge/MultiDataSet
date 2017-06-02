@@ -235,42 +235,6 @@ setGeneric("betas", function(object){
     standardGeneric("betas")
 })
 
-#' Filter \code{MethylationSet} probes
-#' 
-#' This function selects probes present in the annotation matrix. Probes without
-#' annotation and annotation values without beta values are discarded. 
-#' 
-#' @rdname checkProbes-methods
-#' @export 
-#' @aliases checkProbes
-#' @param object \code{MethylationSet}
-#' @return \code{MethylationSet} containing the common samples.
-#' @examples 
-#' if(require(MEALData)){
-#'  data(mset)
-#'  checkProbes(mset)
-#' } 
-setGeneric("checkProbes", function(object) standardGeneric("checkProbes"))
-
-#' Modify a \code{MethylationSet} to only contain common samples
-#' 
-#' This function removes samples that have beta values but no phenotypes and vice versa.
-#' If snps object is present, only samples present in the three set are retained.
-#' 
-#' @name checkSamples
-#' @rdname checkSamples-methods
-#' @aliases checkSamples 
-#' @export 
-#' 
-#' @param object \code{MethylationSet}
-#' @return \code{MethylationSet} containing the common samples.
-#' @examples 
-#' if(require(MEALData)){
-#'  data(mset)
-#'  checkSamples(mset)
-#' } 
-setGeneric("checkSamples", function(object) standardGeneric("checkSamples"))
-
 #' Method to select samples that are present in all datasets.
 #'
 #' This method subsets the datasets to only contain the samples that are in all datasets. All sets 

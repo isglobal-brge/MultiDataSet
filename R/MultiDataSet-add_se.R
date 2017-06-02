@@ -34,7 +34,7 @@ setMethod(
             Biobase::AnnotatedDataFrame(as.data.frame(SummarizedExperiment::rowData(set)))
         
         if (missing(GRanges)){
-            GRanges <- GenomicRanges::makeGRangesFromDataFrame(SummarizedExperiment::colData(set))
+            GRanges <- GenomicRanges::makeGRangesFromDataFrame(SummarizedExperiment::rowData(set))
             names(GRanges) <- rownames(SummarizedExperiment::rowData(set))
         } 
         if (!is(GRanges, "GenomicRanges")){
@@ -48,8 +48,7 @@ setMethod(
         returnfunc <- function(env, phe, fet) {
             assays <- SummarizedExperiment::Assays(as.list(env))
             new(class(set), assays = assays, colData = S4Vectors::DataFrame(as(phe, "data.frame")), 
-                rowRanges = GenomicRanges::makeGRangesFromDataFrame(as(fet, "data.frame"), keep.extra.columns=TRUE), 
-                elementMetadata = S4Vectors::DataFrame(matrix(nrow = nrow(assays), ncol = 0 )))
+                elementMetadata = S4Vectors::DataFrame(as(fet, "data.frame")))
         }
         
         object@return_method[[dataset.name]] <- returnfunc

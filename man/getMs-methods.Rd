@@ -15,13 +15,13 @@ getMs(object, threshold = 1e-04)
 Matrix with the M values.
 }
 \description{
-Given a \code{MethylationSet} or a \code{AnalysisResults} returns 
-the matrix of M values using a logit2 transformation. Betas equal to 0 will 
+Given a \code{MethylationSet} or a \code{AnalysisResults} returns
+the matrix of M values using a logit2 transformation. Betas equal to 0 will
 be transformed to threshold and betas equal to 1, to 1 - threshold.
 }
 \examples{
 if(require(MEALData)){
  data(mset)
  Ms <- getMs(mset)
-} 
+}
 }

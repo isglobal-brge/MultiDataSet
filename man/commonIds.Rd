@@ -16,18 +16,17 @@ Character vector with the common ids.
 Get the name of the ids common to all datasets
 }
 \examples{
- 
 multi <- createMultiDataSet()
 eset <- new("ExpressionSet", exprs = matrix(runif(9), ncol = 3))
-fData(eset) <- data.frame(chromosome = c("chr1", "chr1", "chr1"), 
-                          start = c(1, 5, 10),end = c(4, 6, 14), 
+fData(eset) <- data.frame(chromosome = c("chr1", "chr1", "chr1"),
+                          start = c(1, 5, 10),end = c(4, 6, 14),
                           stringsAsFactors = FALSE)
 sampleNames(eset) <- c("S1", "S2", "S3")
 pData(eset) <- data.frame(id = c("S1", "S2", "S3"))
 rownames(pData(eset)) <- c("S1", "S2", "S3")
 multi <- add_genexp(multi, eset, dataset.name = "g1")
 eset <- new("ExpressionSet", exprs = matrix(runif(8), ncol = 2))
-fData(eset) <- data.frame(chromosome = c("chr1", "chr1", "chr1", "chr1"), 
+fData(eset) <- data.frame(chromosome = c("chr1", "chr1", "chr1", "chr1"),
                           start = c(1, 14, 25, 104),end = c(11, 16, 28, 115),
                           stringsAsFactors = FALSE)
 sampleNames(eset) <- c("S1", "G2")

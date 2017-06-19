@@ -57,8 +57,8 @@ analysis.
 \section{Slots}{
 
 \describe{
-\item{\code{assayData}}{Contains matrices with equal dimensions, and with column number 
-equal to nrow(phenoData). assayData must contain a matrix meth with rows representing 
+\item{\code{assayData}}{Contains matrices with equal dimensions, and with column number
+equal to nrow(phenoData). assayData must contain a matrix meth with rows representing
 features (e.g., methylation probes sets) and columns representing samples.}
 
 \item{\code{phenoData}}{See \linkS4class{eSet}}

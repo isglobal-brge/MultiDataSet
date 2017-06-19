@@ -1,25 +1,25 @@
 #' MethylationSet instances
-#' 
+#'
 #' Container with the data needed to perform methylation analysis. \code{MethylationSet}
 #' inherits from \code{eSet} and contains \code{meth} matrix as assay data member.
-#' 
+#'
 #' FeatureData, which contains annotation data, is required to perform any of the
 #' analysis.
-#' 
+#'
 #' @export
 #' @rdname MethylationSet-class
 #' @name MethylationSet
 #' @aliases MethylationSet-class MethylationSet-methods
-#' @slot assayData Contains matrices with equal dimensions, and with column number 
-#' equal to nrow(phenoData). assayData must contain a matrix meth with rows representing 
-#' features (e.g., methylation probes sets) and columns representing samples. 
+#' @slot assayData Contains matrices with equal dimensions, and with column number
+#' equal to nrow(phenoData). assayData must contain a matrix meth with rows representing
+#' features (e.g., methylation probes sets) and columns representing samples.
 #' @slot phenoData See \linkS4class{eSet}
 #' @slot annotation See \linkS4class{eSet}
 #' @slot featureData See \linkS4class{eSet}. fData should contain at least chromosome
-#' and positions columns. 
+#' and positions columns.
 setClass (
     Class = "MethylationSet",
-    contains = "eSet", 
+    contains = "eSet",
     prototype = prototype(new("VersionedBiobase",
                               versions = c(classVersion("eSet"), MethylationSet = "1.0.0")))
 )
@@ -54,4 +54,29 @@ setClass(
     rowRanges = "list",
     return_method = "list"
   )
+)
+
+#' Class ResultSet
+#'
+#' Class \code{ResultSet} encapsulates the results from the association and
+#' integration processes developed in \code{omicRexposome}. This include
+#' the functions \code{\link{association}} and \code{\link{crossomics}}.
+#'
+#' @name ResultSet
+#' @aliases ResultSet-class
+#' @rdname ResultSet-class
+#' @exportClass ResultSet
+#' @slot fun_origin Character containing the function that creates the object.
+#' @slot results List containing the results of the association/integration.
+#' @slot fData List containing the feature-data of the original objects.
+#' @slot options list of options used to create the \code{ResultSet}.
+#' @return An object of class \code{ResultSet}
+setClass(
+    Class = "ResultSet",
+    representation = representation(
+        fun_origin = "character",
+        results = "list",
+        fData = "list",
+        options = "list"
+    )
 )

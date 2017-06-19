@@ -19,7 +19,7 @@ filled.
 }
 \description{
 This method adds or overwrites the slot \code{"methylation"} of an
-\code{MultiDataSet} with the content of the given \code{MethylationSet} or \code{RatioSet}. 
+\code{MultiDataSet} with the content of the given \code{MethylationSet} or \code{RatioSet}.
 The fData of the input object must contain the columns chromosome and position.
 }
 \examples{
@@ -27,5 +27,5 @@ if(require(MEALData)){
  data(mset)
  multi <- createMultiDataSet()
  multi <- add_methy(multi, mset)
-} 
+}
 }

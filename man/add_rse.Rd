@@ -14,7 +14,7 @@ add_rse(object, set, dataset.type, dataset.name = NULL, warnings = TRUE,
 
 \item{dataset.type}{Character with the type of data of the omic set (e.g. expression, methylation...)}
 
-\item{dataset.name}{Character with the specific name for this set (NULL by default). It is useful when there 
+\item{dataset.name}{Character with the specific name for this set (NULL by default). It is useful when there
 are several sets of the same type (e.g. multiple expression assays)}
 
 \item{warnings}{Logical to indicate if warnings will be displayed.}
@@ -25,7 +25,7 @@ are several sets of the same type (e.g. multiple expression assays)}
 A new \code{MultiDataSet} with a slot filled.
 }
 \description{
-This method adds or overwrites a slot of a \code{MultiDataSet} with the content 
+This method adds or overwrites a slot of a \code{MultiDataSet} with the content
 of the given  \code{RangedSummarizedExperiment}.
 }
 \examples{

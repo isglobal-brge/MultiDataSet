@@ -24,6 +24,8 @@
 \alias{MultiDataSet-methods}
 \alias{add_methy,MultiDataSet,RatioSet-method}
 \alias{MultiDataSet-methods}
+\alias{add_methy,MultiDataSet,GenomicRatioSet-method}
+\alias{MultiDataSet-methods}
 \alias{add_rse,MultiDataSet,RangedSummarizedExperiment-method}
 \alias{MultiDataSet-methods}
 \alias{add_se,MultiDataSet,SummarizedExperiment-method}
@@ -90,6 +92,8 @@
 \S4method{add_methy}{MultiDataSet,MethylationSet}(object, methySet, ...)
 
 \S4method{add_methy}{MultiDataSet,RatioSet}(object, methySet, ...)
+
+\S4method{add_methy}{MultiDataSet,GenomicRatioSet}(object, methySet, ...)
 
 \S4method{add_rse}{MultiDataSet,RangedSummarizedExperiment}(object, set,
   dataset.type, dataset.name = NULL, warnings = TRUE, overwrite = FALSE)
@@ -213,9 +217,14 @@ The names of the three lists (\code{assayData}, \code{phenoData} and
 
 \item \code{add_rnaseq}: Method to add a slot of (RNASeq) expression to \code{MultiDataSet}.
 
-\item \code{add_methy}: Method to add a slot of methylation to \code{MultiDataSet}.
+\item \code{add_methy}: Method to add a slot of methylation to 
+\code{MultiDataSet} from a \code{MethylationSet}.
 
-\item \code{add_methy}: Method to add a slot of methylation to \code{MultiDataSet}.
+\item \code{add_methy}: Method to add a slot of methylation to 
+\code{MultiDataSet} from a \code{RatioSet}.
+
+\item \code{add_methy}: Method to add a slot of methylation to 
+\code{MultiDataSet} from a \code{GenomicRatioSet}.
 
 \item \code{add_rse}: Method to add a \code{RangedSummarizedExperiment} to \code{MultiDataSet}.
 

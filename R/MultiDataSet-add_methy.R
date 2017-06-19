@@ -52,15 +52,7 @@ setMethod(
     signature = c("MultiDataSet", "GenomicRatioSet"),
     definition = function(object, methySet, ...) {
         
-        fet <- SummarizedExperiment::rowData(methySet)
-        if (!all(c("position", "chromosome") %in% colnames(fet))){
-            stop("fData of methySet must contain columns chromosome and position")
-        }
-        fet$start <- fet$position
-        fet$end <- fet$position
-        SummarizedExperiment::rowData(methySet) <- fet
-        
-        object <- add_se(object, methySet, dataset.type = "methylation")
+        object <- add_rse(object, methySet, dataset.type = "methylation")
         
         return(object)
     }

@@ -420,13 +420,13 @@ setGeneric("rid", function(object)
 
 #' Method to extrat feature result from a ResultSet
 #'
-#' Homologous methods from \code{limma}, \code{topTable} resturns a
+#' Homologous methods from \code{limma}, \code{getAssociation} resturns a
 #' \code{data.frame} with the \code{logFC} and  \code{PValue} per
 #' featrue for the selcted \code{coef} and for given result (\code{rid}).
 #'
-#' @name topTable
-#' @rdname topTable-methods
-#' @aliases topTable
+#' @name getAssociation
+#' @rdname getAssociation-methods
+#' @aliases getAssociation
 #' @param object A \code{\link{ResultSet}} object.
 #' @param rid The name or index of the result to be extracted.
 #' @param coef (default \code{2}) Index of the coefficient to be extracted.
@@ -440,10 +440,11 @@ setGeneric("rid", function(object)
 #' data(gexp_r)
 #' data(exp_r)
 #' rst <- assocES(exp_r, gexp_r, formula=~sex+age)
-#' topTable(rst, rid=1)
-#' @export topTable
-setGeneric("topTable", function(object, rid, coef=2, contrast=1, sort = TRUE)
-    standardGeneric("topTable")
+#' getAssociation(rst, rid=1)
+#' @export getAssociation
+setGeneric("getAssociation", function(object, rid, coef=2, contrasts = NULL, 
+                                      sort = TRUE,  fNames = c("chromosome", "start", "end", "genesymbol"), ...)
+    standardGeneric("getAssociation")
 )
 
 #' Method to get the options sued to create the ResultSet

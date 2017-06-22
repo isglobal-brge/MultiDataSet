@@ -17,6 +17,5 @@
 #' @importFrom S4Vectors DataFrame
 #' @importFrom SummarizedExperiment rowRanges
 #' @importFrom utils installed.packages
-#' @importFrom minfi RatioSet GenomicRatioSet
 #' @seealso \linkS4class{MultiDataSet}
 NULL

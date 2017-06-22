@@ -19,7 +19,7 @@
 
         qqman::manhattan(dta, ylab="-log10(P.Value)", ...)
     } else if(type == "volcano") {
-        rexposome::volcano_plot(
+        volcano_plot(
             pval=dta$P.Value,
             fc=dta$logFC,
             names=rownames(dta),
@@ -27,27 +27,7 @@
             tPV=tPV,
             show.effect=effect
         )
-    } else if(type == "protein") {
-        dta$PV <- -log10(dta$P.Value)
-        dta$protein <- rownames(dta)
-        if(nrow(dta) == 1) {
-            stop("Invalid data obtained from 'topTable.'")
-        }
-        ggplot2::ggplot(dta,
-            ggplot2::aes_string(x="protein", y="PV", size="PV", fill="PV", color="PV")) +
-
-            ggplot2::theme_bw() +
-            ggplot2::geom_point(alpha=0.7) +
-            ggplot2::theme(
-                axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
-                legend.position = "none"
-            ) +
-            ggplot2::xlab("") +
-            ggplot2::ylab(expression(-log[10](P-Value))) +
-            ggplot2::scale_colour_gradientn(
-                colours = c("darkgray", "darkblue"))
-
-    } else {
+    }  else {
         stop("Invalid type of plot ('", type, "').")
     }
 }

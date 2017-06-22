@@ -11,48 +11,38 @@
 setMethod(
     f = "plotAssociation",
     signature = "ResultSet",
-    definition = function(object, rid = 1, coef = 2, contrast = 1, type, tPV, tFC, show.effect=FALSE) {
-        ## plot.new()
-        ## type = c("manhattan", "qq", "feature")
-
-        if(missing(tPV)) tPV <- NULL
-        if(missing(tFC)) tFC <- NULL
-
-        #if(object@fun_origin %in% c("assocGE", "assocME")) {
-        if(object@fun_origin == "association") {
-            # if(sum(object@class_origin %in%  c("ExposomeSet", "ExpressionSet", "ExposomeClust")) != 2) {
-            #     stop("Invalid object 'ResultSet'. Expected an object ",
-            #          "obtained from 'ExposomeSet' and 'ExpressionSet'. ",
-            #          "Given one from '", paste(object@class_origin,
-            #                                    collapse="', '"), "'")
-            # }
-            return(.plot_assoc(object, rid, coef, contrast, type, tPV, tFC, show.effect))
-        # } else if(object@fun_origin == "assocME") {
-        #     if(sum(object@class_origin %in%  c("ExposomeSet", "MethylationSet", "ExposomeClust")) != 2) {
-        #         stop("Invalid object 'ResultSet'. Expected an object ",
-        #              "obtained from 'ExposomeSet' and 'MethylationSet'. ",
-        #              "Given one from '", paste(object@class_origin,
-        #                                        collapse="', '"), "'")
-        #     }
-        #     .plot_assoc(object, rid, type, tPV, tFC)
-        } else if(object@fun_origin == "assocSNP") {
-            if(sum(object@class_origin %in%  c("ExposomeSet", "SnpSet", "ExposomeClust")) != 2) {
-                stop("Invalid object 'ResultSet'. Expected an object ",
-                     "obtained from 'ExposomeSet' and 'SnpSet'. ",
-                     "Given one from '", paste(object@class_origin,
-                                               collapse="', '"), "'")
-            }
-            .plot_assoc_snps(object, type, ...)
-        # } else if(object@fun_origin == "assocPRT") {
-        #     if(sum(object@class_origin %in%  c("ExposomeSet", "ExpressionSet", "ExposomeClust")) != 2) {
-        #         stop("Invalid object 'ResultSet'. Expected an object ",
-        #              "obtained from 'ExposomeSet' and 'ExpressionSet'. ",
-        #              "Given one from '", paste(object@class_origin,
-        #                                        collapse="', '"), "'")
-        #     }
-        #     .plot_assoc_prot(object, rid, type, ...)
-        } else {
-            stop("Invalid 'object'. Value for attribue 'fun_origin' (",
-                 object@fun_origin, ") not recognized.")
+    definition = function(object, rid = 1, coef = 2, contrast = NULL, type = "volcano", 
+                          tPV = NULL, tFC = NULL, show.effect = FALSE) {
+        
+        type <- tolower(type)
+        type <- match.arg(type, choices = c("qq", "volcano", "manhattan"))
+        
+        dta <- getAssociation(object, rid=rid, coef = coef, contrast = contrast, 
+                        fNames = c("chromosome", "position"))
+        
+        if(type == "qq") {
+            qq_plot(dta$P.Value)
+        } else if(type == "manhattan") {
+            dta$SNP <- rownames(dta)
+            colnames(dta) <- c("P", "CHR", "BP", "SNP")
+            dta$CHR <- gsub("chr", "", sapply(strsplit(dta$chromosome, "_"), "[[", 1))
+            dta$CHR <- gsub("X", "23", gsub("Y", "24", dta$CHR))
+            dta <- dta[dta$CHR %in% as.character(1:24), ]
+            dta$CHR <- as.numeric(dta$CHR)
+            dta$BP <- as.numeric(dta$start)
+            
+            qqman::manhattan(dta, ylab="-log10(P.Value)", ...)
+        } else if(type == "volcano") {
+            volcano_plot(
+                pval = dta$P.Value,
+                fc = dta$logFC,
+                names = rownames(dta),
+                tFC = tFC,
+                tPV = tPV,
+                show.effect = show.effect
+            )
+        }  else {
+            stop("Invalid type of plot ('", type, "').")
         }
+    
     })

@@ -1,4 +1,4 @@
-#' @describeIn ResultSet Returns the names (aka. exposures) of the analyses
+#' @describeIn ResultSet Returns the names of the analyses
 #' stored in the \code{ResultSet}.
 setMethod(
     f = "rid",

@@ -9,7 +9,7 @@
 #' @param size (default \code{2}) Sice of the labels in case they are
 #' placed.
 #' @param tFC (default \code{2}) fold change threshold. It can be set to
-#' \code{NULL} to do not filter.
+#' \code{NULL} to not filter.
 #' @param tPV (default \code{-log10(0.001)}) P-Value threshold. It can be set
 #' to \code{NULL} to not filter.
 #' @param show.effect (default \code{FALSE}) If set to \code{TRUE}, the X-axis
@@ -21,7 +21,7 @@
 #' volcano_plot(w1$pvalue, w1$effect, rownames(w1))
 #' @export
 volcano_plot <- function(pval, fc, names, size=2, tFC = 2, tPV = -log10(0.001),
-                         show.effect=FALSE) {
+                         show.effect = FALSE) {
     if(missing(names)) {
         names <- names(pval)
     }

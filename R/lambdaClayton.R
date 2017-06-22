@@ -8,7 +8,7 @@
 #' @return A lambda value, indicatinf the inflation/deflation of the
 #' analysis.
 #' @export
-lambdaClayton <- function(x, trim=0.5) {
+lambdaClayton <- function(x, trim = 0.5) {
     xx <- qnorm(1-x)^2
     N <- length(xx)
     obsvd <- sort(xx, na.last=NA)

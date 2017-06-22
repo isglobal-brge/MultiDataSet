@@ -16,14 +16,16 @@ setMethod(
             res <- limma::eBayes(res)
             res <- limma::topTable(res, coef = coef, ...)
             
-            fData <- object@fData[[1]]
-            
-            if (!all(fNames %in% colnames(fData))){
-                stop("All fNames must be present in ResultSet fData.")
+            ## Add fData to results
+            if (!is.null(fNames)){
+                fData <- object@fData[[1]]
+                
+                if (!all(fNames %in% colnames(fData))){
+                    stop("All fNames must be present in ResultSet fData.")
+                }
+                
+                res <- cbind(res, fData[rownames(res), fNames])  
             }
-            
-            res <- cbind(res, fData[rownames(res), fNames])
-            
         }
         
         return(res)

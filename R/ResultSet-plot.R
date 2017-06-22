@@ -11,8 +11,10 @@
 setMethod(
     f = "plot",
     signature = "ResultSet",
-    definition = function(x, y, rid = 1, coef = 2, contrast = NULL, type, tPV, tFC, 
-                          show.effect = FALSE, fNames = c("chromosome", "start"), ...) {
+    definition = function(x, y, rid = 1, coef = 2, contrast = NULL, type, 
+                          tFC = 2, tPV = -log10(0.001),
+                          show.effect = FALSE, 
+                          fNames = c("chromosome", "start"), ...) {
         
         type <- tolower(type)
         type <- match.arg(type, choices = c("qq", "volcano", "manhattan"))
@@ -44,17 +46,17 @@ setMethod(
             dta$CHR <- as.numeric(dta$CHR)
             dta$BP <- as.numeric(dta$BP)
             # Plot using qqman
-            qqman::manhattan(dta, ylab="-log10(P.Value)", ...)
+            qqman::manhattan(dta, ylab = "-log10(P.Value)", ...)
         } else if(type == "volcano") {
             dta <- getAssociation(x, rid = rid, coef = coef, contrast = contrast,
                                   fNames = NULL, n = Inf)
             volcano_plot(
-                pval=dta$P.Value,
-                fc=dta$logFC,
-                names=rownames(dta),
-                tFC=tFC,
-                tPV=tPV,
-                show.effect=effect
+                pval = dta$P.Value,
+                fc = dta$logFC,
+                names = rownames(dta),
+                tFC = tFC,
+                tPV = tPV,
+                show.effect = show.effect
             )
         } else {
             stop("Invalid type of plot ('", type, "').")

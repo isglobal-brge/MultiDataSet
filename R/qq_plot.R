@@ -21,6 +21,8 @@ qq_plot <- function(values) {
 
     dta <- as.data.frame(cbind(e, o, c025, c975))
 
+    lambda <- signif(lambdaClayton(values), 4)
+    
     p <- ggplot2::ggplot(dta) + ggplot2::theme_bw()
     p <- p + ggplot2::geom_polygon(
             data=data.frame(
@@ -31,6 +33,8 @@ qq_plot <- function(values) {
     p <- p + ggplot2::geom_point(ggplot2::aes(x=e,y=o, colour=o, fill=o), alpha=0.5)
     p <- p + ggplot2::xlab(expression(Expected~~-log[10](P-Value)))
     p <- p + ggplot2::ylab(expression(Observed~~-log[10](P-Value)))
-    p <- p + ggplot2::theme(legend.position = "none")
+    p <- p + ggplot2::theme(legend.position = "none") 
+    p <- p + ggplot2::geom_text(ggplot2::aes(x = -Inf, y = Inf, hjust = 0, vjust = 1,
+                                             label = paste("Lambda: ", lambda)))
     return(p)
 }

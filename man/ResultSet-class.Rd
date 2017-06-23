@@ -2,7 +2,7 @@
 % Please edit documentation in R/2_ResultSet-ClassGenerics.R,
 %   R/ResultSet-fData.R, R/ResultSet-getAssociation.R, R/ResultSet-length.R,
 %   R/ResultSet-names.R, R/ResultSet-opt.R, R/ResultSet-plot.R,
-%   R/create_resultset.R
+%   R/ResultSet-varLabels.R, R/create_resultset.R
 \docType{class}
 \name{ResultSet}
 \alias{ResultSet}
@@ -13,6 +13,7 @@
 \alias{names,ResultSet-method}
 \alias{opt,ResultSet-method}
 \alias{plot,ResultSet,ANY-method}
+\alias{varLabels,ResultSet-method}
 \alias{create_resultset}
 \alias{ResultSet-methods}
 \title{Class ResultSet}
@@ -29,8 +30,11 @@
 
 \S4method{opt}{ResultSet}(object)
 
-\S4method{plot}{ResultSet,ANY}(x, y, rid = 1, coef = 2, contrast = 1,
-  type, tPV, tFC, show.effect = FALSE)
+\S4method{plot}{ResultSet,ANY}(x, y, rid = 1, coef = 2, contrast = NULL,
+  type, tFC = 2, tPV = -log10(0.001), show.effect = FALSE,
+  fNames = c("chromosome", "start"), ...)
+
+\S4method{varLabels}{ResultSet}(object)
 
 create_resultset(fOrigin, lResults, fData, lOptions = list())
 }
@@ -50,9 +54,9 @@ of the contrast to be returned.}
 
 \item{type}{Type of plot to be drawn}
 
-\item{tPV}{Threshold for P-Value}
-
 \item{tFC}{Threshold for log FC of effect}
+
+\item{tPV}{Threshold for P-Value}
 }
 \value{
 An object of class \code{ResultSet}
@@ -81,6 +85,9 @@ the \code{ResultSet}.
 \item \code{plot}: Allows to plot a series of plots (QQ plot, Manhattan
 plot and Volcano plot) depending on the results stored in the
 \code{ResultSet}.
+
+\item \code{varLabels}: Returns the names of the variables of the models used in
+a \code{ResultSet}.
 }}
 
 \section{Slots}{

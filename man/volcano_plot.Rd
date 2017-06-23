@@ -18,7 +18,7 @@ volcano_plot(pval, fc, names, size = 2, tFC = 2, tPV = -log10(0.001),
 placed.}
 
 \item{tFC}{(default \code{2}) fold change threshold. It can be set to
-\code{NULL} to do not filter.}
+\code{NULL} to not filter.}
 
 \item{tPV}{(default \code{-log10(0.001)}) P-Value threshold. It can be set
 to \code{NULL} to not filter.}

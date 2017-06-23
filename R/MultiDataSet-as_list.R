@@ -9,4 +9,5 @@ as.list.MultiDataSet <- function(x) {
 #' @describeIn MultiDataSet Returns a list with the first matrix of each
 #' dataset.
 #' @aliases as.list
+#' @export
 setMethod("as.list", "MultiDataSet", as.list.MultiDataSet)

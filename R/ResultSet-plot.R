@@ -8,6 +8,7 @@
 #' @param type Type of plot to be drawn
 #' @param tPV Threshold for P-Value
 #' @param tFC Threshold for log FC of effect
+#' @export
 setMethod(
     f = "plot",
     signature = "ResultSet",

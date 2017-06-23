@@ -4,7 +4,7 @@
 setMethod(
     f = "getAssociation",
     signature = "ResultSet",
-    definition = function(object, rid, coef = 2, contrasts = NULL, sort=TRUE, 
+    definition = function(object, rid, coef = 2, contrasts = NULL, 
                           fNames = c("chromosome", "start", "end", "genesymbol"), ...) {
         
         res <- object@results[[rid]]$result
@@ -14,7 +14,7 @@ setMethod(
                 res <- limma::contrasts.fit(res, contrasts)
             }
             res <- limma::eBayes(res)
-            res <- limma::topTable(res, coef = coef, ...)
+            res <- limma::topTable(res, coef = coef, number = Inf, ...)
             
             ## Add fData to results
             if (!is.null(fNames)){

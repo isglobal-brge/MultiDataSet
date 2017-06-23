@@ -17,20 +17,24 @@ setMethod(
                           show.effect = FALSE, 
                           fNames = c("chromosome", "start"), ...) {
         
+        if (class(x@results[[rid]]) != "MArrayLM"){
+            stop("plot function is only available for results in a MArrayLM object.")
+        }
+        
         type <- tolower(type)
         type <- match.arg(type, choices = c("qq", "volcano", "manhattan"))
         
         if(type == "qq") {
-            dta <- getAssociation(x, rid = rid, coef = coef, n = Inf,
+            dta <- getAssociation(x, rid = rid, coef = coef,
                                   contrast=contrast, fNames = NULL)
             qq_plot(dta$P.Value)
         } else if(type == "manhattan") {
             dta <- getAssociation(x, rid = rid, coef = coef, contrast = contrast, 
-                                  fNames = fNames, n = Inf)
+                                  fNames = fNames)
             # Select columns P.Value, Chromosome and "Position"
             dta <- dta[ , c("P.Value", fNames)]
             # Add column with rs name per SNP
-            dta$SNP <- rownames(x@results[[rid]]$result)
+            dta$SNP <- dta
             # Update colnames of 'dta' by the ones used on qqman::manhattan
             colnames(dta) <- c("P", "CHR", "BP", "SNP")
             # Two steps:
@@ -50,7 +54,7 @@ setMethod(
             qqman::manhattan(dta, ylab = "-log10(P.Value)", ...)
         } else if(type == "volcano") {
             dta <- getAssociation(x, rid = rid, coef = coef, contrast = contrast,
-                                  fNames = NULL, n = Inf)
+                                  fNames = NULL)
             volcano_plot(
                 pval = dta$P.Value,
                 fc = dta$logFC,

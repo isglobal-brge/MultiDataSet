@@ -20,9 +20,8 @@
 \usage{
 \S4method{fData}{ResultSet}(object)
 
-\S4method{getAssociation}{ResultSet}(object, rid, coef = 2,
-  contrasts = NULL, sort = TRUE, fNames = c("chromosome", "start", "end",
-  "genesymbol"), ...)
+\S4method{getAssociation}{ResultSet}(object, rid, coef = 2, contrast = NULL,
+  fNames = c("chromosome", "start", "end", "genesymbol"), ...)
 
 \S4method{length}{ResultSet}(x)
 
@@ -32,7 +31,7 @@
 
 \S4method{plot}{ResultSet,ANY}(x, y, rid = 1, coef = 2, contrast = NULL,
   type, tFC = 2, tPV = -log10(0.001), show.effect = FALSE,
-  fNames = c("chromosome", "start"), ...)
+  show.lambda = TRUE, fNames = c("chromosome", "start"), ...)
 
 \S4method{varLabels}{ResultSet}(object)
 
@@ -45,26 +44,43 @@ create_resultset(fOrigin, lResults, fData, lOptions = list())
 
 \item{coef}{Coefficient to be returne, usually 2}
 
-\item{sort}{Indicates of the result should be ordered by P-Value}
+\item{contrast}{Numeric matrix with the contrasts used to perform the analyses}
+
+\item{fNames}{Character vector with the names of the fData columns that will 
+be added to the results data.frame.}
+
+\item{...}{Further arguments passed to \link[limma]{topTable}}
 
 \item{x}{A \code{ResultSet} object.}
 
-\item{contrast}{If coefficient to be used was multicategorical, number
-of the contrast to be returned.}
+\item{y}{-}
 
 \item{type}{Type of plot to be drawn}
 
 \item{tFC}{Threshold for log FC of effect}
 
 \item{tPV}{Threshold for P-Value}
+
+\item{show.effect}{(default: \code{TRUE}). Used in volcano plot. If \code{TRUE}, 
+effect is shown as FC instead of logFC.}
+
+\item{show.lambda}{(default: \code{TRUE}) If \code{TRUE} shows lambda
+score for the given model.}
+
+\item{fOrigin}{Chracter with the function used to run the analysis.}
+
+\item{lResults}{List with the results}
+
+\item{fData}{List with the feature data.}
+
+\item{lOptions}{List with additional options}
 }
 \value{
 An object of class \code{ResultSet}
 }
 \description{
-Class \code{ResultSet} encapsulates the results from the association and
-integration processes developed in \code{omicRexposome}. This include
-the functions \code{\link{association}} and \code{\link{crossomics}}.
+Class \code{ResultSet} used to encapsulate results from \code{MEAL} and 
+\code{omicrexposome}.
 }
 \section{Methods (by generic)}{
 \itemize{

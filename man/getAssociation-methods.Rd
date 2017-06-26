@@ -4,7 +4,7 @@
 \alias{getAssociation}
 \title{Method to extrat feature result from a ResultSet}
 \usage{
-getAssociation(object, rid, coef = 2, contrasts = NULL, sort = TRUE,
+getAssociation(object, rid, coef = 2, contrast = NULL,
   fNames = c("chromosome", "start", "end", "genesymbol"), ...)
 }
 \arguments{
@@ -14,15 +14,14 @@ getAssociation(object, rid, coef = 2, contrasts = NULL, sort = TRUE,
 
 \item{coef}{(default \code{2}) Index of the coefficient to be extracted.}
 
-\item{sort}{(default \code{TRUE}) If \code{TRUE}, results are ordered
-by P-Value.}
+\item{contrast}{(default \code{1}) When \code{code} corresponds to a
+multicategorical variable, contasr selects the comparison.}
 
 \item{fNames}{(default \code{c("chromosome", "start", "end", "genesymbol")})
 Corresponds to the columns selected from \code{fData} that will be
 incorporated into the resulting \code{data.frame}.}
 
-\item{contrast}{(default \code{1}) When \code{code} corresponds to a
-multicategorical variable, contasr selects the comparison.}
+\item{...}{Further arguments passed to \link[limma]{topTable}}
 }
 \value{
 A \code{data.frame} with the result of the association study,
@@ -34,8 +33,6 @@ Homologous methods from \code{limma}, \code{getAssociation} resturns a
 featrue for the selcted \code{coef} and for given result (\code{rid}).
 }
 \examples{
-data(gexp_r)
-data(exp_r)
-rst <- assocES(exp_r, gexp_r, formula=~sex+age)
-getAssociation(rst, rid=1)
+data(rset)
+getAssociation(rset, rid=1, fNames = c("chromosome", "position"))
 }

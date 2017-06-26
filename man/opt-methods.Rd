@@ -17,8 +17,6 @@ Method that returns a list with the options used to create the
 \code{ResultSet}.
 }
 \examples{
-data(gexp_r)
-data(exp_r)
-rst <- assocES(exp_r, gexp_r, formula=~sex+age)
-opt(rst)
+data(rset)
+opt(rset)
 }

@@ -2,11 +2,13 @@
 #'
 #' Implementation of Clayton's lambda score for a vector of P-Values
 #'
-#' @author Juran R. González
+#' @author Juan R. Gonzalez
 #' @param x Vector of P-Value
 #' @param trim (default \code{0.5})
-#' @return A lambda value, indicatinf the inflation/deflation of the
+#' @return A lambda value, indicating the inflation/deflation of the
 #' analysis.
+#' @examples 
+#' lambdaClayton(runif(30))
 #' @export
 lambdaClayton <- function(x, trim = 0.5) {
     xx <- qnorm(1-x)^2

@@ -1,7 +1,7 @@
 #' Function to draw a Volcano Plot
 #'
 #' Function that takes two numeric vectors (P-Value and fold change)
-#' and draws a volcano plot using \link{ggplot2}
+#' and draws a volcano plot using \code{ggplot2}
 #'
 #' @param pval numeric vector of P.Values
 #' @param fc numeric vector of fold change
@@ -16,9 +16,9 @@
 #' will should \code{2^logFC} instead to teh default \code{logFC}.
 #' @return A \code{ggplot} object
 #' @examples
-#' data(exposome)
-#' w1 <- psygenet2r::extract(exwas(expo[1:20, ], asthma~1, family = "binomial"))
-#' volcano_plot(w1$pvalue, w1$effect, rownames(w1))
+#' data(rset)
+#' w1 <- getAssociation(rset, rid = 1, fNames = NULL)
+#' volcano_plot(w1$P.Value, w1$logFC, rownames(w1))
 #' @export
 volcano_plot <- function(pval, fc, names, size=2, tFC = 2, tPV = -log10(0.001),
                          show.effect = FALSE) {

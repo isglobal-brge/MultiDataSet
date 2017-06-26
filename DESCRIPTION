@@ -1,16 +1,16 @@
 Package: MultiDataSet
 Type: Package
-Title: Implementation of the BRGE's (Bioinformatic Research Group in Epidemiology from
- Center for Research in Environmental Epidemiology) MultiDataSet and MethylationSet 
-Version: 1.5.3
+Title: Implementation of MultiDataSet, ResultSet and MethylationSet 
+Version: 1.5.4
 Date: 2017-06-02
 Authors@R: c(person("Carlos", "Ruiz-Arenas", , "carlos.ruiz@isglobal.org", role = c("aut", "cre")),
   person("Carles", "Hernandez-Ferrer", , "carles.hernandez@isglobal.org", role = "aut"),
   person("Juan R.", "Gonzalez", ,"juanr.gonzalez@isglobal.org", role = "aut"))
 Description: Implementation of the BRGE's (Bioinformatic Research Group in Epidemiology from
- Center for Research in Environmental Epidemiology) MultiDataSet and MethylationSet. MultiDataSet
- is designed for integrating multi omics data sets and MethylationSet to contain normalized methylation data. 
- These package contains base classes for MEAL and rexposome packages.
+ Center for Research in Environmental Epidemiology) MultiDataSet, ResultSet and 
+ MethylationSet. MultiDataSet is designed for integrating multi omics data sets 
+ and MethylationSet to contain normalized methylation data. This package contains
+ base classes for MEAL and rexposome packages.
 License: file LICENSE
 LazyData: TRUE
 biocViews: Software, DataRepresentation
@@ -23,7 +23,11 @@ Imports:
     S4Vectors,
     SummarizedExperiment,
     methods,
-    utils
+    utils,
+    ggplot2,
+    ggrepel,
+    qqman,
+    limma
 RoxygenNote: 6.0.1
 Suggests: MEALData,
     minfi,

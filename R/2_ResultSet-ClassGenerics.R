@@ -1,8 +1,7 @@
 #' Class ResultSet
 #'
-#' Class \code{ResultSet} encapsulates the results from the association and
-#' integration processes developed in \code{omicRexposome}. This include
-#' the functions \code{\link{association}} and \code{\link{crossomics}}.
+#' Class \code{ResultSet} used to encapsulate results from \code{MEAL} and 
+#' \code{omicrexposome}.
 #'
 #' @name ResultSet
 #' @aliases ResultSet-class
@@ -39,21 +38,18 @@ setClass(
 #' @param coef (default \code{2}) Index of the coefficient to be extracted.
 #' @param contrast (default \code{1}) When \code{code} corresponds to a
 #' multicategorical variable, contasr selects the comparison.
-#' @param sort (default \code{TRUE}) If \code{TRUE}, results are ordered
-#' by P-Value.
 #' @param fNames (default \code{c("chromosome", "start", "end", "genesymbol")})
 #' Corresponds to the columns selected from \code{fData} that will be
 #' incorporated into the resulting \code{data.frame}.
+#' @param ... Further arguments passed to \link[limma]{topTable}
 #' @return A \code{data.frame} with the result of the association study,
 #' including P-Value and Fold Change.
 #' @examples
-#' data(gexp_r)
-#' data(exp_r)
-#' rst <- assocES(exp_r, gexp_r, formula=~sex+age)
-#' getAssociation(rst, rid=1)
+#' data(rset)
+#' getAssociation(rset, rid=1, fNames = c("chromosome", "position"))
 #' @export getAssociation
-setGeneric("getAssociation", function(object, rid, coef = 2, contrasts = NULL, 
-        sort = TRUE,  fNames = c("chromosome", "start", "end", "genesymbol"), 
+setGeneric("getAssociation", function(object, rid, coef = 2, contrast = NULL, 
+       fNames = c("chromosome", "start", "end", "genesymbol"), 
         ...)
     standardGeneric("getAssociation")
 )
@@ -69,10 +65,8 @@ setGeneric("getAssociation", function(object, rid, coef = 2, contrasts = NULL,
 #' @param object A \code{\link{ResultSet}} object.
 #' @return A list with the options used to create the \code{ResultSet}.
 #' @examples
-#' data(gexp_r)
-#' data(exp_r)
-#' rst <- assocES(exp_r, gexp_r, formula=~sex+age)
-#' opt(rst)
+#' data(rset)
+#' opt(rset)
 #' @export opt
 setGeneric("opt", function(object)
     standardGeneric("opt")

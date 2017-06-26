@@ -1,13 +1,16 @@
 #' @describeIn ResultSet Allows to plot a series of plots (QQ plot, Manhattan
 #' plot and Volcano plot) depending on the results stored in the
 #' \code{ResultSet}.
+#' @param y -
 #' @param rid Name or index of the internal result to be used
 #' @param coef Coefficient to be returne, usually 2
-#' @param contrast If coefficient to be used was multicategorical, number
-#' of the contrast to be returned.
 #' @param type Type of plot to be drawn
 #' @param tPV Threshold for P-Value
 #' @param tFC Threshold for log FC of effect
+#' @param show.effect (default: \code{TRUE}). Used in volcano plot. If \code{TRUE}, 
+#' effect is shown as FC instead of logFC. 
+#' @param show.lambda (default: \code{TRUE}) If \code{TRUE} shows lambda
+#' score for the given model.
 #' @export
 setMethod(
     f = "plot",
@@ -26,10 +29,10 @@ setMethod(
         
         if(type == "qq") {
             dta <- getAssociation(x, rid = rid, coef = coef,
-                                  contrast=contrast, fNames = NULL)
+                                  contrast = contrast, fNames = NULL)
             qq_plot(dta$P.Value, show.lambda = show.lambda)
         } else if(type == "manhattan") {
-            dta <<- getAssociation(x, rid = rid, coef = coef, contrast = contrast, 
+            dta <- getAssociation(x, rid = rid, coef = coef, contrast = contrast, 
                                   fNames = fNames)
             # Select columns P.Value, Chromosome and "Position"
             dta <- dta[ , c("P.Value", fNames)]

@@ -3,11 +3,10 @@
 #' @param  values Numeric vector of P.Values
 #' @param show.lambda (default: \code{TRUE}) If \code{TRUE} shows lambda
 #' score for the given model.
-#' @return An object obtained from \link{ggplot}.
+#' @return An object obtained from \link[ggplot2]{ggplot}.
 #' @examples
-#' data(gexp_r)
-#' data(exp_r)
-#' rst <- topTable(assocES(exp_r, gexp_r, formula=~sex+age, select="Cd"))
+#' data(rset)
+#' rst <- getAssociation(rset, rid = 1, fNames = NULL)
 #' qq_plot(rst$P.Value)
 #' @export
 qq_plot <- function(values, show.lambda = TRUE) {

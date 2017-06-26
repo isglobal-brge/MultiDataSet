@@ -31,10 +31,10 @@ A \code{ggplot} object
 }
 \description{
 Function that takes two numeric vectors (P-Value and fold change)
-and draws a volcano plot using \link{ggplot2}
+and draws a volcano plot using \code{ggplot2}
 }
 \examples{
-data(exposome)
-w1 <- psygenet2r::extract(exwas(expo[1:20, ], asthma~1, family = "binomial"))
-volcano_plot(w1$pvalue, w1$effect, rownames(w1))
+data(rset)
+w1 <- getAssociation(rset, rid = 1, fNames = NULL)
+volcano_plot(w1$P.Value, w1$logFC, rownames(w1))
 }

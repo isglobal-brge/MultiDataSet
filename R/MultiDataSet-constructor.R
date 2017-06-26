@@ -7,5 +7,4 @@
 #' createMultiDataSet()
 createMultiDataSet <- function(){
     new("MultiDataSet")
-    }
-    
+}

@@ -40,29 +40,29 @@ test_that("Setters Getters", {
     
     # Check ncols ####
     ## Empty dataset
-    expect_equal(ncols(multi), numeric(0))
+    expect_equal(ncol(multi), numeric(0))
     
     ## One dataset 
     multi2 <- add_eset(multi, eset, "rnaseq")
-    expect_equal(ncols(multi2), c(rnaseq = 2))
+    expect_equal(ncol(multi2), c(rnaseq = 2))
     
     ## Two datasets
     multi2 <- add_eset(multi, eset, "rnaseq")
     multi2 <- add_eset(multi2, eset[, 1], "rnaseq2")
-    expect_equal(ncols(multi2), c(rnaseq = 2, rnaseq2 = 1))
+    expect_equal(ncol(multi2), c(rnaseq = 2, rnaseq2 = 1))
     
     # Check nrows ####
     ## Empty dataset
-    expect_equal(nrows(multi), numeric(0))
+    expect_equal(nrow(multi), numeric(0))
     
     ## One dataset 
     multi2 <- add_eset(multi, eset, "rnaseq")
-    expect_equal(nrows(multi2), c(rnaseq = 3))
+    expect_equal(nrow(multi2), c(rnaseq = 3))
     
     ## Two datasets
     multi2 <- add_eset(multi, eset, "rnaseq")
     multi2 <- add_eset(multi2, eset[1:2, ], "rnaseq2")
-    expect_equal(nrows(multi2), c(rnaseq = 3, rnaseq2 = 2))
+    expect_equal(nrow(multi2), c(rnaseq = 3, rnaseq2 = 2))
     
     
 })

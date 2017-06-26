@@ -1,6 +1,8 @@
 #' Function to draw a QQ Plot from a vector of numbers
 #'
 #' @param  values Numeric vector of P.Values
+#' @param show.lambda (default: \code{TRUE}) If \code{TRUE} shows lambda
+#' score for the given model.
 #' @return An object obtained from \link{ggplot}.
 #' @examples
 #' data(gexp_r)
@@ -8,7 +10,7 @@
 #' rst <- topTable(assocES(exp_r, gexp_r, formula=~sex+age, select="Cd"))
 #' qq_plot(rst$P.Value)
 #' @export
-qq_plot <- function(values) {
+qq_plot <- function(values, show.lambda = TRUE) {
     values <- as.numeric(values)
     o <- -log10(sort(values, decreasing=FALSE))
     e <- -log10(1:length(o)/length(o))
@@ -21,8 +23,6 @@ qq_plot <- function(values) {
 
     dta <- as.data.frame(cbind(e, o, c025, c975))
 
-    lambda <- signif(lambdaClayton(values), 4)
-    
     p <- ggplot2::ggplot(dta) + ggplot2::theme_bw()
     p <- p + ggplot2::geom_polygon(
             data=data.frame(
@@ -34,7 +34,11 @@ qq_plot <- function(values) {
     p <- p + ggplot2::xlab(expression(Expected~~-log[10](P-Value)))
     p <- p + ggplot2::ylab(expression(Observed~~-log[10](P-Value)))
     p <- p + ggplot2::theme(legend.position = "none") 
-    p <- p + ggplot2::geom_text(ggplot2::aes(x = -Inf, y = Inf, hjust = 0, vjust = 1,
+    if(show.lambda) {
+        lambda <- signif(lambdaClayton(values), 4)
+        p <- p + ggplot2::geom_text(ggplot2::aes(x = -Inf, y = Inf, hjust = 0, vjust = 1,
                                              label = paste("Lambda: ", lambda)))
+    }
+    
     return(p)
 }

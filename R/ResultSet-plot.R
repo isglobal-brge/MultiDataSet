@@ -14,10 +14,10 @@ setMethod(
     signature = "ResultSet",
     definition = function(x, y, rid = 1, coef = 2, contrast = NULL, type, 
                           tFC = 2, tPV = -log10(0.001),
-                          show.effect = FALSE, 
+                          show.effect = FALSE, show.lambda = TRUE,
                           fNames = c("chromosome", "start"), ...) {
         
-        if (class(x@results[[rid]]) != "MArrayLM"){
+        if (class(x@results[[rid]]$result) != "MArrayLM"){
             stop("plot function is only available for results in a MArrayLM object.")
         }
         
@@ -27,9 +27,9 @@ setMethod(
         if(type == "qq") {
             dta <- getAssociation(x, rid = rid, coef = coef,
                                   contrast=contrast, fNames = NULL)
-            qq_plot(dta$P.Value)
+            qq_plot(dta$P.Value, show.lambda = show.lambda)
         } else if(type == "manhattan") {
-            dta <- getAssociation(x, rid = rid, coef = coef, contrast = contrast, 
+            dta <<- getAssociation(x, rid = rid, coef = coef, contrast = contrast, 
                                   fNames = fNames)
             # Select columns P.Value, Chromosome and "Position"
             dta <- dta[ , c("P.Value", fNames)]

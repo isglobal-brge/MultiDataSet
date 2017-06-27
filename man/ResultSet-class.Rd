@@ -31,7 +31,8 @@
 
 \S4method{plot}{ResultSet,ANY}(x, y, rid = 1, coef = 2, contrast = NULL,
   type, tFC = 2, tPV = -log10(0.001), show.effect = FALSE,
-  show.lambda = TRUE, fNames = c("chromosome", "start"), ...)
+  show.lambda = TRUE, fNames = c("chromosome", "start"), subset, highlight,
+  ...)
 
 \S4method{varLabels}{ResultSet}(object)
 
@@ -66,6 +67,10 @@ effect is shown as FC instead of logFC.}
 
 \item{show.lambda}{(default: \code{TRUE}) If \code{TRUE} shows lambda
 score for the given model.}
+
+\item{subset}{GenomicRanges used to zoom a region in Manhattan plot}
+
+\item{highlight}{GenomicRanges used to highlight a region in Manhattan plot}
 
 \item{fOrigin}{Chracter with the function used to run the analysis.}
 

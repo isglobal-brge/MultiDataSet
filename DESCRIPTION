@@ -1,7 +1,7 @@
 Package: MultiDataSet
 Type: Package
 Title: Implementation of MultiDataSet, ResultSet and MethylationSet 
-Version: 1.5.4
+Version: 1.5.5
 Date: 2017-06-02
 Authors@R: c(person("Carlos", "Ruiz-Arenas", , "carlos.ruiz@isglobal.org", role = c("aut", "cre")),
   person("Carles", "Hernandez-Ferrer", , "carles.hernandez@isglobal.org", role = "aut"),

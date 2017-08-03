@@ -55,7 +55,7 @@ test_that("mae2mds", {
     # rangemap <- data.frame(primary = c("Jack", "Jill", "Jill"),
     #                        assay = c("snparray1", "snparray2", "snparray3"),
     #                        stringsAsFactors = FALSE)
-    
+    # 
     nrows <- 5; ncols <- 4
     counts <- matrix(runif(nrows * ncols, 1, 1e4), nrows)
     rowRanges <- GRanges(rep(c("chr1", "chr2"), c(2, nrows - 2)),
@@ -78,7 +78,7 @@ test_that("mae2mds", {
     
     
     objlist <- list("Affy" = exprdat, "Methyl 450k" = methyldat,
-                    "Mirna" = microdat, "CNV gistic2" = rse)
+                    "Mirna" = microdat,  "CNV gistic2" = rse)
     myMultiAssay <- MultiAssayExperiment(objlist, patient.data, dfmap)
 
     mds <- mae2mds(myMultiAssay)
@@ -95,21 +95,20 @@ test_that("mae2mds", {
 
 test_that("mds2mae", {
     data(eset)
-    data(pheno)
     fvarLabels(eset)[1] <- "chromosome"
+    data(mset)
     
-    mset <- prepareMethylationSet(betavals, pheno)
     multi <- createMultiDataSet()
     multi <- add_methy(multi, mset)
     multi <- add_genexp(multi, eset)
     multi <- add_eset(multi, eset, dataset.type = "test", GRanges = NA)
     
     mae <- mds2mae(multi)
-    
+
     expect_is(mae, "MultiAssayExperiment")
     expect_equal(names(mae), c("methylation", "expression", "test"))
-    expect_equal(nrow(pData(mae)), length(Reduce(union, sampleNames(multi))))
-    
+    expect_equal(nrow(colData(mae)), length(Reduce(union, sampleNames(multi))))
+
     expect_is(experiments(mae)[[1]], "MethylationSet")
     expect_is(experiments(mae)[[2]], "ExpressionSet")
     expect_is(experiments(mae)[[3]], "ExpressionSet")

@@ -14,6 +14,8 @@
 #' @import methods
 #' @importFrom GenomicRanges makeGRangesFromDataFrame
 #' @importFrom IRanges subsetByOverlaps 
+#' @importFrom limma contrasts.fit eBayes topTable
+#' @importFrom qqman manhattan
 #' @importFrom S4Vectors DataFrame
 #' @importFrom SummarizedExperiment rowRanges
 #' @importFrom utils installed.packages

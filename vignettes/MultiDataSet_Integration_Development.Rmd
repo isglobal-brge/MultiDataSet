@@ -11,6 +11,10 @@ output:
     fig_caption: yes
     fig_height: 3
     fig_width: 4
+vignette: >
+  %\VignetteIndexEntry{Integration of methylation and expression using MultiDataSet}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
 ---
 
 # Introduction
@@ -400,13 +404,11 @@ library(parallel)
 library(minfi)
 ```
 
-MEALData contains the expression data in an `ExpressionSet`. However, the methylation data has the beta values in a matrix and the phenotypic data in a data.frame. Therefore, we will create a `MethylationSet` and then we will add the `ExpressionSet` and the `MethylationSet` to a `MultiDataSet`:
+MEALData contains the expression data and the methylation data of few samples. We will add this data to a `MultiDataSet` to test our function:
 
 ```{r Prepare MultiDataSet, warning=FALSE, message = FALSE}
-meth <- prepareMethylationSet(betavals, pheno)
 multi <- createMultiDataSet()
-multi <- add_methy(multi, meth)
-fvarLabels(eset)[1] <- "chromosome" 
+multi <- add_methy(multi, mset)
 multi <- add_genexp(multi, eset)
 ```
 

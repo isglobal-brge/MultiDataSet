@@ -1,3 +1,37 @@
+#' MultiDataSet instances
+#'
+#' The class \code{MultiDataSet} is a superior class to store multiple
+#' datasets in form of triplets (assayData-phenoData-featureData). The datasets must be \code{eSet} or
+#' \code{SummarizedExperiment}.
+#'
+#' The names of the three lists (\code{assayData}, \code{phenoData} and
+#' \code{featureData}) must be the same.
+#'
+#' @name MultiDataSet-class
+#' @rdname MultiDataSet-class
+#' @exportClass MultiDataSet
+#' @slot assayData List of \code{assayData} elements.
+#' @slot phenoData List of \code{AnnotatedDataFrame} containing the phenoData
+#' of each \code{assayData}.
+#' @slot featureData List of \code{AnnotatedDataFrame} containing the featureData
+#' of each \code{assayData}.
+#' @slot rowRanges List of \code{GenomicRanges} containing the rowRanges
+#' of each \code{assayData}.
+#' @slot extraData List of other slots of the original object.
+#' @slot return_method List of functions used to create the original object.
+#' @seealso \code{\link{add_eset}}, \code{\link{add_rse}}
+setClass(
+  Class = "MultiDataSet",
+  representation = representation(
+    assayData = "list",
+    phenoData = "list",
+    featureData = "list",
+    rowRanges = "list",
+    extraData = "list",
+    return_method = "list"
+  )
+)
+
 #' Method to add an \code{eSet} to \code{MultiDataSet}.
 #'
 #' This method adds or overwrites a slot of a \code{MultiDataSet} with the content 
@@ -242,49 +276,6 @@ setGeneric("add_table", function(object, set, dataset.type, dataset.name = NULL,
 #' commonIds(multi)
 setGeneric("commonIds", function(object) standardGeneric("commonIds"))
 
-#' @export 
-setGeneric("betas", function(object){
-    standardGeneric("betas")
-})
-
-#' Filter \code{MethylationSet} probes
-#' 
-#' This function selects probes present in the annotation matrix. Probes without
-#' annotation and annotation values without beta values are discarded. 
-#' 
-#' @rdname checkProbes-methods
-#' @export 
-#' @aliases checkProbes
-#' @param object \code{MethylationSet}
-#' @return \code{MethylationSet} containing the common samples.
-#' @examples 
-#' if (require(MEALData)){
-#'  betavals <- betavals[1:100, ]  ## To speed up the example, the beta values are reduced
-#'  methy <- prepareMethylationSet(betavals, pheno)
-#'  checkProbes(methy)
-#' }
-setGeneric("checkProbes", function(object) standardGeneric("checkProbes"))
-
-#' Modify a \code{MethylationSet} to only contain common samples
-#' 
-#' This function removes samples that have beta values but no phenotypes and vice versa.
-#' If snps object is present, only samples present in the three set are retained.
-#' 
-#' @name checkSamples
-#' @rdname checkSamples-methods
-#' @aliases checkSamples 
-#' @export 
-#' 
-#' @param object \code{MethylationSet}
-#' @return \code{MethylationSet} containing the common samples.
-#' @examples 
-#' if (require(MEALData)){
-#'  betavals <- betavals[1:100, ]  ## To speed up the example, the beta values are reduced
-#'  methy <- prepareMethylationSet(betavals, pheno)
-#'  checkSamples(methy)
-#' }
-setGeneric("checkSamples", function(object) standardGeneric("checkSamples"))
-
 #' Method to select samples that are present in all datasets.
 #'
 #' This method subsets the datasets to only contain the samples that are in all datasets. All sets 
@@ -320,32 +311,6 @@ setGeneric("checkSamples", function(object) standardGeneric("checkSamples"))
 #' multi <- add_genexp(multi, eset, dataset.name="g2")
 #' commonSamples(multi)
 setGeneric("commonSamples", function(object, unify.names = FALSE) standardGeneric("commonSamples"))
-
-#' Transforms beta values to M-values
-#' 
-#' Given a \code{MethylationSet} or a \code{AnalysisResults} returns 
-#' the matrix of M values using a logit2 transformation. Betas equal to 0 will 
-#' be transformed to threshold and betas equal to 1, to 1 - threshold. 
-#' 
-#' @name getMs
-#' @rdname getMs-methods
-#' @export
-#' @param object \code{MethylationSet} or \code{AnalysisResults}
-#' @param threshold Numeric with the threshold to avoid 0s and 1s. 
-#' @return Matrix with the M values.
-#' @examples
-#' if (require(minfiData)){
-#' set <- prepareMethylationSet(MsetEx[1:100, ], pData(MsetEx))
-#' mvalues <- getMs(set)
-#' head(mvalues)
-#' }
-setGeneric("getMs", function(object, threshold = 0.0001) standardGeneric("getMs"))
-
-
-setGeneric("ncols", function(object) standardGeneric("ncols"))
-
-setGeneric("nrows", function(object) standardGeneric("nrows"))
-
 
 #' Get the name of the datasets that have rowRanges
 #' @export

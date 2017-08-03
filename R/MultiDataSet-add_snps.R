@@ -8,7 +8,7 @@ setMethod(
         
         fet <- fData(snpSet)
         if (!all(c("position", "chromosome") %in% colnames(fet))){
-            stop("fData of methySet must contain columns chromosome and position")
+            stop("fData of snpSet must contain columns chromosome and position")
         }
         range <- GenomicRanges::makeGRangesFromDataFrame(fet, seqnames.field = "chromosome", 
                                                          start.field = "position", end.field = "position")

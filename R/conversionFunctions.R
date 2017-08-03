@@ -13,7 +13,7 @@ mae2mds <- function(MAE, warnings = TRUE){
     exps <- MultiAssayExperiment::experiments(MAE)
     map <- MultiAssayExperiment::sampleMap(MAE)
     map <- MultiAssayExperiment::mapToList(map, colnames(map)[1])
-    pheno <- as.data.frame(MultiAssayExperiment::pData(MAE))
+    pheno <- as.data.frame(MultiAssayExperiment::colData(MAE))
     
     for (expname in names(exps)){
         set <- exps[[expname]]

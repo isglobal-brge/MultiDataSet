@@ -63,7 +63,7 @@ test_that("add RangedSummarizedExperiment", {
   data("MsetEx")
   GRset <- mapToGenome(MsetEx[1:10, 1:2])
   
-  expect_warning(multi2 <- add_rse(multi, GRset, "GRSet"), "No id column found in rowRanges. The id will be equal to the sampleNames")
+  expect_warning(multi2 <- add_rse(multi, GRset, "GRSet"), "No id column found in colData. The id will be equal to the sampleNames")
   expect_equal(sampleNames(multi2[["GRSet"]]), c("5723646052_R02C02", "5723646052_R04C01"))
   expect_equal(multi2[["GRSet"]]$id, c("5723646052_R02C02", "5723646052_R04C01"))
   

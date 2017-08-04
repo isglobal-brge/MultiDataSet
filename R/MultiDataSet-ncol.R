@@ -4,6 +4,6 @@ setMethod(
     f = "ncol",
     signature = c("MultiDataSet"),
     definition = function(x) {
-        return(vapply(x@phenoData, nrow, numeric(1)))
+        return(vapply(x@phenoData, function(y) nrow(y[[1]]), numeric(1)))
     } 
 )

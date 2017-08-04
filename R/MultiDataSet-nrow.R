@@ -4,6 +4,6 @@ setMethod(
     f = "nrow",
     signature = c("MultiDataSet"),
     definition = function(x) {
-        return(vapply(x@featureData, nrow, numeric(1)))
+        return(vapply(x@featureData, function(y) nrow(y[[1]]), numeric(1)))
     } 
 )

@@ -98,66 +98,7 @@ test_that("specific functions based on eSet", {
     snpSet2 <- snpSet
     fvarLabels(snpSet2)[2] <- "cot"
     expect_error(add_snps(multi, snpSet2), "fData of snpSet must contain columns chromosome and position")
-    
-    
-  # library(methylumi)
-  # samps <- read.table(system.file("extdata/samples.txt",
-  #                                 package = "methylumi"),sep="\t",header=TRUE)
-  # mldat <- methylumi::methylumiR(system.file('extdata/exampledata.samples.txt',package='methylumi'),
-  #                     qcfile=system.file('extdata/exampledata.controls.txt',package="methylumi"),
-  #                     sampleDescriptions=samps)
-  # fvarLabels(mldat) <- tolower(fvarLabels(mldat))
-  # fData(mldat)$position <- fData(mldat)$cpg_coordinate
-  # pData(mldat)$id <- pData(mldat)$sampleID
-  # multi <- add_eset(multi, mldat, "cot", GRanges = NA)
-  # expect_equal(names(multi), c("expression", "snps", "cot"))
-  # expect_equal(names(multi[, c("cot", "snps")]), c("cot", "snps"))
-  # expect_is(multi[, "snps", drop = TRUE], "SnpSet")
-  # 
-  
-  
-  beta_matrix <- matrix(runif(4), nrow = 2)
-  colnames(beta_matrix) <- c("H", "M")
-  rownames(beta_matrix) <- c("cg00050873", "cg00212031")
-  phenotypes <- data.frame(age = c(12, 23))
-  rownames(phenotypes) <- c("H", "M")
-  annot <- data.frame(chromosome = c("chr1", "chr2"), 
-             position = c(12414, 1234321))
-  mset <- methylationSet(betas = beta_matrix, phenotypes = phenotypes, annotationDataFrame = annot)
-  
-  multi <- createMultiDataSet()
-  multi <- add_methy(multi, mset)
-  expect_equal(names(multi), "methylation")
-  
-  multi <- createMultiDataSet()
-  msetbad <- mset
-  colnames(fData(msetbad))[1] <- "chr"
-  expect_error(multi <- add_methy(multi, msetbad), "fData of methySet must contain columns chromosome and position")
-  
-  multi <- createMultiDataSet()
-  msetbad <- mset
-  colnames(fData(msetbad))[2] <- "pos"
-  expect_error(multi <- add_methy(multi, msetbad), "fData of methySet must contain columns chromosome and position")
-  
-  library(minfiData)
-  minfiset <- ratioConvert(MsetEx[1:2, ])
-  rowData(minfiset) <- fData(mset)
-  
-  multi <- createMultiDataSet()
-  multi <- add_methy(multi, minfiset)
-  expect_equal(names(multi), "methylation")
-  
-  
-  multi <- createMultiDataSet()
-  msetbad <- minfiset
-  colnames(rowData(msetbad))[1] <- "chr"
-  expect_error(multi <- add_methy(multi, msetbad), "fData of methySet must contain columns chromosome and position")
-  
-  multi <- createMultiDataSet()
-  msetbad <- minfiset
-  colnames(rowData(msetbad))[2] <- "pos"
-  expect_error(multi <- add_methy(multi, msetbad), "fData of methySet must contain columns chromosome and position")
-  
+   
 })
 
 # Specific Wrong ####

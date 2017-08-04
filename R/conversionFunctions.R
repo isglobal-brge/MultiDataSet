@@ -56,7 +56,7 @@ mae2mds <- function(MAE, warnings = TRUE){
 #' @export mds2mae
 #' @param MDS a \code{MultiDataSet} 
 #' @return \code{MultiAssayExperiment} with the of the incoming \code{MultiDataSet}.
-mds2mae <- function(MDS){
+mds2mae <- function(MDS) {
     
     objlist <- lapply(names(MDS), function(x) MDS[[x]])
     names(objlist) <- names(MDS)
@@ -65,7 +65,7 @@ mds2mae <- function(MDS){
         data.frame(primary = x$id, assay = rownames(x), stringsAsFactors = FALSE))
     dfmap <- MultiAssayExperiment::listToMap(sampleMap)
     
-    phenoDataVars <- Reduce(intersect, lapply(pData(MDS), colnames))
+    phenoDataVars <- Reduce(intersect, lapply(pData(MDS), function(x) colnames(x$main)))
     
     pData <- Reduce(rbind, lapply(pData(MDS), function(x) x[, phenoDataVars, drop = FALSE]))
     pData <- pData[!duplicated(pData$id), ]

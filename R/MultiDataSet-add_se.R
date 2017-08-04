@@ -49,7 +49,7 @@ setMethod(
         }
         
         if (missing(GRanges)){
-            GRanges <- GenomicRanges::makeGRangesFromDataFrame(SummarizedExperiment::colData(set))
+            GRanges <- GenomicRanges::makeGRangesFromDataFrame(SummarizedExperiment::rowData(set))
             names(GRanges) <- rownames(SummarizedExperiment::rowData(set))
         } 
         if (!is(GRanges, "GenomicRanges")){
@@ -70,9 +70,7 @@ setMethod(
             assays <- SummarizedExperiment::Assays(as.list(env))
             attr <- list(Class = class(set), 
                          assays = assays, 
-                         colData = S4Vectors::DataFrame(as(phe$main, "data.frame")),
-                         rowRanges = GenomicRanges::makeGRangesFromDataFrame(as(fet$main, "data.frame"), 
-                                                                             keep.extra.columns=TRUE))
+                         colData = S4Vectors::DataFrame(as(phe$main, "data.frame")))
             attr <- c(attr, phe[-1], fet[-1], extra)
             do.call("new", attr)
         }

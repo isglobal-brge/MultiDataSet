@@ -2,7 +2,7 @@
 % Please edit documentation in R/1_MultiDataSet-ClassGenerics.R
 \name{add_snps}
 \alias{add_snps}
-\title{Method to add a slot of SNPs to \code{MultiDataSet}}
+\title{Method to add a slot of SNPs to \code{MultiDataSet}.}
 \usage{
 add_snps(object, snpSet, ...)
 }
@@ -19,16 +19,16 @@ filled.
 }
 \description{
 This method adds or overwrites the slot \code{"snps"} of an
-\code{MultiDataSet} with the content of the given \code{SnpSet}. The fData 
-of the \code{SnpSet} must contain the columns chromosome and position.
+\code{MultiDataSet} with the content of the given \code{SnpSet}. The fData of the
+\code{SnpSet} must contain the columns chromosome and position.
 }
 \examples{
 multi <- createMultiDataSet()
 geno <- matrix(c(3,1,2,1), ncol = 2)
 colnames(geno) <- c("VAL0156", "VAL0372")
 rownames(geno) <- c("rs3115860", "SNP1-1628854")
-map <- AnnotatedDataFrame(data.frame(chromosome = c("chr1", "chr2"), 
-  position = c(12414, 1234321), stringsAsFactors = FALSE))
+map <- AnnotatedDataFrame(data.frame(chromosome = c("chr1", "chr2"), position = c(12414, 1234321),
+     stringsAsFactors = FALSE))
 rownames(map) <- rownames(geno)
 snpSet <- new("SnpSet", call = geno, featureData = map)
 pheno <- data.frame(id = c("VAL0156", "VAL0372"))

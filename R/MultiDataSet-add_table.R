@@ -41,11 +41,11 @@ setMethod(
         feats <- as(data.frame(id = rownames(set)), "AnnotatedDataFrame")
         rownames(feats) <- feats$id
         
-        object@phenoData[[dataset.name]] <- pheno
-        object@featureData[[dataset.name]] <- feats
+        object@phenoData[[dataset.name]] <- list(main = pheno)
+        object@featureData[[dataset.name]] <- list(main = feats)
         object@rowRanges[[dataset.name]] <- NA
         
-        returnfunc <- function(env, phe, fet) {
+        returnfunc <- function(env, phe, fet, extra) {
             env$mat
         }
         

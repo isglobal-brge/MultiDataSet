@@ -4,7 +4,9 @@
 setMethod(
     f = "add_se",
     signature = c("MultiDataSet", "SummarizedExperiment"),
-    definition = function(object, set, dataset.type, dataset.name, warnings = TRUE, overwrite = FALSE, 
+    definition = function(object, set, dataset.type, dataset.name, 
+                          sample.tables = NULL, feature.tables = "elementMetadata",
+                          warnings = TRUE, overwrite = FALSE, 
                           GRanges) {
         validObject(set)
         dataset.name <- paste(c(dataset.type, dataset.name), collapse = "+")
@@ -24,17 +26,30 @@ setMethod(
                function(x) assign(x, SummarizedExperiment::assays(set)[[x]], env))
         object@assayData[[dataset.name]] <- env
         
+        extra <- attributes(set)
+        
         pheno <- Biobase::AnnotatedDataFrame(as.data.frame(SummarizedExperiment::colData(set)))
         if (!"id" %in% colnames(pheno)){
-            warning("No id column found in rowRanges. The id will be equal to the sampleNames")
+            warning("No id column found in colData. The id will be equal to the sampleNames")
             pheno$id <- rownames(pheno)
         }
-        object@phenoData[[dataset.name]] <- pheno
-        object@featureData[[dataset.name]] <- 
-            Biobase::AnnotatedDataFrame(as.data.frame(SummarizedExperiment::rowData(set)))
+        object@phenoData[[dataset.name]] <- list(main = pheno)
+        if (!is.null(sample.tables)) {
+            object@phenoData[[dataset.name]] <- 
+                c(object@phenoData[[dataset.name]], extra[sample.tables])
+            
+        }
+        
+        
+        feat <- Biobase::AnnotatedDataFrame(as.data.frame(SummarizedExperiment::rowData(set)))
+        object@featureData[[dataset.name]] <- list(main = feat)
+        if (!is.null(feature.tables)) {
+            object@featureData[[dataset.name]] <- 
+                c(object@featureData[[dataset.name]], extra[feature.tables])
+        }
         
         if (missing(GRanges)){
-            GRanges <- GenomicRanges::makeGRangesFromDataFrame(SummarizedExperiment::rowData(set))
+            GRanges <- GenomicRanges::makeGRangesFromDataFrame(SummarizedExperiment::colData(set))
             names(GRanges) <- rownames(SummarizedExperiment::rowData(set))
         } 
         if (!is(GRanges, "GenomicRanges")){
@@ -42,15 +57,26 @@ setMethod(
                 stop("GRanges should be a GenomicRanges or NA.")
             }
         }
-        
         object@rowRanges[[dataset.name]] <- GRanges
         
-        returnfunc <- function(env, phe, fet) {
-            assays <- SummarizedExperiment::Assays(as.list(env))
-            new(class(set), assays = assays, colData = S4Vectors::DataFrame(as(phe, "data.frame")), 
-                elementMetadata = S4Vectors::DataFrame(as(fet, "data.frame")))
-        }
         
+        extranames <- names(extra)[!names(extra) %in% 
+                                       c("assays", "colData", "rowRanges", "class", sample.tables, feature.tables)]
+        extra <- extra[extranames]
+        extra <- extra[!sapply(extra, class) == "name"]
+        object@extraData[[dataset.name]] <- extra
+        
+        returnfunc <- function(env, phe, fet, extra) {
+            assays <- SummarizedExperiment::Assays(as.list(env))
+            attr <- list(Class = class(set), 
+                         assays = assays, 
+                         colData = S4Vectors::DataFrame(as(phe$main, "data.frame")),
+                         rowRanges = GenomicRanges::makeGRangesFromDataFrame(as(fet$main, "data.frame"), 
+                                                                             keep.extra.columns=TRUE))
+            attr <- c(attr, phe[-1], fet[-1], extra)
+            do.call("new", attr)
+        }
+
         object@return_method[[dataset.name]] <- returnfunc
         return(object)
     }

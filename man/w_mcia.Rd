@@ -15,6 +15,6 @@ w_mcia(object, ...)
 A list of results from \link[omicade4]{mcia}
 }
 \description{
-Method \link[omicade4]{mcia} is applied on a \link{MultiDataSet} object 
-after getting the common samples along all the contained datasets.
+Method \link[omicade4]{mcia} is applied on a \link{MultiDataSet} object after
+getting the common samples along all the contained datasets.
 }

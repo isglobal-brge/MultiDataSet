@@ -2,9 +2,10 @@
 % Please edit documentation in R/1_MultiDataSet-ClassGenerics.R
 \name{add_eset}
 \alias{add_eset}
-\title{Method to add an \code{eSet} to \code{MultiDataSet}}
+\title{Method to add an \code{eSet} to \code{MultiDataSet}.}
 \usage{
-add_eset(object, set, dataset.type, dataset.name = NULL, warnings = TRUE,
+add_eset(object, set, dataset.type, dataset.name = NULL,
+  sample.tables = NULL, feature.tables = NULL, warnings = TRUE,
   overwrite = FALSE, GRanges)
 }
 \arguments{
@@ -12,17 +13,18 @@ add_eset(object, set, dataset.type, dataset.name = NULL, warnings = TRUE,
 
 \item{set}{Object derived from \code{eSet} to be used to fill the slot.}
 
-\item{dataset.type}{Character with the type of data of the omic set (e.g. 
-expression, methylation...)}
+\item{dataset.type}{Character with the type of data of the omic set (e.g. expression, methylation...)}
 
-\item{dataset.name}{Character with the specific name for this set (NULL by 
-default). It is useful when there
+\item{dataset.name}{Character with the specific name for this set (NULL by default). It is useful when there 
 are several sets of the same type (e.g. multiple expression assays)}
+
+\item{sample.tables}{Character with the names of the slots with sample data besides phenoData.}
+
+\item{feature.tables}{Character with the names of the slots with feature data besides featureData.}
 
 \item{warnings}{Logical to indicate if warnings will be displayed.}
 
-\item{overwrite}{Logical to indicate if the set stored in the slot will be 
-overwritten.}
+\item{overwrite}{Logical to indicate if the set stored in the slot will be overwritten.}
 
 \item{GRanges}{\code{GenomicRanges} to be included in rowRanges slot.}
 }
@@ -30,8 +32,8 @@ overwritten.}
 A new \code{MultiDataSet} with a slot filled.
 }
 \description{
-This method adds or overwrites a slot of a \code{MultiDataSet} with the 
-content of the given \code{eSet}.
+This method adds or overwrites a slot of a \code{MultiDataSet} with the content 
+of the given \code{eSet}.
 }
 \examples{
 multi <- createMultiDataSet()
@@ -39,6 +41,5 @@ eset <- new("ExpressionSet", exprs = matrix(runif(10), 5))
 multi <- add_eset(multi, eset, "exampledata", GRanges = NA)
 }
 \seealso{
-\code{\link{add_methy}}, \code{\link{add_genexp}}, 
-\code{\link{add_rnaseq}}, \code{\link{add_snps}}
+\code{\link{add_methy}}, \code{\link{add_genexp}}, \code{\link{add_rnaseq}}, \code{\link{add_snps}}
 }

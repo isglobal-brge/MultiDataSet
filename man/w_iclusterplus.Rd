@@ -17,10 +17,9 @@ w_iclusterplus(object, commonSamples = TRUE, ...)
 A list of results from \link[iClusterPlus]{iClusterPlus}
 }
 \description{
-Method \link[iClusterPlus]{iClusterPlus} is applied on a \link{MultiDataSet}
-object after getting the common samples along all the contained datasets.
+Method \link[iClusterPlus]{iClusterPlus} is applied on a \link{MultiDataSet} object after
+getting the common samples along all the contained datasets.
 }
 \note{
-Argument \code{type} for \link[iClusterPlus]{iClusterPlus} is filled 
-within the method.
+Argument \code{type} for \link[iClusterPlus]{iClusterPlus} is filled within the method.
 }

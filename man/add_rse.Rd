@@ -2,35 +2,36 @@
 % Please edit documentation in R/1_MultiDataSet-ClassGenerics.R
 \name{add_rse}
 \alias{add_rse}
-\title{Method to add a \code{RangedSummarizedExperiment} to \code{MultiDataSet}}
+\title{Method to add a \code{RangedSummarizedExperiment} to \code{MultiDataSet}.}
 \usage{
-add_rse(object, set, dataset.type, dataset.name = NULL, warnings = TRUE,
+add_rse(object, set, dataset.type, dataset.name = NULL,
+  sample.tables = NULL, feature.tables = NULL, warnings = TRUE,
   overwrite = FALSE)
 }
 \arguments{
 \item{object}{\code{MultiDataSet} that will be filled.}
 
-\item{set}{Object derived from \code{RangedSummarizedExperiment} to be used 
-to fill the slot.}
+\item{set}{Object derived from \code{RangedSummarizedExperiment} to be used to fill the slot.}
 
-\item{dataset.type}{Character with the type of data of the omic set (e.g. 
-expression, methylation...)}
+\item{dataset.type}{Character with the type of data of the omic set (e.g. expression, methylation...)}
 
-\item{dataset.name}{Character with the specific name for this set (NULL by 
-default). It is useful when there are several sets of the same type (e.g. 
-multiple expression assays)}
+\item{dataset.name}{Character with the specific name for this set (NULL by default). It is useful when there 
+are several sets of the same type (e.g. multiple expression assays)}
+
+\item{sample.tables}{Character with the names of the slots with sample data besides colData.}
+
+\item{feature.tables}{Character with the names of the slots with feature data besides rowData.}
 
 \item{warnings}{Logical to indicate if warnings will be displayed.}
 
-\item{overwrite}{Logical to indicate if the set stored in the slot will be 
-overwritten.}
+\item{overwrite}{Logical to indicate if the set stored in the slot will be overwritten.}
 }
 \value{
 A new \code{MultiDataSet} with a slot filled.
 }
 \description{
-This method adds or overwrites a slot of a \code{MultiDataSet} with the 
-content of the given  \code{RangedSummarizedExperiment}.
+This method adds or overwrites a slot of a \code{MultiDataSet} with the content 
+of the given  \code{RangedSummarizedExperiment}.
 }
 \examples{
 if (require(GenomicRanges) & require(SummarizedExperiment)){

@@ -9,8 +9,8 @@ setMethod(
     if (length(samples) == 0){
       stop("There are no samples present in all the datasets")
     }
+    object <- object[samples, ]
     if (unify.names){
-        object <- object[samples, ]
         assyD <- list()
         phenD <- list()
         
@@ -19,12 +19,10 @@ setMethod(
             stop("Sample names cannot be unified. ", paste(names(dups)[dups != 0], collapse = ", "), " contain(s) duplicated sample names.")
         }
         
-        assyD <- list()
-        phenD <- list()
         for(dtype in names(object)) {
-            orig <- assayData(object[[dtype]])
+            orig <- assayData(object)[[dtype]]
             storage.mode <- Biobase:::assayDataStorageMode(orig)
-            ids <- object@phenoData[[dtype]]$id
+            ids <- object@phenoData[[dtype]]$main$id
             
             assyD[[dtype]] <-
                 switch(storage.mode,
@@ -51,12 +49,14 @@ setMethod(
                            })
                        })
             
-            rownames(object@phenoData[[dtype]]) <- ids
+            phenD[[dtype]] <- object@phenoData[[dtype]]
+            for (tab in names(phenD[[dtype]])){
+                rownames(phenD[[dtype]][[tab]]) <- ids
+            }
         }
         object@assayData <- assyD
-        return(object)
-    }else{
-        return(object[samples, ])
+        object@phenoData <- phenD
     }
+        return(object)
   }
 )

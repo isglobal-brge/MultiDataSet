@@ -84,7 +84,8 @@
 \title{MultiDataSet instances}
 \usage{
 \S4method{add_eset}{MultiDataSet,eSet}(object, set, dataset.type,
-  dataset.name = NULL, warnings = TRUE, overwrite = FALSE, GRanges)
+  dataset.name = NULL, sample.tables = "protocolData",
+  feature.tables = NULL, warnings = TRUE, overwrite = FALSE, GRanges)
 
 \S4method{add_genexp}{MultiDataSet,ExpressionSet}(object, gexpSet, ...)
 
@@ -97,10 +98,13 @@
 \S4method{add_methy}{MultiDataSet,GenomicRatioSet}(object, methySet, ...)
 
 \S4method{add_rse}{MultiDataSet,RangedSummarizedExperiment}(object, set,
-  dataset.type, dataset.name = NULL, warnings = TRUE, overwrite = FALSE)
+  dataset.type, dataset.name = NULL, sample.tables = NULL,
+  feature.tables = "elementMetadata", warnings = TRUE, overwrite = FALSE)
 
 \S4method{add_se}{MultiDataSet,SummarizedExperiment}(object, set, dataset.type,
-  dataset.name = NULL, warnings = TRUE, overwrite = FALSE, GRanges)
+  dataset.name = NULL, sample.tables = NULL,
+  feature.tables = "elementMetadata", warnings = TRUE, overwrite = FALSE,
+  GRanges)
 
 \S4method{add_snps}{MultiDataSet,SnpSet}(object, snpSet, ...)
 
@@ -159,6 +163,10 @@ createMultiDataSet()
 \item{dataset.type}{Character with the type of data of the omic set (e.g. expression, methylation...)}
 
 \item{dataset.name}{Character with the specific name for this set (NULL by default). It is useful when there}
+
+\item{sample.tables}{Character with the names of the slots with sample data besides phenoData.}
+
+\item{feature.tables}{Character with the names of the slots with feature data besides featureData.}
 
 \item{warnings}{Logical to indicate if warnings will be displayed.}
 
@@ -292,6 +300,8 @@ of each \code{assayData}.}
 
 \item{\code{rowRanges}}{List of \code{GenomicRanges} containing the rowRanges
 of each \code{assayData}.}
+
+\item{\code{extraData}}{List of other slots of the original object.}
 
 \item{\code{return_method}}{List of functions used to create the original object.}
 }}

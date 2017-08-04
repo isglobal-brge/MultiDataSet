@@ -2,8 +2,7 @@
 % Please edit documentation in R/1_MultiDataSet-ClassGenerics.R
 \name{rowRangesElements}
 \alias{rowRangesElements}
-\title{Get the name of the datasets that have rowRanges in a \code{MultiDataSet}
-object}
+\title{Get the name of the datasets that have rowRanges}
 \usage{
 rowRangesElements(object)
 }
@@ -14,14 +13,13 @@ rowRangesElements(object)
 Character vector with the slots that have rowRanges.
 }
 \description{
-Get the name of the datasets that have rowRanges in a \code{MultiDataSet}
-object
+Get the name of the datasets that have rowRanges
 }
 \examples{
 multi <- createMultiDataSet()
 eset <- new("ExpressionSet", exprs = matrix(runif(10), 5))
 eset2 <- new("ExpressionSet", exprs = matrix(runif(8), ncol = 2))
-fData(eset2) <- data.frame(chromosome = c("chr1", "chr1", "chr1", "chr1"),
+fData(eset2) <- data.frame(chromosome = c("chr1", "chr1", "chr1", "chr1"), 
                           start = c(1, 14, 25, 104),end = c(11, 16, 28, 115),
                           stringsAsFactors = FALSE)
 multi <- add_eset(multi, eset, "exampledata", GRanges = NA)

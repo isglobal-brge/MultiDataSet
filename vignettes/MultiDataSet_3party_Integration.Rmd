@@ -29,37 +29,33 @@ The objective of this document is to illustrate how to use `MultiDataSet` to sto
 
 # Implementation
 
-This section includes three subsections. In the first subsection, __Loading Data__, three dummy datasets are loaded. These datasets correspond to two microarray experiments, which are encapsulated as an `ExpressionSet` and one methylation experiment stored as a `MethylationSet`. The second, __Packaging Data__, illustrates how `MultiDataSet` is used to package multiple pieces of information. Notice that our package allows the possibility of having datasets of the same type. The third section,  __Integrative Analysis__, shows how to perform the integration analysis of the three datasets by using `omicade4` and `iClusterPlus`.
+This section includes three subsections. In the first subsection, __Loading Data__, three dummy datasets are loaded. These datasets correspond to two microarray experiments, which are encapsulated as an `ExpressionSet` and one methylation experiment stored as a `GenomicRatioSet`. The second, __Packaging Data__, illustrates how `MultiDataSet` is used to package multiple pieces of information. Notice that our package allows the possibility of having datasets of the same type. The third section,  __Integrative Analysis__, shows how to perform the integration analysis of the three datasets by using `omicade4` and `iClusterPlus`.
 
 ## Loading Data
 
-Two libraries are required to manage the three dummy datasets: `MultiDataSet` and `Biobase`. These libraries contain the required classes of objects we are dealing with: `MultiDataSet`, `ExpressionSet`, and `MethylationSet`:
+Two libraries are required to manage the three dummy datasets: `MultiDataSet`, `Biobase` and `minfi`. These libraries contain the required classes of objects we are dealing with: `MultiDataSet`, `ExpressionSet`, and `GenomicRatioSet`:
 
 ```{r load_libraries, message=FALSE}
 library(MultiDataSet)
 library(Biobase)
+library(minfi)
 ```
 
 ````{r create_data, echo=FALSE, eval=TRUE, message=FALSE}
-library(MEALData)
-data("eset") # Get the ExpressionSet from MEALData 
-gSet1 <- eset[sample(1:21916, 300), 1:50]   # Create ExpressionSet with samples from 01 to 50
-gSet2 <- eset[sample(1:21916, 300), 35:61]  # Create ExpressionSet with samples from 35 to 64
+library(BRGEdata)
+data("brge_gexp") # Get the ExpressionSet from MEALData 
+gSet1 <- brge_gexp[sample(1:21916, 300), 1:50]   # Create ExpressionSet with samples from 01 to 50
+gSet2 <- brge_gexp[sample(1:21916, 300), 35:61]  # Create ExpressionSet with samples from 35 to 64
 
-data("mset")
-mSet <- mset[sample(1:40000, 300), 20:60] 
-
-
-colnames(fData(gSet1))[1] <- "chromosome"
-colnames(fData(gSet2))[1] <- "chromosome"
-colnames(fData(mSet))[1] <- "chromosome"
+data("brge_methy")
+mSet <- brge_methy[sample(1:40000, 300), 20:60] 
 
 # setwd("/home/chernandez/Projects/multidataset/Tutorials/")
 save(gSet1, gSet2, file="expression.RData")
 save(mSet, file="methylation.RData")
 ````
 
-Three dummy datasets have been generated for creating this document. They can be downloaded from the Supplementary Material of the manuscript. The gene expression file (`expression.RData`) has two `ExpressionSets` corresponding to gene expression measured at two different time points. The methylation file (`methylation.RData`) contains a `MethylationSet`, which is having information about beta values of 450K CpGs. The three datasets belong to the same experiment.
+Three dummy datasets have been generated for creating this document. They can be downloaded from the Supplementary Material of the manuscript. The gene expression file (`expression.RData`) has two `ExpressionSets` corresponding to gene expression measured at two different time points. The methylation file (`methylation.RData`) contains a `GenomicRatioSet`, which is having information about beta values of 450K CpGs. The three datasets belong to the same experiment.
 
 ````{r load_data}
 load("expression.RData")
@@ -67,7 +63,7 @@ load("methylation.RData")
 ls()
 ````
 
-The result of the command `ls` from the previous chunk tells us that objects containing the information are called `gSet1`, `gSet2`, and `mSet`. The first two are the `ExpressionSets` while the last one corresponds to the `MethylationSet`. The following table shows the number of samples of each set and the number of common samples between each pair of sets:
+The result of the command `ls` from the previous chunk tells us that objects containing the information are called `gSet1`, `gSet2`, and `mSet`. The first two are the `ExpressionSets` while the last one corresponds to the `GenomicRatioSet`. The following table shows the number of samples of each set and the number of common samples between each pair of sets:
 
 
 |         | `gSet1` | `gSet2` | `mSet` |
@@ -288,7 +284,7 @@ plotHeatmap(fit=fit,datasets=lapply(as.list(commonSamples(md)), t),
   row.order=c(TRUE,TRUE,TRUE),sparse=c(TRUE,FALSE,TRUE),cap=c(FALSE,FALSE,FALSE)
 )
 ```
-In this case, the first two rectangles correspond to the two `ExpressionSet`s while the last rectangle to the `MethylationSet`.
+In this case, the first two rectangles correspond to the two `ExpressionSet`s while the last rectangle to the `GenomicRatioSet`.
 
 # Summary and Conclusion
 

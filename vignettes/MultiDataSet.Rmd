@@ -38,7 +38,7 @@ In the code below, the libraries needed in this tutorial are loaded:
 
 ```{r Load libraries, message=FALSE, warning = FALSE}
 library(MultiDataSet)
-library(MEALData)
+library(BRGEdata)
 library(minfiData)
 library(GenomicRanges)
 ``` 
@@ -74,9 +74,9 @@ General functions directly interact with the `MultiDataSet` and change its conte
 `add_eset` is the general function to add eSet-derived classes. This function has three important arguments. `object` is the `MultiDataSet` where the set will be added, `set` is the `eSet` that will be added and `dataset.type` is the type of the new set. The next lines will illustrate its use by adding an `ExpressionSet` from `r Rpackage("MEALData")`:
 
 ```{r add_eset 10}
-data(eset)
-eset
-multi2 <- add_eset(multi, eset, dataset.type = "expression")
+data("brge_gexp")
+brge_gexp
+multi2 <- add_eset(multi, brge_gexp, dataset.type = "expression")
 multi2
 multi
 ``` 
@@ -86,7 +86,7 @@ The print of multi2 shows the names of the sets that has been added and, for eac
 By default, the name of the incoming set is equal to dataset.type. If we want to add another set of the same type, we can use the argument `dataset.name` to differentiate them. As an example, we will add the same `ExpressionSet` of the previous example but with another name:
 
 ```{r add_eset 2}
-multi2 <- add_eset(multi2, eset, dataset.type = "expression", dataset.name = "new")
+multi2 <- add_eset(multi2, brge_gexp, dataset.type = "expression", dataset.name = "new")
 multi2
 ``` 
 
@@ -97,28 +97,28 @@ In order to assure sample consistency across the difference datasets, we use a c
 Because our `ExpressionSet` does not contain this column, a warning is raised. To solve it, we can manually add an `id` to our dataset: 
 
 ```{r add_eset add id to eset}
-eset2 <- eset
-eset2$id <- 1:61
-multi2 <- add_eset(multi, eset2, dataset.type = "expression")
+brge_gexp2 <- brge_gexp
+brge_gexp2$id <- 1:100
+multi2 <- add_eset(multi, brge_gexp2, dataset.type = "expression")
 multi2
 ``` 
 
 There are three additional arguments: `warnings`, `overwrite` and `GRanges`. `warnings` can be used to enable or disable the warnings. `overwrite` is used when we want to add a set with a name that is currently used. If TRUE, the set is substituted. If FALSE, nothing is changed:
 
 ```{r add_eset overwrite, error=TRUE}
-eset2 <- eset[, 1:10]
-multi2 <- add_eset(multi, eset, dataset.type = "expression", warnings = FALSE)
+brge_gexp2 <- brge_gexp[, 1:10]
+multi2 <- add_eset(multi, brge_gexp, dataset.type = "expression", warnings = FALSE)
 multi2
-multi2 <- add_eset(multi2, eset2, dataset.type = "expression", warnings = FALSE, overwrite = FALSE)
+multi2 <- add_eset(multi2, brge_gexp2, dataset.type = "expression", warnings = FALSE, overwrite = FALSE)
 multi2
-multi2 <- add_eset(multi2, eset2, dataset.type = "expression", warnings = FALSE, overwrite = TRUE)
+multi2 <- add_eset(multi2, brge_gexp2, dataset.type = "expression", warnings = FALSE, overwrite = TRUE)
 multi2
 ``` 
 
 Finally, `GRanges` argument is used add a `GenomicRanges` with the annotation. By default, a `GenomicRanges` will be generated from the set's `fData`. With this parameter, we can directly supply a `GenomicRanges` or, if the annotation of our dataset cannot be transformed to a `GenomicRanges` (e.g. proteomic data), we can set this parameter to NA:
 
 ```{r add_eset GRanges}
-multi2 <- add_eset(multi, eset, dataset.type = "expression", warnings = FALSE, GRanges = NA)
+multi2 <- add_eset(multi, brge_gexp, dataset.type = "expression", warnings = FALSE, GRanges = NA)
 multi2
 ``` 
 
@@ -126,15 +126,13 @@ Now, we can see that rowRanges is NO for expression. The implications will be de
 
 ### Add SummarizedExperiment
 
-`SummarizedExperiment`s are added using `add_rse`. Its arguments and behavior are very similar to those of `add_eset`. The only difference is that there is `GRanges` argument (annotation data is already in the form of a `GenomicRanges`). To exemplify its use, a `GenomicRatioSet` (a `r Rpackage("minfi")` class) will be created and added:
+`SummarizedExperiment`s are added using `add_rse`. Its arguments and behavior are very similar to those of `add_eset`. The only difference is that there is `GRanges` argument (annotation data is already in the form of a `GenomicRanges`). To exemplify its use, we will add a `GenomicRatioSet` containing methylation data from `r Rpackage("BRGEdata")` package:
 
 ```{r add_rse overwrite}
-data("MsetEx")
-MsetEx2 <- MsetEx[1:100, ] ### Subset the original set to speed up
-GRSet <- mapToGenome(ratioConvert(MsetEx2)) ## Convert MethylSet (eSet-derived) to GenomicRatioSet
-GRSet
+data("brge_methy")
+brge_methy2 <- brge_methy[1:100, ] ### Subset the original set to speed up
 multi <- createMultiDataSet()
-multi2 <- add_rse(multi, GRSet, dataset.type = "methylation", warnings = FALSE)
+multi2 <- add_rse(multi, brge_methy, dataset.type = "methylation", warnings = FALSE)
 multi2
 ``` 
 
@@ -144,98 +142,56 @@ Specific functions are designed to add specific datasets to `MultiDataSet`. They
 
 In `MultiDataSet` we have introduced four specific functions: `add_genexp`, `add_rnaseq`, `add_methy` and `add_snps`. All these functions has two arguments: `object` with the `MultiDataSet` and a second argument with the incoming set. The name of the second argument depends on the specific function (e.g: gexpSet for `add_genexp`, snpSet for `add_snps`...). Despite we will only show examples of `add_genexp` and `add_snps`, the other specific functions share the same behavior and features. 
 
-`add_genexp` adds an `ExpressionSet` to the slot "expression". We will use the `ExpressionSet` of `r Rpackage("MEALData")` as example:
+`add_genexp` adds an `ExpressionSet` to the slot "expression". We will use the `ExpressionSet` of `r Rpackage("BRGEdata")` as example:
 
-```{r add genexep error, error = TRUE}
+```{r add genexep}
 multi <- createMultiDataSet()
-multi2 <- add_genexp(multi, eset)
-eset
+multi2 <- add_genexp(multi, brge_gexp)
+brge_gexp
 ``` 
-
-`add_genexp` requires that the fData of the incoming `ExpressionSet` has the columns `chromosome`, `start` and `end`. Our `eset` object has the columns `start` and `end` but the chromosome is labeled with `chr`. We should fix it before continue:
-
-```{r add genexep 0}
-fvarLabels(eset)[1] <- "chromosome"
-multi <- createMultiDataSet()
-multi2 <- add_genexp(multi, eset)
-multi2
-``` 
-
 
 Given that `add_genexp` calls `add_eset`, the arguments of `add_eset` can also be used but `dataset.type` and `GRanges`. Let's add the same `ExpressionSet` to another slot using `dataset.name`:
 
 ```{r add genexp }
-multi2 <- add_genexp(multi2, eset, dataset.name = "2")
+multi2 <- add_genexp(multi2, brge_gexp, dataset.name = "2")
 multi2
 ``` 
 
-`add_snps` adds a `SnpSet` to the slot "snps" of a `MultiDataSet`. Snps data is in the form of `SnpMatrix` in `r Rpackage("MEALData")`, so we need to convert it first to `SnpSet`:
-
-```{r create snpset }
-data(snps)
-SnpSet <- new("SnpSet", call = snps$genotypes)
-fData(SnpSet) <- snps$map
-SnpSet
-```
-
-If we try now to add this set to a `MultiDataSet`:
-
-```{r add snpset1, error = TRUE}
-multi2 <- add_snps(multi, SnpSet)
-```
-
-This error rises when `makeGRangesFromDataFrame` is unable to create a `GenomicRanges` from the `fData`. If we take a look to `SnpSet`'s `fData`:
-
-```{r snpset1 fData}
-head(fData(SnpSet))
-```
-
-There are two columns that can be used as chromosome. To simplify it, we will remove the first column of `fData` and we will try again:
-
-```{r add snpset2}
-fData(SnpSet) <- fData(SnpSet)[, -1]
-multi2 <- add_snps(multi, SnpSet)
-multi2
-```
-
-Now, the method has worked and the set has been successfully added. This case exemplifies a checking in the structure of the `fData` of the incoming set by a specific function. 
-
 # Subsetting
 
-Subsetting of `MultiDataSet`s can be done by samples, by tables or using a `GenomicRanges`. In order to illustrate these operations, we will use the `ExpressionSet` and the `MethylationSet` of `r Rpackage("MEALData")`. First, we will add these sets to a `MultiDataSet`. The `ExpressionSet` will be added to another slot but setting GRanges = NA:
+Subsetting of `MultiDataSet`s can be done by samples, by tables or using a `GenomicRanges`. In order to illustrate these operations, we will use the `ExpressionSet` and the `GenomicRatioSet` of `r Rpackage("BRGEdata")`. First, we will add these sets to a `MultiDataSet`. The `ExpressionSet` will be added to another slot but setting GRanges = NA:
 
 ```{r Subsetting intro }
-data(mset)
 multi <- createMultiDataSet()
 
 # Remove probes without a position before adding the object
-multi <- add_methy(multi, mset)
-multi <- add_genexp(multi, eset)
-multi <- add_eset(multi, eset, dataset.type = "test", GRanges = NA)
+multi <- add_methy(multi, brge_methy)
+multi <- add_genexp(multi, brge_gexp)
+multi <- add_eset(multi, brge_gexp, dataset.type = "test", GRanges = NA)
 multi
 ```
 
-The expression data contains 61 samples and 21916 features and the methylation data 61 samples and 451383 CpGs. 
+The expression data contains 100 samples and 67528 features and the methylation data 115 samples and 476946 CpGs. 
 
 ## Samples 
 
 Subsetting by samples can be done in two different ways. The first option is to introduce a vector of sample ids. `MultiDataSet` has the operator `[` overloaded and samples are the first element:
 
 ```{r subset samples}
-samples <- sampleNames(eset)[1:25]
+samples <- sampleNames(brge_gexp)[76:100]
 multi[samples, ]
 ```
 
-Samples' subsetting returns, for each set, all the samples that are present in the filtering vector. In our example, we selected the first 25 samples of the `ExpressionSet`. In the `MethylationSet`, only 23 of these samples were present. 
+Samples' subsetting returns, for each set, all the samples that are present in the filtering vector. In our example, we selected the last 25 samples of the `ExpressionSet`. In the `GenomicRatioSet`, only 9 of these samples were present. 
 
 We can also select only those samples that are present in all the datasets with the function `commonSamples`. This method returns a new `MultiDataSet` but only with the common samples:  
 
 ```{r subset common samples}
 commonSamples(multi)
-length(intersect(sampleNames(eset), sampleNames(mset)))
+length(intersect(sampleNames(brge_gexp), sampleNames(brge_methy)))
 ```
 
-The resulting `MultiDataSet` contains 57 samples for expression and methylation, the same that the intersection between the sample names of the original sets. 
+The resulting `MultiDataSet` contains 84 samples for expression and methylation, the same that the intersection between the sample names of the original sets. 
 
 ## Tables
 
@@ -298,12 +254,12 @@ A similar approach can be used for selection samples with a common phenotype. In
 
 
 ```{r Advanced pheno}
-subset(multi, , gender == "female")
+subset(multi, , sex == "Female")
 ```
 
 With this line of code, we can select all the women of the study. Both subsetting can be applied at the same time:
 
 ```{r Combined advanced}
-subset(multi, genes == "SLC35E2", gender == "female")
+subset(multi, genes == "SLC35E2", sex == "Female")
 ```
 

@@ -117,7 +117,7 @@ multiset <- commonSamples(multiset)
 
 We can select specific datasets of `MultiDataSet` using `[` and pass their names to the second argument. This code returns a `MultiDataSet` with the specified datasets. The method `commonSamples` returns a `MultiDataSet` where all datasets have the same samples in the same order. Given that `multiset` can have other datasets, it is advisable to previously reduce it to only the datasets that we will use. Otherwise, we might lose samples that are not present in other datasets.
 
-Next, we will get the original `MethylationSet` and `ExpressionSet` from `multiset`. The original classes will help us to perform easily perform other operations that we will do later. The `[[` operator retrieves the original datasets from a `MultiDataSet`:
+Next, we will get the original `GenomicRatioSet` and `ExpressionSet` from `multiset`. The original classes will help us to perform easily perform other operations that we will do later. The `[[` operator retrieves the original datasets from a `MultiDataSet`:
 
 ```{r Get sets, eval=FALSE}
 # Obtain the original objects
@@ -383,7 +383,7 @@ setResidues <- function(set, vars_names, vars_types){
     }
     if (is(set, "ExpressionSet")){
         return(exprs(set))
-    } else if (is(set, "RatioSet")){
+    } else if (is(set, "GenomicRatioSet")){
         return(minfi::getBeta(set))
     } else{
         return(betas(set))
@@ -393,23 +393,26 @@ setResidues <- function(set, vars_names, vars_types){
 
 # Application 
 
-Now, it is time to check that the function is working. To this end, we will use MEALData package that contains methylation and expression data from the same set of samples. The following lines load the libraries used in our function:
+Now, it is time to check that the function is working. To this end, we will use BRGEdata package that contains methylation and expression data from the same set of samples. The following lines load the libraries used in our function:
 
 ```{r Loading libraries, message=FALSE, warning=FALSE}
 library(MultiDataSet)
 library(GenomicRanges)
-library(MEALData)
+library(BRGEdata)
 library(limma)
 library(parallel)
 library(minfi)
+
+data(brge_methy)
+data(brge_gexp)
 ```
 
 MEALData contains the expression data and the methylation data of few samples. We will add this data to a `MultiDataSet` to test our function:
 
 ```{r Prepare MultiDataSet, warning=FALSE, message = FALSE}
 multi <- createMultiDataSet()
-multi <- add_methy(multi, mset)
-multi <- add_genexp(multi, eset)
+multi <- add_methy(multi, brge_methy)
+multi <- add_genexp(multi, brge_gexp)
 ```
 
 We are ready to use our function. To speed up the computation, we will select three CpGs to do the pairing:

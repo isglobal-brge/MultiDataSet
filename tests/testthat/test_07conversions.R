@@ -4,7 +4,6 @@ library(GenomicRanges)
 library(Biobase)
 library(SummarizedExperiment)
 library(MultiAssayExperiment)
-library(BRGEdata)
 
 # Create a MultiAssayExperiment
 

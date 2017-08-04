@@ -21,10 +21,6 @@
 \alias{MultiDataSet-methods}
 \alias{add_rnaseq,MultiDataSet,ExpressionSet-method}
 \alias{MultiDataSet-methods}
-\alias{add_methy,MultiDataSet,MethylationSet-method}
-\alias{MultiDataSet-methods}
-\alias{add_methy,MultiDataSet,RatioSet-method}
-\alias{MultiDataSet-methods}
 \alias{add_methy,MultiDataSet,GenomicRatioSet-method}
 \alias{MultiDataSet-methods}
 \alias{add_rse,MultiDataSet,RangedSummarizedExperiment-method}
@@ -90,10 +86,6 @@
 \S4method{add_genexp}{MultiDataSet,ExpressionSet}(object, gexpSet, ...)
 
 \S4method{add_rnaseq}{MultiDataSet,ExpressionSet}(object, rnaSet, ...)
-
-\S4method{add_methy}{MultiDataSet,MethylationSet}(object, methySet, ...)
-
-\S4method{add_methy}{MultiDataSet,RatioSet}(object, methySet, ...)
 
 \S4method{add_methy}{MultiDataSet,GenomicRatioSet}(object, methySet, ...)
 
@@ -176,11 +168,7 @@ createMultiDataSet()
 
 \item{gexpSet}{\code{ExpressionSet} to be used to fill the slot.}
 
-\item{...}{Further arguments passed to \code{add_eset}.}
-
 \item{rnaSet}{\code{ExpressionSet} to be used to fill the slot.}
-
-\item{methySet}{\code{MethylationSet} to be used to fill the slot.}
 
 \item{snpSet}{\code{SnpSet} to be used to fill the slot.}
 
@@ -225,12 +213,6 @@ The names of the three lists (\code{assayData}, \code{phenoData} and
 \item \code{add_genexp}: Method to add a slot of expression to \code{MultiDataSet}.
 
 \item \code{add_rnaseq}: Method to add a slot of (RNASeq) expression to \code{MultiDataSet}.
-
-\item \code{add_methy}: Method to add a slot of methylation to 
-\code{MultiDataSet} from a \code{MethylationSet}.
-
-\item \code{add_methy}: Method to add a slot of methylation to 
-\code{MultiDataSet} from a \code{RatioSet}.
 
 \item \code{add_methy}: Method to add a slot of methylation to 
 \code{MultiDataSet} from a \code{GenomicRatioSet}.

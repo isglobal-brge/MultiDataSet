@@ -8,7 +8,7 @@ setMethod(
     f = "getAssociation",
     signature = "ResultSet",
     definition = function(object, rid, coef = 2, contrast = NULL, 
-                          fNames = c("chromosome", "start", "end", "genesymbol"), ...) {
+                          fNames = NULL, ...) {
         
         res <- object@results[[rid]]$result
         

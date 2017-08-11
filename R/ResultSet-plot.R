@@ -62,13 +62,17 @@ setMethod(
                     dta, seqnames.field = "CHR", start.field = "BP", end.field = "BP")
                 gr <- IRanges::subsetByOverlaps(gr, subset)
                 dta <- dta[names(gr), ]
+                # Plot using qqman
+                qqman::manhattan(dta, ylab = "-log10(P.Value)", 
+                                 xlim = c(min(dta$BP), max(dta$BP)), ...)
             }
             
             if (!missing(highlight)){
                 gr <- GenomicRanges::makeGRangesFromDataFrame(
                     dta, seqnames.field = "CHR", start.field = "BP", end.field = "BP")
                 gr <- IRanges::subsetByOverlaps(gr, highlight)
-                qqman::manhattan(dta, ylab = "-log10(P.Value)", highlight = names(gr), ...)
+                qqman::manhattan(dta, ylab = "-log10(P.Value)", 
+                                 highlight = names(gr), ...)
             } else {
                 # Plot using qqman
                 qqman::manhattan(dta, ylab = "-log10(P.Value)", ...)

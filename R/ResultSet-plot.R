@@ -11,6 +11,8 @@
 #' @param highlight GenomicRanges used to highlight a region in Manhattan plot
 #' @param show.effect (default: \code{TRUE}). Used in volcano plot. If \code{TRUE}, 
 #' effect is shown as FC instead of logFC. 
+#' @param show.labels (default \code{TRUE}) If set to \code{TRUE}, features are 
+#' labelled.
 #' @param show.lambda (default: \code{TRUE}) If \code{TRUE} shows lambda
 #' score for the given model.
 #' @export
@@ -18,7 +20,7 @@ setMethod(
     f = "plot",
     signature = "ResultSet",
     definition = function(x, y, rid = 1, coef = 2, contrast = NULL, type, 
-                          tFC = 2, tPV = -log10(0.001),
+                          tFC = 2, tPV = -log10(0.001), show.labels = TRUE,
                           show.effect = FALSE, show.lambda = TRUE,
                           fNames = c("chromosome", "start"), 
                           subset, highlight, ...) {
@@ -86,7 +88,8 @@ setMethod(
                 names = rownames(dta),
                 tFC = tFC,
                 tPV = tPV,
-                show.effect = show.effect
+                show.effect = show.effect, 
+                show.labels = show.labels
             )
         } else {
             stop("Invalid type of plot ('", type, "').")

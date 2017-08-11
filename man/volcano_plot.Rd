@@ -5,7 +5,7 @@
 \title{Function to draw a Volcano Plot}
 \usage{
 volcano_plot(pval, fc, names, size = 2, tFC = 2, tPV = -log10(0.001),
-  show.effect = FALSE)
+  show.labels = TRUE, show.effect = FALSE)
 }
 \arguments{
 \item{pval}{numeric vector of P.Values}
@@ -23,8 +23,11 @@ placed.}
 \item{tPV}{(default \code{-log10(0.001)}) P-Value threshold. It can be set
 to \code{NULL} to not filter.}
 
+\item{show.labels}{(default \code{TRUE}) If set to \code{TRUE}, features are 
+labelled.}
+
 \item{show.effect}{(default \code{FALSE}) If set to \code{TRUE}, the X-axis
-will should \code{2^logFC} instead to teh default \code{logFC}.}
+will should \code{2^logFC} instead to the default \code{logFC}.}
 }
 \value{
 A \code{ggplot} object

@@ -12,8 +12,10 @@
 #' \code{NULL} to not filter.
 #' @param tPV (default \code{-log10(0.001)}) P-Value threshold. It can be set
 #' to \code{NULL} to not filter.
+#' @param show.labels (default \code{TRUE}) If set to \code{TRUE}, features are 
+#' labelled.
 #' @param show.effect (default \code{FALSE}) If set to \code{TRUE}, the X-axis
-#' will should \code{2^logFC} instead to teh default \code{logFC}.
+#' will should \code{2^logFC} instead to the default \code{logFC}.
 #' @return A \code{ggplot} object
 #' @examples
 #' data(rset)
@@ -21,7 +23,7 @@
 #' volcano_plot(w1$P.Value, w1$logFC, rownames(w1))
 #' @export
 volcano_plot <- function(pval, fc, names, size=2, tFC = 2, tPV = -log10(0.001),
-                         show.effect = FALSE) {
+                         show.labels = TRUE, show.effect = FALSE) {
     if(missing(names)) {
         names <- names(pval)
     }
@@ -63,7 +65,7 @@ volcano_plot <- function(pval, fc, names, size=2, tFC = 2, tPV = -log10(0.001),
         plt <- plt + ggplot2::xlab(expression(log[2](Fold~~Change)))
     }
 
-    if(!is.null(tPV) & !is.null(tFC)) {
+    if(!is.null(tPV) & !is.null(tFC) & show.labels) {
         plt <- plt + ggrepel::geom_text_repel(
             data = subset(dta, dta$PV >= tPV & abs(dta$FC) >= tFC),
             ggplot2::aes_string("FC", "PV", label="names"),
@@ -72,7 +74,7 @@ volcano_plot <- function(pval, fc, names, size=2, tFC = 2, tPV = -log10(0.001),
             point.padding = ggplot2::unit(0.3, "lines"),
             color="black"
         )
-    } else if(!is.null(tPV) & is.null(tFC)) {
+    } else if(!is.null(tPV) & is.null(tFC) & show.labels) {
         plt <- plt + ggrepel::geom_text_repel(
             data = subset(dta, dta$PV >= tPV),
             ggplot2::aes_string("FC", "PV", label="names"),

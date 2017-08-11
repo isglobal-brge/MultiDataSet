@@ -21,7 +21,7 @@
 \S4method{fData}{ResultSet}(object)
 
 \S4method{getAssociation}{ResultSet}(object, rid, coef = 2, contrast = NULL,
-  fNames = c("chromosome", "start", "end", "genesymbol"), ...)
+  fNames = NULL, ...)
 
 \S4method{length}{ResultSet}(x)
 

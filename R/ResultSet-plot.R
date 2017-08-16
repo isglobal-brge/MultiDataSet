@@ -67,9 +67,7 @@ setMethod(
                 # Plot using qqman
                 qqman::manhattan(dta, ylab = "-log10(P.Value)", 
                                  xlim = c(min(dta$BP), max(dta$BP)), ...)
-            }
-            
-            if (!missing(highlight)){
+            } else if (!missing(highlight)){
                 gr <- GenomicRanges::makeGRangesFromDataFrame(
                     dta, seqnames.field = "CHR", start.field = "BP", end.field = "BP")
                 gr <- IRanges::subsetByOverlaps(gr, highlight)

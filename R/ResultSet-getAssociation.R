@@ -7,12 +7,12 @@
 setMethod(
     f = "getAssociation",
     signature = "ResultSet",
-    definition = function(object, rid, coef = 2, contrast = NULL, 
+    definition = function(object, rid = 1, coef = 2, contrast = NULL, 
                           fNames = NULL, ...) {
         
         res <- object@results[[rid]]$result
         
-        if(class(res) == "MArrayLM") {
+        if(is(res, "MArrayLM")) {
             if (!is.null(contrast)){
                 res <- limma::contrasts.fit(res, contrast)
             }

@@ -4,7 +4,7 @@ setMethod(
   f = "fData",
   signature = "MultiDataSet", 
   definition = function(object) {
-    return(lapply(object@featureData, pData))
+    return(lapply(object@featureData, function(x) pData(x$main)))
   }
 )
 

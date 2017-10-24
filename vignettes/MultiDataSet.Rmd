@@ -71,7 +71,7 @@ General functions directly interact with the `MultiDataSet` and change its conte
 
 ### Add eSet
 
-`add_eset` is the general function to add eSet-derived classes. This function has three important arguments. `object` is the `MultiDataSet` where the set will be added, `set` is the `eSet` that will be added and `dataset.type` is the type of the new set. The next lines will illustrate its use by adding an `ExpressionSet` from `r Rpackage("MEALData")`:
+`add_eset` is the general function to add eSet-derived classes. This function has three important arguments. `object` is the `MultiDataSet` where the set will be added, `set` is the `eSet` that will be added and `dataset.type` is the type of the new set. The next lines will illustrate its use by adding an `ExpressionSet` from `r Rpackage("BRGEData")`:
 
 ```{r add_eset 10}
 data("brge_gexp")

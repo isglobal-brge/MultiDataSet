@@ -407,7 +407,7 @@ data(brge_methy)
 data(brge_gexp)
 ```
 
-MEALData contains the expression data and the methylation data of few samples. We will add this data to a `MultiDataSet` to test our function:
+BRGEdata contains the expression data and the methylation data of few samples. We will add this data to a `MultiDataSet` to test our function:
 
 ```{r Prepare MultiDataSet, warning=FALSE, message = FALSE}
 multi <- createMultiDataSet()

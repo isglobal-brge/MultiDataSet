@@ -43,7 +43,7 @@ library(minfi)
 
 ````{r create_data, echo=FALSE, eval=TRUE, message=FALSE}
 library(BRGEdata)
-data("brge_gexp") # Get the ExpressionSet from MEALData 
+data("brge_gexp") # Get the ExpressionSet from BRGEdata 
 gSet1 <- brge_gexp[sample(1:21916, 300), 1:50]   # Create ExpressionSet with samples from 01 to 50
 gSet2 <- brge_gexp[sample(1:21916, 300), 35:61]  # Create ExpressionSet with samples from 35 to 64
 

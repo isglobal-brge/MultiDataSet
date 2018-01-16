@@ -20,8 +20,8 @@
 \usage{
 \S4method{fData}{ResultSet}(object)
 
-\S4method{getAssociation}{ResultSet}(object, rid, coef = 2, contrast = NULL,
-  fNames = NULL, ...)
+\S4method{getAssociation}{ResultSet}(object, rid = 1, coef = 2,
+  contrast = NULL, fNames = NULL, ...)
 
 \S4method{length}{ResultSet}(x)
 
@@ -30,9 +30,9 @@
 \S4method{opt}{ResultSet}(object)
 
 \S4method{plot}{ResultSet,ANY}(x, y, rid = 1, coef = 2, contrast = NULL,
-  type, tFC = 2, tPV = -log10(0.001), show.effect = FALSE,
-  show.lambda = TRUE, fNames = c("chromosome", "start"), subset, highlight,
-  ...)
+  type, tFC = 2, tPV = -log10(0.001), show.labels = TRUE,
+  show.effect = FALSE, show.lambda = TRUE, fNames = c("chromosome",
+  "start"), subset, highlight, ...)
 
 \S4method{varLabels}{ResultSet}(object)
 
@@ -61,6 +61,9 @@ be added to the results data.frame.}
 \item{tFC}{Threshold for log FC of effect}
 
 \item{tPV}{Threshold for P-Value}
+
+\item{show.labels}{(default \code{TRUE}) If set to \code{TRUE}, features are 
+labelled.}
 
 \item{show.effect}{(default: \code{TRUE}). Used in volcano plot. If \code{TRUE}, 
 effect is shown as FC instead of logFC.}

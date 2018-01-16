@@ -119,7 +119,7 @@ setGeneric("add_rnaseq", function(object, rnaSet, ...) standardGeneric("add_rnas
 #' filled.
 #' @exportMethod add_methy
 #' @examples 
-#' if (require(BRGEdata)){
+#' if (require(brgedata)){
 #'  multi <- createMultiDataSet()
 #'  multi <- add_methy(multi, brge_methy[1:100, ])
 #' }

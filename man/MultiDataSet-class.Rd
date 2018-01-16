@@ -199,8 +199,8 @@ createMultiDataSet()
 }
 \description{
 The class \code{MultiDataSet} is a superior class to store multiple
-datasets in form of triplets (assayData-phenoData-featureData). The datasets must be \code{eSet} or
-\code{SummarizedExperiment}.
+datasets in form of triplets (assayData-phenoData-featureData). The datasets can be \code{eSet} or
+\code{SummarizedExperiment} derived or \code{matrices}.
 }
 \details{
 The names of the three lists (\code{assayData}, \code{phenoData} and

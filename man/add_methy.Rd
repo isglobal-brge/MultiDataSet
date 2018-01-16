@@ -23,7 +23,7 @@ This method adds or overwrites the slot \code{"methylation"} of an
 The fData of the input object must contain the columns chromosome and position.
 }
 \examples{
-if (require(BRGEdata)){
+if (require(brgedata)){
  multi <- createMultiDataSet()
  multi <- add_methy(multi, brge_methy[1:100, ])
 }

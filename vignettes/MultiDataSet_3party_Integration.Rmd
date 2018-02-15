@@ -10,6 +10,10 @@ output:
     fig_caption: yes
     fig_height: 6
     fig_width: 4
+vignette: >
+  %\VignetteIndexEntry{Using MultiDataSet with third party R packages}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
 ---
 
 # Introduction
@@ -48,7 +52,7 @@ gSet1 <- brge_gexp[sample(1:21916, 300), 1:50]   # Create ExpressionSet with sam
 gSet2 <- brge_gexp[sample(1:21916, 300), 35:61]  # Create ExpressionSet with samples from 35 to 64
 
 data("brge_methy")
-mSet <- brge_methy[sample(1:40000, 300), 20:60] 
+mSet <- brge_methy[sample(1:40000, 300),]
 
 # setwd("/home/chernandez/Projects/multidataset/Tutorials/")
 save(gSet1, gSet2, file="expression.RData")
@@ -68,17 +72,17 @@ The result of the command `ls` from the previous chunk tells us that objects con
 
 |         | `gSet1` | `gSet2` | `mSet` |
 |--------:|--------:|--------:|-------:|
-| `gSet1` | 50      | 16      | 32     |
-| `gSet2` | -       | 27      | 19     |
-| `mSet`  | -       | -       | 41     |
+| `gSet1` | 50      | 16      | 13     |
+| `gSet2` | -       | 27      | 10     |
+| `mSet`  | -       | -       | 20     |
 
 
 The table should be read as:
 
-  * `gSet1` has 50 samples, `gSet2` has 27 samples and `mSet` has 41 samples
+  * `gSet1` has 50 samples, `gSet2` has 27 samples and `mSet` has 20 samples
   * `gSet1` and `gSet2` have 16 samples in common
-  * `gSet1` and `mSet` have 32 samples in common
-  * `gSet2` and `mSet` have 19 samples in common
+  * `gSet1` and `mSet` have 13 samples in common
+  * `gSet2` and `mSet` have 10 samples in common
 
 The following three commands show the number of samples that each pair of objects has in common. They were used to create the previous table.
 
@@ -93,7 +97,7 @@ length(intersect(sampleNames(gSet1), sampleNames(mSet)))
 length(intersect(sampleNames(gSet2), sampleNames(mSet)))
 ````
 
-The number of common samples along the three datasets is 12:
+The number of common samples along the three datasets is 6:
 
 ```{r common_samples_2}
 ## gSet1 intersection gSet2 intersection mSet
@@ -184,7 +188,7 @@ The function `assayDataElement` can be used to retrieve the matrix having gene e
 dat <- list(
   assayDataElement(gSet1, "exprs"),
   assayDataElement(gSet2, "exprs"),
-  assayDataElement(mSet, "meth")
+  assay(mSet, "Beta")
 )
 ```
 
@@ -243,10 +247,10 @@ The typical call to `iClusterPlus`, using our three datasets, should be:
 fit <- iClusterPlus(
 	dt1 = assayDataElement(gSet1, "exprs"),
 	dt2 = assayDataElement(gSet2, "exprs"),
-	dt3 = assayDataElement(mSet, "meth"),
+	dt3 = assay(mSet, "Beta"),
 	type = c("gaussian", "gaussian", "gaussian"),
 	lambda = c(0.04,0.61,0.90),
-	K = 5,
+	K = 3,
 	maxiter = 10
 )
 ```
@@ -264,7 +268,7 @@ The other arguments accepted by `iClusterPlus` can be given to the function thro
 fit <- w_iclusterplus(
   md,
   lambda = c(0.04,0.61,0.90),
-  K = 5,
+  K = 3,
   maxiter = 10
 )
 ```

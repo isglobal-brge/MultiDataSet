@@ -168,7 +168,11 @@ createMultiDataSet()
 
 \item{gexpSet}{\code{ExpressionSet} to be used to fill the slot.}
 
+\item{...}{Further arguments passed to add_rse or add_se}
+
 \item{rnaSet}{\code{ExpressionSet} to be used to fill the slot.}
+
+\item{methySet}{\code{GenomicRatioSet} to be used to fill the slot.}
 
 \item{snpSet}{\code{SnpSet} to be used to fill the slot.}
 

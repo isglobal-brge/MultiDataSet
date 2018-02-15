@@ -39,7 +39,6 @@ In the code below, the libraries needed in this tutorial are loaded:
 ```{r Load libraries, message=FALSE, warning = FALSE}
 library(MultiDataSet)
 library(brgedata)
-library(minfiData)
 library(GenomicRanges)
 ``` 
 

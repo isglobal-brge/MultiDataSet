@@ -48,7 +48,7 @@ setClass(
 #' data(rset)
 #' getAssociation(rset, rid=1, fNames = c("chromosome", "position"))
 #' @export getAssociation
-setGeneric("getAssociation", function(object, rid, coef = 2, contrast = NULL, 
+setGeneric("getAssociation", function(object, rid = 1, coef = 2, contrast = NULL, 
        fNames = NULL, ...)
     standardGeneric("getAssociation")
 )

@@ -25,7 +25,7 @@
 volcano_plot <- function(pval, fc, names, size=2, tFC = 2, tPV = -log10(0.001),
                          show.labels = TRUE, show.effect = FALSE) {
     if(missing(names)) {
-        names <- names(pval)
+        names <- base::names(pval)
     }
     dta <- data.frame(P.Value=pval, FC=fc, names, clr="gray87", alp=0.5, stringsAsFactors=FALSE)
     dta$PV <- -log10(dta$P.Value)

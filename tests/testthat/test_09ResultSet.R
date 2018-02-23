@@ -73,9 +73,10 @@ test_that("ResultSet basics", {
     expect_equal(fData(rset), list(pac = fdata, cot = data.frame(chr = 1, start = 1:10)))    
     
     ## Check plot
-    plot(rset, type = "manhattan", fNames = c("chr", "start"))
-    plot(rset, type = "manhattan", fNames = c("chr", "start"), highlight = GRanges("1:2-5"))
-    plot(rset, type = "manhattan", fNames = c("chr", "start"), subset = GRanges("1:2-5"))
-    plot(rset, type = "qq")
-    plot(rset, type = "volcano")
+    a <- plot(rset, type = "manhattan", fNames = c("chr", "start"))
+    a <- plot(rset, type = "manhattan", fNames = c("chr", "start"), highlight = GRanges("1:2-5"))
+    a <- plot(rset, type = "manhattan", fNames = c("chr", "start"), subset = GRanges("1:2-5"))
+    a <- plot(rset, type = "qq")
+    a <- plot(rset, type = "volcano")
+    expect_error(plot(rset, type = "cot"))
 })

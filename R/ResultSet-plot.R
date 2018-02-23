@@ -89,7 +89,5 @@ setMethod(
                 show.effect = show.effect, 
                 show.labels = show.labels
             )
-        } else {
-            stop("Invalid type of plot ('", type, "').")
-        }
+        } 
     })

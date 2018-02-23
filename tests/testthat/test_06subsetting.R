@@ -67,6 +67,18 @@ test_that("Common samples", {
     multi <- add_genexp(multi, eset2, dataset.name="g2")
     ## /
     
+    ## Check no samples in common
+    multi2 <- createMultiDataSet()
+    
+    eset3 <- eset2
+    eset3$id <- sampleNames(eset3)
+    multi2 <- add_eset(multi2, eset, "cot")
+    multi2 <- add_eset(multi2, eset3, "pac")
+    
+    expect_error(commonSamples(multi2))
+    ## /
+    
+
     ## Check SAMPLES
     multi2 <- multi[c("S4", "S1"), ]
     expect_equal(multi2[["expression+g1"]]$id, "S1")
@@ -124,6 +136,15 @@ test_that("Advanced subseting", {
     rownames(pData(eset)) <- c("S1", "G2")
     
     multi <- add_genexp(multi, eset, dataset.name = "g2")
+    ## /
+    
+    ## Check tables selection
+    multi2 <- multi[, 1]
+    expect_equal(names(multi2), "expression+g1")
+    expect_error(multi[, "expression+g3"])
+    
+    expect_s4_class(multi[, 1, drop = TRUE], "ExpressionSet")
+    expect_error(subset(multi))
     ## /
     
     ## Check Features
@@ -211,5 +232,6 @@ test_that("wrong variables",{
     multi <- add_genexp(multi, eset, dataset.name = "g2")
     expect_error(subset(multi, 1243), "'feat' must be a logical expression")
     expect_error(subset(multi, , 1243), "'phe' must be a logical expression")
-    
+    expect_error(subset(multi, , 1243), "'phe' must be a logical expression")
+    expect_error(multi[])
 })

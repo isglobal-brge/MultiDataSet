@@ -65,12 +65,12 @@ mds2mae <- function(MDS) {
         data.frame(primary = x$id, assay = rownames(x), stringsAsFactors = FALSE))
     dfmap <- MultiAssayExperiment::listToMap(sampleMap)
     
-    phenoDataVars <- Reduce(intersect, lapply(pData(MDS), function(x) colnames(x$main)))
+    phenoDataVars <- Reduce(intersect, lapply(pData(MDS), colnames))
     
     pData <- Reduce(rbind, lapply(pData(MDS), function(x) x[, phenoDataVars, drop = FALSE]))
-    pData <- pData[!duplicated(pData$id), ]
+    pData <- pData[!duplicated(pData$id), , drop = FALSE]
     rownames(pData) <- pData$id
-    pData <- pData[, colnames(pData) != "id"]
+    pData <- pData[, colnames(pData) != "id", drop = FALSE]
     
     MAE <- MultiAssayExperiment::MultiAssayExperiment(objlist, pData, dfmap)
     MAE

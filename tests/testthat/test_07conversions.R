@@ -4,6 +4,7 @@ library(GenomicRanges)
 library(Biobase)
 library(SummarizedExperiment)
 library(MultiAssayExperiment)
+library(RaggedExperiment)
 
 # Create a MultiAssayExperiment
 
@@ -37,24 +38,25 @@ test_that("mae2mds", {
     micromap <- data.frame(primary = c("Jack", "Barbara", "Bob"),
                            assay = c("micro1", "micro2", "micro3"),
                            stringsAsFactors = FALSE)
-    # gr1 <-
-    #     GRanges(seqnames = "chr3", ranges = IRanges(58000000, 59502360),
-    #             strand = "+", score = 5L, GC = 0.45)
-    # gr2 <-
-    #     GRanges(seqnames = c("chr3", "chr3"),
-    #             ranges = IRanges(c(58493000, 3), width=9000),
-    #             strand = c("+", "-"), score = 3:4, GC = c(0.3, 0.5))
-    # gr3 <-
-    #     GRanges(seqnames = c("chr1", "chr2"),
-    #             ranges = IRanges(c(1, 4), c(3, 9)),
-    #             strand = c("-", "-"), score = c(6L, 2L), GC = c(0.4, 0.1))
-    # grl <- GRangesList("gr1" = gr1, "gr2" = gr2, "gr3" = gr3)
-    # names(grl) <- c("snparray1", "snparray2", "snparray3")
-    # 
-    # rangemap <- data.frame(primary = c("Jack", "Jill", "Jill"),
-    #                        assay = c("snparray1", "snparray2", "snparray3"),
-    #                        stringsAsFactors = FALSE)
-    # 
+    gr1 <-
+        GRanges(seqnames = "chr3", ranges = IRanges(58000000, 59502360),
+                strand = "+", score = 5L, GC = 0.45)
+    gr2 <-
+        GRanges(seqnames = c("chr3", "chr3"),
+                ranges = IRanges(c(58493000, 3), width=9000),
+                strand = c("+", "-"), score = 3:4, GC = c(0.3, 0.5))
+    gr3 <-
+        GRanges(seqnames = c("chr1", "chr2"),
+                ranges = IRanges(c(1, 4), c(3, 9)),
+                strand = c("-", "-"), score = c(6L, 2L), GC = c(0.4, 0.1))
+    grl <- GRangesList("gr1" = gr1, "gr2" = gr2, "gr3" = gr3)
+    names(grl) <- c("snparray1", "snparray2", "snparray3")
+    re <- RaggedExperiment(grl)
+
+    rangemap <- data.frame(primary = c("Jack", "Jill", "Jill"),
+                           assay = c("snparray1", "snparray2", "snparray3"),
+                           stringsAsFactors = FALSE)
+    
     nrows <- 5; ncols <- 4
     counts <- matrix(runif(nrows * ncols, 1, 1e4), nrows)
     rowRanges <- GRanges(rep(c("chr1", "chr2"), c(2, nrows - 2)),
@@ -67,22 +69,24 @@ test_that("mae2mds", {
                                       "mysnparray3", "mysnparray4"))
     rse <- SummarizedExperiment(assays=SimpleList(counts=counts),
                                 rowRanges=rowRanges, colData=colData)
+    
+    se <- SummarizedExperiment(assays=SimpleList(counts=counts), colData=colData)
     rangemap2 <-
         data.frame(primary = c("Jack", "Jill", "Bob", "Barbara"),
                    assay = c("mysnparray1", "mysnparray2", "mysnparray3",
                              "mysnparray4"), stringsAsFactors = FALSE)
-    listmap <- list(exprmap, methylmap, micromap, rangemap2)
-    names(listmap) <- c("Affy", "Methyl 450k", "Mirna", "CNV gistic2")
+    listmap <- list(exprmap, methylmap, micromap, rangemap2, rangemap2, rangemap)
+    names(listmap) <- c("Affy", "Methyl 450k", "Mirna", "CNV gistic2", "SE", "RaggedExperiment")
     dfmap <- listToMap(listmap)
     
     
     objlist <- list("Affy" = exprdat, "Methyl 450k" = methyldat,
-                    "Mirna" = microdat,  "CNV gistic2" = rse)
+                    "Mirna" = microdat,  "CNV gistic2" = rse, "SE" = se, "RaggedExperiment" = re)
     myMultiAssay <- MultiAssayExperiment(objlist, patient.data, dfmap)
 
     mds <- mae2mds(myMultiAssay)
     expect_is(mds, "MultiDataSet")
-    expect_equal(names(mds), c("Affy", "Methyl 450k", "Mirna", "CNV gistic2"))
+    expect_equal(names(mds), c("Affy", "Methyl 450k", "Mirna", "CNV gistic2", "SE"))
     expect_is(mds[["Affy"]], "ExpressionSet")
     expect_is(mds[["Methyl 450k"]], "ExpressionSet")
     expect_is(mds[["Mirna"]], "ExpressionSet")
@@ -127,14 +131,14 @@ test_that("mds2mae", {
     multi <- add_genexp(multi, exprdat)
     multi <- add_eset(multi, exprdat, dataset.type = "test", GRanges = NA)
     
-    # mae <- mds2mae(multi)
-    # 
-    # expect_is(mae, "MultiAssayExperiment")
-    # expect_equal(names(mae), c("methylation", "expression", "test"))
-    # expect_equal(nrow(colData(mae)), length(Reduce(union, sampleNames(multi))))
-    # 
-    # expect_is(experiments(mae)[[1]], "GenomicRatioSet")
-    # expect_is(experiments(mae)[[2]], "ExpressionSet")
-    # expect_is(experiments(mae)[[3]], "ExpressionSet")
+    mae <- mds2mae(multi)
+
+    expect_is(mae, "MultiAssayExperiment")
+    expect_equal(names(mae), c("methylation", "expression", "test"))
+    expect_equal(nrow(colData(mae)), length(Reduce(union, sampleNames(multi))))
+
+    expect_is(experiments(mae)[[1]], "GenomicRatioSet")
+    expect_is(experiments(mae)[[2]], "ExpressionSet")
+    expect_is(experiments(mae)[[3]], "ExpressionSet")
 
 })

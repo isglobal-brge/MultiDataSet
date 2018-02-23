@@ -1,8 +1,8 @@
 Package: MultiDataSet
 Type: Package
 Title: Implementation of MultiDataSet and ResultSet 
-Version: 1.7.2
-Date: 2017-08-16
+Version: 1.7.3
+Date: 2018-02-23
 Authors@R: c(person("Carlos", "Ruiz-Arenas", , "carlos.ruiz@isglobal.org", role = c("aut", "cre")),
   person("Carles", "Hernandez-Ferrer", , "carles.hernandez@isglobal.org", role = "aut"),
   person("Juan R.", "Gonzalez", ,"juanr.gonzalez@isglobal.org", role = "aut"))
@@ -39,5 +39,6 @@ Suggests: brgedata,
     iClusterPlus,
     GEOquery,
     MultiAssayExperiment,
-    BiocStyle
+    BiocStyle,
+    RaggedExperiment
 VignetteBuilder: knitr

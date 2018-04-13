@@ -13,11 +13,13 @@ setMethod(
         res <- object@results[[rid]]$result
         
         if(is(res, "MArrayLM")) {
+            fit <- res; rm(res)
             if (!is.null(contrast)){
-                res <- limma::contrasts.fit(res, contrast)
+                fit <- limma::contrasts.fit(fit, contrast)
             }
-            res <- limma::eBayes(res)
+            res <- limma::eBayes(fit)
             res <- limma::topTable(res, coef = coef, number = Inf, ...)
+            res$SE <- sqrt(fit$s2.post) * fit$stdev.unscaled
             
             ## Add fData to results
             if (!is.null(fNames)){

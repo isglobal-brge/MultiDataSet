@@ -43,7 +43,8 @@ test_that("ResultSet basics", {
     design <- cbind(Grp1 = 1, Grp2vs1 = c(0, 0, 0, 1, 1, 1))
     fit <- lmFit(y, design)
     fite <- eBayes(fit)
-    df <- topTable(fite, coef = 2, number = Inf)
+    df <- topTable(fite, coef = 2, number = Inf, confint = TRUE)
+    df$SE <- sqrt(fite$s2.post) * fite$stdev.unscaled
     
     fdata <- data.frame(chr = "1", start = 1:10, stringsAsFactors = FALSE)
     rownames(fdata) <- paste("Gene", 1:10)
@@ -56,9 +57,11 @@ test_that("ResultSet basics", {
     
     ## Check getAssociation
     expect_equal(getAssociation(rset), df)
-    expect_equal(getAssociation(rset, coef = 1, contrast = cbind(First = c(0,1))), df)
     expect_equal(getAssociation(rset, fNames = c("chr", "start")), cbind(df, fdata[rownames(df), ]))
     expect_error(getAssociation(rset, fNames = "chra"))
+    
+    rset_tbl <- getAssociation(rset, coef = 1, contrast = cbind(First = c(0,1)))
+    expect_equal(rset_tbl[ , -ncol(rset_tbl)], df[ , -ncol(df)])
     
     ## Check length
     expect_equal(length(rset), 2)

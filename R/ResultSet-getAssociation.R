@@ -18,7 +18,7 @@ setMethod(
                 fit <- limma::contrasts.fit(fit, contrast)
             }
             fit <- limma::eBayes(fit)
-            res <- limma::topTable(fit, coef = coef, number = Inf, confint = TRUE)#, ...)
+            res <- limma::topTable(fit, coef = coef, number = Inf, confint = TRUE, ...)
             res$SE <- sqrt(fit$s2.post) * fit$stdev.unscaled
             
             ## Add fData to results

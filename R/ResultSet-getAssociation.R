@@ -19,7 +19,7 @@ setMethod(
             }
             fit <- limma::eBayes(fit)
             res <- limma::topTable(fit, coef = coef, number = Inf, confint = TRUE, ...)
-            res$SE <- sqrt(fit$s2.post) * fit$stdev.unscaled
+            res$SE <- (sqrt(fit$s2.post) * fit$stdev.unscaled)[, coef]
             
             ## Add fData to results
             if (!is.null(fNames)){

@@ -111,7 +111,7 @@
 
 createMultiDataSet()
 
-\S4method{dims}{MultiDataSet}(object)
+\S4method{dims}{MultiDataSet}(x)
 
 \S4method{w_iclusterplus}{MultiDataSet}(object, commonSamples = TRUE, ...)
 

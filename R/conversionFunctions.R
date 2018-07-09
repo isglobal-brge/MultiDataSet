@@ -62,7 +62,7 @@ mds2mae <- function(MDS) {
     names(objlist) <- names(MDS)
     
     sampleMap <- lapply(pData(MDS), function(x) 
-        data.frame(primary = x$id, assay = rownames(x), stringsAsFactors = FALSE))
+        data.frame(primary = x$id, colname = rownames(x), stringsAsFactors = FALSE))
     dfmap <- MultiAssayExperiment::listToMap(sampleMap)
     
     phenoDataVars <- Reduce(intersect, lapply(pData(MDS), colnames))

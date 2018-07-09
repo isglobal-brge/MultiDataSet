@@ -21,7 +21,7 @@ test_that("mae2mds", {
                                age=38:41,
                                row.names=c("Jack", "Jill", "Bob", "Barbara"))
     exprmap <- data.frame(primary=rownames(patient.data)[c(1, 2, 4, 3)],
-                          assay=c("array1", "array2", "array3", "array4"),
+                          colname=c("array1", "array2", "array3", "array4"),
                           stringsAsFactors = FALSE)
     methyldat <-
         matrix(1:10, ncol=5,
@@ -29,14 +29,14 @@ test_that("mae2mds", {
                              c("methyl1", "methyl2", "methyl3",
                                "methyl4", "methyl5")))
     methylmap <- data.frame(primary = c("Jack", "Jack", "Jill", "Barbara", "Bob"),
-                            assay = c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5"),
+                            colname = c("methyl1", "methyl2", "methyl3", "methyl4", "methyl5"),
                             stringsAsFactors = FALSE)
     microdat <- matrix(201:212, ncol=3,
                        dimnames=list(c("hsa-miR-21", "hsa-miR-191",
                                        "hsa-miR-148a", "hsa-miR148b"),
                                      c("micro1", "micro2", "micro3")))
     micromap <- data.frame(primary = c("Jack", "Barbara", "Bob"),
-                           assay = c("micro1", "micro2", "micro3"),
+                           colname = c("micro1", "micro2", "micro3"),
                            stringsAsFactors = FALSE)
     gr1 <-
         GRanges(seqnames = "chr3", ranges = IRanges(58000000, 59502360),
@@ -54,7 +54,7 @@ test_that("mae2mds", {
     re <- RaggedExperiment(grl)
 
     rangemap <- data.frame(primary = c("Jack", "Jill", "Jill"),
-                           assay = c("snparray1", "snparray2", "snparray3"),
+                           colname = c("snparray1", "snparray2", "snparray3"),
                            stringsAsFactors = FALSE)
     
     nrows <- 5; ncols <- 4
@@ -73,7 +73,7 @@ test_that("mae2mds", {
     se <- SummarizedExperiment(assays=SimpleList(counts=counts), colData=colData)
     rangemap2 <-
         data.frame(primary = c("Jack", "Jill", "Bob", "Barbara"),
-                   assay = c("mysnparray1", "mysnparray2", "mysnparray3",
+                   colname = c("mysnparray1", "mysnparray2", "mysnparray3",
                              "mysnparray4"), stringsAsFactors = FALSE)
     listmap <- list(exprmap, methylmap, micromap, rangemap2, rangemap2, rangemap)
     names(listmap) <- c("Affy", "Methyl 450k", "Mirna", "CNV gistic2", "SE", "RaggedExperiment")

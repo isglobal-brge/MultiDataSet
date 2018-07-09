@@ -3,10 +3,10 @@
 setMethod(
     f = "dims",
     signature = c("MultiDataSet"),
-    definition = function(object) {
-        dims <- lapply(names(object), function(name) c(Features = nrow(pData(object@featureData[[name]]$main)), 
-                                                       Samples =  nrow(pData(object@phenoData[[name]]$main))))
-        names(dims) <- names(object)
+    definition = function(x) {
+        dims <- lapply(names(x), function(name) c(Features = nrow(pData(x@featureData[[name]]$main)), 
+                                                       Samples =  nrow(pData(x@phenoData[[name]]$main))))
+        names(dims) <- names(x)
         return(dims)
     } 
 )

@@ -44,7 +44,7 @@ test_that("ResultSet basics", {
     fit <- lmFit(y, design)
     fite <- eBayes(fit)
     df <- topTable(fite, coef = 2, number = Inf, confint = TRUE)
-    df$SE <- sqrt(fite$s2.post) * fite$stdev.unscaled
+    df$SE <- (sqrt(fite$s2.post) * fite$stdev.unscaled)[, 2]
     
     fdata <- data.frame(chr = "1", start = 1:10, stringsAsFactors = FALSE)
     rownames(fdata) <- paste("Gene", 1:10)

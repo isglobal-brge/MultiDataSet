@@ -4,8 +4,17 @@
 \alias{add_se}
 \title{Method to add a \code{SummarizedExperiment} to \code{MultiDataSet}.}
 \usage{
-add_se(object, set, dataset.type, dataset.name = NULL, sample.tables = NULL,
-  feature.tables = NULL, warnings = TRUE, overwrite = FALSE, GRanges)
+add_se(
+  object,
+  set,
+  dataset.type,
+  dataset.name = NULL,
+  sample.tables = NULL,
+  feature.tables = NULL,
+  warnings = TRUE,
+  overwrite = FALSE,
+  GRanges
+)
 }
 \arguments{
 \item{object}{\code{MultiDataSet} that will be filled.}

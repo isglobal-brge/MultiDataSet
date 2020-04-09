@@ -4,8 +4,7 @@
 \alias{getAssociation}
 \title{Method to extrat feature result from a ResultSet}
 \usage{
-getAssociation(object, rid = 1, coef = 2, contrast = NULL,
-  fNames = NULL, ...)
+getAssociation(object, rid = 1, coef = 2, contrast = NULL, fNames = NULL, ...)
 }
 \arguments{
 \item{object}{A \code{\link{ResultSet}} object.}

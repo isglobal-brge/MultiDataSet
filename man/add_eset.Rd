@@ -4,9 +4,17 @@
 \alias{add_eset}
 \title{Method to add an \code{eSet} to \code{MultiDataSet}.}
 \usage{
-add_eset(object, set, dataset.type, dataset.name = NULL,
-  sample.tables = NULL, feature.tables = NULL, warnings = TRUE,
-  overwrite = FALSE, GRanges)
+add_eset(
+  object,
+  set,
+  dataset.type,
+  dataset.name = NULL,
+  sample.tables = NULL,
+  feature.tables = NULL,
+  warnings = TRUE,
+  overwrite = FALSE,
+  GRanges
+)
 }
 \arguments{
 \item{object}{\code{MultiDataSet} that will be filled.}

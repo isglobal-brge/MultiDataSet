@@ -20,8 +20,7 @@
 \usage{
 \S4method{fData}{ResultSet}(object)
 
-\S4method{getAssociation}{ResultSet}(object, rid = 1, coef = 2,
-  contrast = NULL, fNames = NULL, ...)
+\S4method{getAssociation}{ResultSet}(object, rid = 1, coef = 2, contrast = NULL, fNames = NULL, ...)
 
 \S4method{length}{ResultSet}(x)
 
@@ -29,10 +28,23 @@
 
 \S4method{opt}{ResultSet}(object)
 
-\S4method{plot}{ResultSet,ANY}(x, y, rid = 1, coef = 2, contrast = NULL,
-  type, tFC = 2, tPV = -log10(0.001), show.labels = TRUE,
-  show.effect = FALSE, show.lambda = TRUE, fNames = c("chromosome",
-  "start"), subset, highlight, ...)
+\S4method{plot}{ResultSet,ANY}(
+  x,
+  y,
+  rid = 1,
+  coef = 2,
+  contrast = NULL,
+  type,
+  tFC = 2,
+  tPV = -log10(0.001),
+  show.labels = TRUE,
+  show.effect = FALSE,
+  show.lambda = TRUE,
+  fNames = c("chromosome", "start"),
+  subset,
+  highlight,
+  ...
+)
 
 \S4method{varLabels}{ResultSet}(object)
 

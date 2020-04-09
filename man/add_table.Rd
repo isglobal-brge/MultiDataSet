@@ -4,8 +4,14 @@
 \alias{add_table}
 \title{Method to add a \code{matrix} to \code{MultiDataSet}.}
 \usage{
-add_table(object, set, dataset.type, dataset.name = NULL, warnings = TRUE,
-  overwrite = FALSE)
+add_table(
+  object,
+  set,
+  dataset.type,
+  dataset.name = NULL,
+  warnings = TRUE,
+  overwrite = FALSE
+)
 }
 \arguments{
 \item{object}{\code{MultiDataSet} that will be filled.}

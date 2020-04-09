@@ -4,9 +4,16 @@
 \alias{add_rse}
 \title{Method to add a \code{RangedSummarizedExperiment} to \code{MultiDataSet}.}
 \usage{
-add_rse(object, set, dataset.type, dataset.name = NULL,
-  sample.tables = NULL, feature.tables = NULL, warnings = TRUE,
-  overwrite = FALSE)
+add_rse(
+  object,
+  set,
+  dataset.type,
+  dataset.name = NULL,
+  sample.tables = NULL,
+  feature.tables = NULL,
+  warnings = TRUE,
+  overwrite = FALSE
+)
 }
 \arguments{
 \item{object}{\code{MultiDataSet} that will be filled.}

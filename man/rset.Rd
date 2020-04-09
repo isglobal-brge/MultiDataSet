@@ -4,7 +4,9 @@
 \name{rset}
 \alias{rset}
 \title{Example \code{ResultSet}}
-\format{\code{ResultSet}}
+\format{
+\code{ResultSet}
+}
 \usage{
 rset
 }

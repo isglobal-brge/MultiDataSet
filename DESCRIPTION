@@ -1,8 +1,8 @@
 Package: MultiDataSet
 Type: Package
 Title: Implementation of MultiDataSet and ResultSet 
-Version: 1.9.1
-Date: 2018-07-03
+Version: 1.9.2
+Date: 2020-04-03
 Authors@R: c(person("Carlos", "Ruiz-Arenas", , "carlos.ruiz@isglobal.org", role = c("aut", "cre")),
   person("Carles", "Hernandez-Ferrer", , "carles.hernandez@isglobal.org", role = "aut"),
   person("Juan R.", "Gonzalez", ,"juanr.gonzalez@isglobal.org", role = "aut"))
@@ -28,7 +28,7 @@ Imports:
     ggrepel,
     qqman,
     limma
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.0
 Suggests: brgedata,
     minfi,
     minfiData,

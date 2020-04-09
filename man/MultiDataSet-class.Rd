@@ -18,35 +18,23 @@
 \alias{add_eset,MultiDataSet,eSet-method}
 \alias{MultiDataSet-methods}
 \alias{add_genexp,MultiDataSet,ExpressionSet-method}
-\alias{MultiDataSet-methods}
 \alias{add_rnaseq,MultiDataSet,ExpressionSet-method}
-\alias{MultiDataSet-methods}
 \alias{add_methy,MultiDataSet,GenomicRatioSet-method}
-\alias{MultiDataSet-methods}
 \alias{add_rse,MultiDataSet,RangedSummarizedExperiment-method}
-\alias{MultiDataSet-methods}
 \alias{add_se,MultiDataSet,SummarizedExperiment-method}
-\alias{MultiDataSet-methods}
 \alias{add_snps,MultiDataSet,SnpSet-method}
-\alias{MultiDataSet-methods}
 \alias{add_table,MultiDataSet,matrix-method}
-\alias{MultiDataSet-methods}
 \alias{as.list,MultiDataSet-method}
 \alias{as.list}
 \alias{commonIds,MultiDataSet-method}
-\alias{MultiDataSet-methods}
 \alias{commonSamples,MultiDataSet-method}
-\alias{MultiDataSet-methods}
 \alias{createMultiDataSet}
-\alias{MultiDataSet-methods}
 \alias{dims,MultiDataSet-method}
 \alias{dims}
 \alias{w_iclusterplus,MultiDataSet-method}
-\alias{MultiDataSet-methods}
 \alias{length,MultiDataSet-method}
 \alias{length}
 \alias{w_mcia,MultiDataSet-method}
-\alias{MultiDataSet-methods}
 \alias{names,MultiDataSet-method}
 \alias{MultiDataSet-methods,}
 \alias{names}
@@ -55,9 +43,7 @@
 \alias{nrow,MultiDataSet-method}
 \alias{nrow}
 \alias{rowRangesElements,MultiDataSet-method}
-\alias{MultiDataSet-methods}
 \alias{sampleNames,MultiDataSet-method}
-\alias{MultiDataSet-methods}
 \alias{assayData,MultiDataSet-method}
 \alias{assayData}
 \alias{fData,MultiDataSet-method}
@@ -71,17 +57,22 @@
 \alias{rowRanges,MultiDataSet-method}
 \alias{rowRanges}
 \alias{[[,MultiDataSet,ANY,ANY-method}
-\alias{MultiDataSet-methods}
 \alias{[,MultiDataSet,ANY,ANY,ANY-method}
-\alias{MultiDataSet-methods}
 \alias{[}
 \alias{subset,MultiDataSet-method}
-\alias{MultiDataSet-methods}
 \title{MultiDataSet instances}
 \usage{
-\S4method{add_eset}{MultiDataSet,eSet}(object, set, dataset.type,
-  dataset.name = NULL, sample.tables = "protocolData",
-  feature.tables = NULL, warnings = TRUE, overwrite = FALSE, GRanges)
+\S4method{add_eset}{MultiDataSet,eSet}(
+  object,
+  set,
+  dataset.type,
+  dataset.name = NULL,
+  sample.tables = "protocolData",
+  feature.tables = NULL,
+  warnings = TRUE,
+  overwrite = FALSE,
+  GRanges
+)
 
 \S4method{add_genexp}{MultiDataSet,ExpressionSet}(object, gexpSet, ...)
 
@@ -89,19 +80,39 @@
 
 \S4method{add_methy}{MultiDataSet,GenomicRatioSet}(object, methySet, ...)
 
-\S4method{add_rse}{MultiDataSet,RangedSummarizedExperiment}(object, set,
-  dataset.type, dataset.name = NULL, sample.tables = NULL,
-  feature.tables = "elementMetadata", warnings = TRUE, overwrite = FALSE)
+\S4method{add_rse}{MultiDataSet,RangedSummarizedExperiment}(
+  object,
+  set,
+  dataset.type,
+  dataset.name = NULL,
+  sample.tables = NULL,
+  feature.tables = "elementMetadata",
+  warnings = TRUE,
+  overwrite = FALSE
+)
 
-\S4method{add_se}{MultiDataSet,SummarizedExperiment}(object, set, dataset.type,
-  dataset.name = NULL, sample.tables = NULL,
-  feature.tables = "elementMetadata", warnings = TRUE, overwrite = FALSE,
-  GRanges)
+\S4method{add_se}{MultiDataSet,SummarizedExperiment}(
+  object,
+  set,
+  dataset.type,
+  dataset.name = NULL,
+  sample.tables = NULL,
+  feature.tables = "elementMetadata",
+  warnings = TRUE,
+  overwrite = FALSE,
+  GRanges
+)
 
 \S4method{add_snps}{MultiDataSet,SnpSet}(object, snpSet, ...)
 
-\S4method{add_table}{MultiDataSet,matrix}(object, set, dataset.type,
-  dataset.name = NULL, warnings = TRUE, overwrite = FALSE)
+\S4method{add_table}{MultiDataSet,matrix}(
+  object,
+  set,
+  dataset.type,
+  dataset.name = NULL,
+  warnings = TRUE,
+  overwrite = FALSE
+)
 
 \S4method{as.list}{MultiDataSet}(x)
 

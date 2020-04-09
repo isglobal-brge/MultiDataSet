@@ -3,7 +3,6 @@
 \docType{package}
 \name{MultiDataSet}
 \alias{MultiDataSet}
-\alias{MultiDataSet-package}
 \title{MultiDataSet: Implementation of the BRGE's basic classes}
 \description{
 Implementation of the BRGE's (Bioinformatic Research Group in Epidemiology from

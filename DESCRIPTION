@@ -1,11 +1,12 @@
 Package: MultiDataSet
 Type: Package
 Title: Implementation of MultiDataSet and ResultSet 
-Version: 1.18.0
+Version: 1.18.1
 Date: 2020-04-03
 Authors@R: c(person("Carlos", "Ruiz-Arenas", , "carlos.ruiz@isglobal.org", role = c("aut", "cre")),
   person("Carles", "Hernandez-Ferrer", , "carles.hernandez@isglobal.org", role = "aut"),
   person("Juan R.", "Gonzalez", ,"juanr.gonzalez@isglobal.org", role = "aut"))
+Maintainer: Xavier Escribà Montagut <xavier.escriba@isglobal.org>
 Description: Implementation of the BRGE's (Bioinformatic Research Group in Epidemiology from
  Center for Research in Environmental Epidemiology) MultiDataSet and ResultSet. 
  MultiDataSet is designed for integrating multi omics data sets and ResultSet is

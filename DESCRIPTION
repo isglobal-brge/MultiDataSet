@@ -1,7 +1,7 @@
 Package: MultiDataSet
 Type: Package
 Title: Implementation of MultiDataSet and ResultSet 
-Version: 1.19.0
+Version: 1.19.1
 Date: 2020-04-03
 Authors@R: c(person("Carlos", "Ruiz-Arenas", , "carlos.ruiz@isglobal.org", role = c("aut", "cre")),
   person("Carles", "Hernandez-Ferrer", , "carles.hernandez@isglobal.org", role = "aut"),

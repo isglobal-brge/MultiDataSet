@@ -8,7 +8,7 @@ setMethod(
     f = "getAssociation",
     signature = "ResultSet",
     definition = function(object, rid = 1, coef = 2, contrast = NULL, 
-                          fNames = NULL, ...) {
+                          fNames = NULL, robust = FALSE, ...) {
         
         res <- object@results[[rid]]$result
         
@@ -17,7 +17,7 @@ setMethod(
             if (!is.null(contrast)){
                 fit <- limma::contrasts.fit(fit, contrast)
             }
-            fit <- limma::eBayes(fit)
+            fit <- limma::eBayes(fit, robust = robust)
             res <- limma::topTable(fit, coef = coef, number = Inf, confint = TRUE, ...)
             res$SE <- (sqrt(fit$s2.post) * fit$stdev.unscaled)[, coef]
             
@@ -28,8 +28,9 @@ setMethod(
                 if (!all(fNames %in% colnames(fData))){
                     stop("All fNames must be present in ResultSet fData.")
                 }
-                
-                res <- cbind(res, fData[rownames(res), fNames])  
+                fData_frame <- data.frame(fData[rownames(res), fNames])
+                colnames(fData_frame) <- fNames
+                res <- cbind(res, fData_frame)  
             }
         }
         

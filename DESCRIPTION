@@ -2,11 +2,11 @@ Package: MultiDataSet
 Type: Package
 Title: Implementation of MultiDataSet and ResultSet 
 Version: 1.21.0
-Date: 2020-04-03
+Date: 2021-10-04
 Authors@R: c(person("Carlos", "Ruiz-Arenas", , "carlos.ruiz@isglobal.org", role = c("aut", "cre")),
   person("Carles", "Hernandez-Ferrer", , "carles.hernandez@isglobal.org", role = "aut"),
   person("Juan R.", "Gonzalez", ,"juanr.gonzalez@isglobal.org", role = "aut"))
-Maintainer: Xavier Escrib√† Montagut <xavier.escriba@isglobal.org>
+Maintainer: Xavier Escrib‡ Montagut <xavier.escriba@isglobal.org>
 Description: Implementation of the BRGE's (Bioinformatic Research Group in Epidemiology from
  Center for Research in Environmental Epidemiology) MultiDataSet and ResultSet. 
  MultiDataSet is designed for integrating multi omics data sets and ResultSet is
@@ -16,7 +16,7 @@ License: file LICENSE
 LazyData: TRUE
 biocViews: Software, DataRepresentation
 Depends:
-    R (>= 3.3), Biobase
+    R (>= 4.1), Biobase
 Imports:
     BiocGenerics,
     GenomicRanges,

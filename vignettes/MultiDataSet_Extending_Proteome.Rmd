@@ -254,7 +254,7 @@ In the definition of `add_prot`, we can see the three main arguments of this fun
 
 The following code shows the implementation of `add_prot`. In the signature, we specify that the first argument should be a `MultiDataSet` and the second a `ProteomeSet`. If any other class is passed to the function, an error will be returned. In the code of the function, we see only two lines: a call to `add_eset` and the return of the object. 
 
-````{r, message = FALSE}
+````{r, message = FALSE, eval = FALSE}
 library(MultiDataSet)
 setMethod(
     f = "add_prot",
@@ -275,7 +275,7 @@ Basic method `add_eset` is used to add `eSet` derived-classes to `MultiDataSet` 
 
 For illustration purposes, we have created three tsv-dummy files that are used in the following code to create a `ProteomeSet` using `read_ldset` function. These files are available in the Supplementary Material of the manuscript
 
-```{r load_ps}
+```{r load_ps, eval = FALSE}
 ## Create a ProteomeSet with protein data
 ps <- read_ldset(assayFile="assay_data.tsv", 
                  phenoFile="pheno_data.tsv",
@@ -288,20 +288,20 @@ The created object `ps` is a `ProteomeSet` and it contains two elements called `
 
 Now that the proteome data is loaded and stored in a `ProteomeSet`, we can add it to a new `MultiDataSet`. `MultiDataSet` objects can be created using the constructor `createMultiDataSet`. Then the method `add_prot` is used to include the proteome data to `md`:
 
-```{r add_prot_md_1, warning=FALSE}
+```{r add_prot_md_1, warning=FALSE, eval = FALSE}
 md <- createMultiDataSet()
 md <- add_prot(md, ps)
 ```
 
 The method `names` of `MultiDataSet` shows the datasets stored in the `MultiDataSet`. `MultiDataSet` stores datasets calling them by its data type.
 
-````{r show_md_1}
+````{r show_md_1, eval = FALSE}
 names(md)
 ````
 
 Finally, the _show_ of the object gives more information related to the stored in the `MultiDataSet`:
 
-````{r show_md_2}
+````{r show_md_2, eval = FALSE}
 md
 ````
 

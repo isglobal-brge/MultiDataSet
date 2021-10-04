@@ -254,7 +254,7 @@ In the definition of `add_prot`, we can see the three main arguments of this fun
 
 The following code shows the implementation of `add_prot`. In the signature, we specify that the first argument should be a `MultiDataSet` and the second a `ProteomeSet`. If any other class is passed to the function, an error will be returned. In the code of the function, we see only two lines: a call to `add_eset` and the return of the object. 
 
-````{r, message = FALSE}
+````{r message = FALSE}
 library(MultiDataSet)
 setMethod(
     f = "add_prot",

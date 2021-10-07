@@ -295,15 +295,15 @@ md <- add_prot(md, ps)
 
 The method `names` of `MultiDataSet` shows the datasets stored in the `MultiDataSet`. `MultiDataSet` stores datasets calling them by its data type.
 
-````{r show_md_1}
+```{r show_md_1}
 names(md)
-````
+```
 
 Finally, the _show_ of the object gives more information related to the stored in the `MultiDataSet`:
 
-````{r show_md_2}
+```{r show_md_2}
 md
-````
+```
 
 The name of the set is shown (`proteome`), the number of proteins (5 rows in feature data), the number of samples (33 samples in pheno data) and, since no `GRanges` was provided, `rowRanges` is `NO`.
 
